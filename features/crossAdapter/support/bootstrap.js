@@ -2,7 +2,7 @@
  * Module Dependencies
  */
 
-var Waterline = require('waterline');
+var Offshore = require('offshore');
 var _ = require('lodash');
 var async = require('async');
 
@@ -35,14 +35,14 @@ var fixtures = {
 // TEST SETUP
 ////////////////////////////////////////////////////
 
-var waterline, ontology;
+var offshore, ontology;
 
 before(function(done) {
 
-  waterline = new Waterline();
+  offshore = new Offshore();
 
   Object.keys(fixtures).forEach(function(key) {
-    waterline.loadCollection(fixtures[key]);
+    offshore.loadCollection(fixtures[key]);
   });
 
   var connections = { associations: _.clone(Connections.test), associations2: _.clone(Connections.test2) };
@@ -50,7 +50,7 @@ before(function(done) {
   // in case previous teardown failed
   Adapter.teardown('associations', function adapterTeardown(){
 
-    waterline.initialize({ adapters: { wl_tests: Adapter, wl_tests2: MemoryAdapter }, connections: connections }, function(err, _ontology) {
+    offshore.initialize({ adapters: { wl_tests: Adapter, wl_tests2: MemoryAdapter }, connections: connections }, function(err, _ontology) {
       if(err) return done(err);
 
       ontology = _ontology;
@@ -79,7 +79,7 @@ after(function(done) {
 
   async.each(Object.keys(ontology.collections), dropCollection, function(err) {
     if(err) return done(err);
-    waterline.teardown(done);
+    offshore.teardown(done);
   });
 
 });

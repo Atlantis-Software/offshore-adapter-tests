@@ -28,7 +28,7 @@ describe('Migratable Interface', function() {
       });
 
       it('should not retain the data when bootstrapped the second time', function(done) {
-        Migratable.waterline.teardown(function(err) {
+        Migratable.offshore.teardown(function(err) {
           bootstrapFn(function(err, obj) {
 
             var ontology = obj.ontology;

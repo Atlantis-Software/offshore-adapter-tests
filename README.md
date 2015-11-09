@@ -1,16 +1,10 @@
-Waterline Adapter Tests
+Offshore Adapter Tests
 ==========================
-[![Build Status](https://travis-ci.org/balderdashy/waterline-adapter-tests.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-adapter-tests)
-[![npm version](https://badge.fury.io/js/waterline-adapter-tests.svg)](http://badge.fury.io/js/waterline-adapter-tests)
-[![Dependency Status](https://david-dm.org/balderdashy/waterline-adapter-tests.svg)](https://david-dm.org/balderdashy/waterline-adapter-tests)
 
-A set of integration tests that can be included in your Waterline Adapter module and used to test
-your adapter against the current Waterline API.
+A set of integration tests that can be included in your Offshore Adapter module and used to test
+your adapter against the current Offshore API.
 
 ## Adapter Interface Specification
-
-+ [Reference](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md)
-+ [Philosophy & Motivations](https://github.com/balderdashy/sails-docs/blob/master/contributing/intro-to-custom-adapters.md)
 
 
 ## Usage
@@ -24,15 +18,15 @@ your adapter against the current Waterline API.
  * Test runner dependencies
  */
 var mocha = require('mocha');
-var TestRunner = require('waterline-adapter-tests');
+var TestRunner = require('offshore-adapter-tests');
 
 
 /**
  * Integration Test Runner
  *
- * Uses the `waterline-adapter-tests` module to
+ * Uses the `offshore-adapter-tests` module to
  * run mocha tests against the specified interfaces
- * of the currently-implemented Waterline adapter API.
+ * of the currently-implemented Offshore adapter API.
  */
 new TestRunner({
 

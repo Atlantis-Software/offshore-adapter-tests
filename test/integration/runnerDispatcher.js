@@ -13,13 +13,13 @@ var adapters = ['sails-postgresql', 'sails-memory', 'sails-disk', 'sails-mongo',
 
 // Core modules npm Dependencies path
 var coreModulesPaths = {
-  "waterline":               ".dependencies.waterline",
-  "- anchor":                ".dependencies.waterline.dependencies.anchor",
-  "- waterline-schema":      ".dependencies.waterline.dependencies.waterline-schema",
-  "waterline-adapter-tests": "."
+  "offshore":               ".dependencies.offshore",
+  "- anchor":                ".dependencies.offshore.dependencies.anchor",
+  "- offshore-schema":      ".dependencies.offshore.dependencies.offshore-schema",
+  "offshore-adapter-tests": "."
 };
 
-var wlSequelPath = ".dependencies.%s.dependencies.waterline-sequel";
+var wlSequelPath = ".dependencies.%s.dependencies.offshore-sequel";
 
 //
 /////////////////////////////////////////////////////////////////////

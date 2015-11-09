@@ -2,9 +2,9 @@ var assert = require('assert');
 var _ = require('lodash');
 
 describe('spatial feature', function () {
-  var Waterline = require('waterline');
+  var Offshore = require('offshore');
   var defaults = { migrate: 'alter' };
-  var waterline;
+  var offshore;
 
   var Models = require('../support/models.js');
   var Fixtures = require('../support/fixtures.js');
@@ -40,12 +40,12 @@ describe('spatial feature', function () {
   });
 
   before(function(done) {
-    waterline = new Waterline();
-    waterline.loadCollection(Models);
+    offshore = new Offshore();
+    offshore.loadCollection(Models);
 
     var connections = { geoConnection: _.clone(Connections.test) };
     Adapter.teardown('geoConnection', function adapterTeardown(){
-      waterline.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, ontology) {
+      offshore.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, ontology) {
         if(err) return done(err);
         Model = ontology.collections['geomodel'];
         done();
@@ -55,12 +55,12 @@ describe('spatial feature', function () {
   after(function(done) {
     done()
     if(!Adapter.hasOwnProperty('drop')) {
-      waterline.teardown(done);
+      offshore.teardown(done);
       done()
     } else {
       Model.drop(function(err1) {
         done()
-        waterline.teardown(function(err2) {
+        offshore.teardown(function(err2) {
           return done(err1 || err2);
         });
       });

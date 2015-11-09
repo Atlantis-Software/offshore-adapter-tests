@@ -9,22 +9,22 @@ var bootstrapFn = require('./bootstrapFn'),
 // TEST SETUP
 ////////////////////////////////////////////////////
 
-var waterline, ontology;
+var offshore, ontology;
 
 before(function(done) {
 
   bootstrapFn(function(err, obj) {
 
     ontology = obj.ontology;
-    waterline = obj.waterline;
+    offshore = obj.offshore;
 
     Object.keys(ontology.collections).forEach(function(key) {
       var globalName = key.charAt(0).toUpperCase() + key.slice(1);
       global.Migratable[globalName] = ontology.collections[key];
     });
 
-    // Store the Waterline object as a global so it can be used in the tests
-    global.Migratable.waterline = waterline;
+    // Store the Offshore object as a global so it can be used in the tests
+    global.Migratable.offshore = offshore;
 
     done();
   });
@@ -43,7 +43,7 @@ after(function(done) {
 
   async.each(Object.keys(ontology.collections), dropCollection, function(err) {
     if(err) return done(err);
-    waterline.teardown(done);
+    offshore.teardown(done);
   });
 
 });

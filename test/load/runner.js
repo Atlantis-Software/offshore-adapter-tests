@@ -22,7 +22,7 @@ var connections = { 'load_test': config };
 connections.load_test.adapter = 'default';
 
 
-var waterline = setupWaterline({
+var offshore = setupWaterline({
   adapters: {
     'default': require(adapterName)
   },
@@ -33,7 +33,7 @@ var waterline = setupWaterline({
   connections: connections
 }, function waterlineReady (err, ontology) {
   if (err) throw err;
-  console.log('waterline initialized');
+  console.log('offshore initialized');
 
   // Our collections (i.e. models):
   global.WL_MODELS = ontology.collections;
@@ -156,6 +156,6 @@ function tearDown(collections, cb){
       cb(err);
     }
     
-    waterline.teardown(cb);
+    offshore.teardown(cb);
   });
 }

@@ -16,17 +16,17 @@ describe('autoIncrement attribute feature', function() {
   // TEST SETUP
   ////////////////////////////////////////////////////
 
-  var Waterline = require('waterline');
+  var Offshore = require('offshore');
   var defaults = { migrate: 'alter' };
-  var waterline;
+  var offshore;
 
   var AutoIncFixture = require('./../support/autoInc.fixture.js');
   var AutoIncModel;
 
 
   before(function(done) {
-    waterline = new Waterline();
-    waterline.loadCollection(AutoIncFixture);
+    offshore = new Offshore();
+    offshore.loadCollection(AutoIncFixture);
     done();
   });
 
@@ -34,7 +34,7 @@ describe('autoIncrement attribute feature', function() {
     var connections = { autoIncConn: _.clone(Connections.test) };
 
     Adapter.teardown('autoIncConn', function adapterTeardown(){
-      waterline.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, ontology) {
+      offshore.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, ontology) {
         if(err) return done(err);
         AutoIncModel = ontology.collections['autoinc'];
         done();
@@ -44,10 +44,10 @@ describe('autoIncrement attribute feature', function() {
 
   afterEach(function(done) {
     if(!Adapter.hasOwnProperty('drop')) {
-      waterline.teardown(done);
+      offshore.teardown(done);
     } else {
       AutoIncModel.drop(function(err1) {
-        waterline.teardown(function(err2) {
+        offshore.teardown(function(err2) {
           return done(err1 || err2);
         });
       });

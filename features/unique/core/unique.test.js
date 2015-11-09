@@ -7,9 +7,9 @@ describe('unique attribute feature', function() {
   // TEST SETUP
   ////////////////////////////////////////////////////
 
-  var Waterline = require('waterline');
+  var Offshore = require('offshore');
   var defaults = { migrate: 'alter' };
-  var waterline;
+  var offshore;
 
   var UniqueFixture = require('../support/unique.fixture.js')
   var UniqueModel;
@@ -18,12 +18,12 @@ describe('unique attribute feature', function() {
 
 
   before(function(done) {
-    waterline = new Waterline();
-    waterline.loadCollection(UniqueFixture);
+    offshore = new Offshore();
+    offshore.loadCollection(UniqueFixture);
 
     var connections = { uniqueConn: _.clone(Connections.test) };
 
-    waterline.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, ontology) {
+    offshore.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, ontology) {
       if(err) return done(err);
       UniqueModel = ontology.collections['unique'];
 
@@ -45,10 +45,10 @@ describe('unique attribute feature', function() {
 
   after(function(done) {
     if(!Adapter.hasOwnProperty('drop')) {
-      waterline.teardown(done);
+      offshore.teardown(done);
     } else {
       UniqueModel.drop(function(err1) {
-        waterline.teardown(function(err2) {
+        offshore.teardown(function(err2) {
           return done(err1 || err2);
         });
       });

@@ -10,7 +10,7 @@ necessarily be sequential, which accommodates the use of UUIDs. If a value for t
 present in the data provided for a new record it will be saved as-is without any guarantee of uniqueness. 
 The autoIncrement option has no effect when updating existing records.
 
-Usage on Waterline models:
+Usage on Offshore models:
 
 ```
 attributes: {

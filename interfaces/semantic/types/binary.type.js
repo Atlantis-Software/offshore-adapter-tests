@@ -11,7 +11,7 @@ describe('Semantic Interface', function() {
       ////////////////////////////////////////////////////
 
       // SKIP FOR NOW
-      // Due to cloning of the data inside Waterline this fails anchor validations. We have
+      // Due to cloning of the data inside Offshore this fails anchor validations. We have
       // Skipper to handle blob/binary data.
 
       it('should store proper binary value', function(done) {

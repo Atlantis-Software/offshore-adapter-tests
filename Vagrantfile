@@ -3,7 +3,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = "precise64"
 
   # Host name
-  config.vm.hostname = "waterline.adapter.tests"
+  config.vm.hostname = "offshore.adapter.tests"
 
   # Network setup
   config.vm.network :forwarded_port, guest: 80, host: 8080
@@ -49,7 +49,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = ".puppet/manifests"
     puppet.module_path = ".puppet/modules"
-    puppet.manifest_file = "waterline-adapter-tests.pp"
+    puppet.manifest_file = "offshore-adapter-tests.pp"
     puppet.hiera_config_path = ".puppet/hiera.yaml"
     puppet.options = ['--verbose']
   end

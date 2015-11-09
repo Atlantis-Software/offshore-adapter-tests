@@ -1,6 +1,6 @@
-var Waterline = require('waterline');
+var Offshore = require('offshore');
 
-module.exports = Waterline.Collection.extend({
+module.exports = Offshore.Collection.extend({
 
   identity: 'compositePrimaryKey',
   tableName: 'compositePrimaryKeyTable',

@@ -2,9 +2,9 @@
  * Dependencies
  */
 
-var Waterline = require('waterline');
+var Offshore = require('offshore');
 
-module.exports = Waterline.Collection.extend({
+module.exports = Offshore.Collection.extend({
 
   tableName: 'alter',
   connection: 'migratable',

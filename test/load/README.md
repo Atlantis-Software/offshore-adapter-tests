@@ -1,9 +1,9 @@
 Load tests
 ==========
-A script that measures the memory comsumption of waterline under load, using the official adapters.
+A script that measures the memory comsumption of offshore under load, using the official adapters.
 
 ## Goal
-Provide a tool to reliably measure performance of waterline and its adapters. Before pushing any changes 
+Provide a tool to reliably measure performance of offshore and its adapters. Before pushing any changes 
 upstream it's a good idea to check if the performance has not deteriorated.  
 
 ## Usage

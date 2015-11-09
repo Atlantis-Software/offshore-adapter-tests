@@ -2,9 +2,9 @@
  * Dependencies
  */
 
-var Waterline = require('waterline');
+var Offshore = require('offshore');
 
-module.exports.payment = Waterline.Collection.extend({
+module.exports.payment = Offshore.Collection.extend({
 
   tableName: 'payment_manyTable',
   identity: 'payment_many',
@@ -31,7 +31,7 @@ module.exports.payment = Waterline.Collection.extend({
 
 });
 
-module.exports.customer = Waterline.Collection.extend({
+module.exports.customer = Offshore.Collection.extend({
 
   tableName: 'customer_manyTable',
   identity: 'customer_many',

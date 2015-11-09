@@ -2,22 +2,22 @@ var assert = require('assert');
 var _ = require('lodash');
 
 describe('compositeUnique feature', function () {
-  var Waterline = require('waterline');
+  var Offshore = require('offshore');
   var defaults = { migrate: 'alter' };
-  var waterline;
+  var offshore;
 
   var Fixture = require('./../support/fixture.js');
   var Model;
 
 
   before(function(done) {
-    waterline = new Waterline();
-    waterline.loadCollection(Fixture);
+    offshore = new Offshore();
+    offshore.loadCollection(Fixture);
 
     var connections = { compositeUniqueConnection: _.clone(Connections.test) };
 
     Adapter.teardown('compositeUniqueConnection', function adapterTeardown(){
-      waterline.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, ontology) {
+      offshore.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, ontology) {
         if(err) return done(err);
         Model = ontology.collections['compositeunique'];
         done();
@@ -26,10 +26,10 @@ describe('compositeUnique feature', function () {
   });
   after(function(done) {
     if(!Adapter.hasOwnProperty('drop')) {
-      waterline.teardown(done);
+      offshore.teardown(done);
     } else {
       Model.drop(function(err1) {
-        waterline.teardown(function(err2) {
+        offshore.teardown(function(err2) {
           return done(err1 || err2);
         });
       });

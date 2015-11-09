@@ -5,7 +5,7 @@
 // TODO: track any failures/errors
 
 
-var Waterline = require('waterline'),
+var Offshore = require('offshore'),
     Model = require('./support/crud.fixture'),
     assert = require('assert'),
     async = require('async');
@@ -27,12 +27,12 @@ describe('Load Testing', function() {
   var User;
 
   before(function(done) {
-    var waterline = new Waterline();
-    waterline.loadCollection(Model);
+    var offshore = new Offshore();
+    offshore.loadCollection(Model);
 
     Events.emit('fixture', Model);
 
-    waterline.initialize({ adapters: { test: Adapter }}, function(err, colls) {
+    offshore.initialize({ adapters: { test: Adapter }}, function(err, colls) {
       if(err) return done(err);
       User = colls.loadtest;
       done();

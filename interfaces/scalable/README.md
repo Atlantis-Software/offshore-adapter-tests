@@ -2,7 +2,7 @@
 
 Currently, the goal with the `scalable` interface is to test that a reasonable bar for performance/memory usage is met, for the `semantic` (CRUD) and `queryable` (searching using criteria) interfaces.
 
-We're standardizing to “Benchmark.js](https://github.com/bestiejs/benchmark.js) across all the sails/waterline projects.
+We're standardizing to “Benchmark.js](https://github.com/bestiejs/benchmark.js) across all the sails/offshore projects.
 
 
 ###### Writing good benchmarks

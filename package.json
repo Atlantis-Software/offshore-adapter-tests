@@ -1,38 +1,37 @@
 {
-  "name": "waterline-adapter-tests",
-  "description": "Integration tests for waterline adapters",
-  "version": "0.10.14",
-  "author": "Cody Stoltman <particlebanana@gmail.com>",
+  "name": "offshore-adapter-tests",
+  "description": "Integration tests for offshore adapters",
+  "version": "0.0.1",
+  "contributors": [
+    {
+      "name": "Alexandre Tiertant",
+      "github": "https://github.com/atiertant"
+    }
+  ],
   "dependencies": {
     "async": "^1.4",
     "bluebird": "~2.9.0",
     "lodash": "^3.10",
     "mocha": "~2.2.5",
-    "sails-memory": "balderdashy/sails-memory",
+    "sails-memory": "~0.0.1",
     "should": "^7.0",
-    "waterline": "~0.10.0"
+    "offshore": "~0.0.1"
   },
   "devDependencies": {
     "jpath": "^0.0.20",
     "npm": "^2.7.4",
-    "sails-disk": "balderdashy/sails-disk",
-    "sails-mongo": "balderdashy/sails-mongo",
-    "sails-mysql": "balderdashy/sails-mysql",
-    "sails-postgresql": "balderdashy/sails-postgresql",
-    "sails-redis": "balderdashy/sails-redis"
+    "offshore-disk": "~0.0.1",
+    "offshore-sql": "~0.0.1"
   },
   "keywords": [
     "orm",
     "tests",
-    "waterline",
+    "offshore",
     "adapters",
-    "sails",
-    "mysql",
-    "postgresql",
-    "mongo"
+    "sql"
   ],
-  "repository": "git://github.com/balderdashy/waterline-adapter-tests.git",
-  "homepage": "http://github.com/balderdashy/waterline-adapter-tests",
+  "repository": "git://github.com/Atlantis-Software/offshore-adapter-tests.git",
+  "homepage": "http://github.com/Atlantis-Software/offshore-adapter-tests",
   "main": "./lib/index.js",
   "scripts": {
     "test": "node test/integration/runnerDispatcher.js",
@@ -44,10 +43,10 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/balderdashy/waterline-adapter-tests/blob/master/LICENSE.md"
+      "url": "https://github.com/Atlantis-Software/offshore-adapter-tests/blob/master/LICENSE.md"
     }
   ],
   "bugs": {
-    "url": "https://github.com/balderdashy/waterline-adapter-tests/issues/new"
+    "url": "https://github.com/Atlantis-Software/offshore-adapter-tests/issues/new"
   }
 }

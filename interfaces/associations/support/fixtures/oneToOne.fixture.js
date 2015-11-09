@@ -2,9 +2,9 @@
  * Dependencies
  */
 
-var Waterline = require('waterline');
+var Offshore = require('offshore');
 
-module.exports.user_resource = Waterline.Collection.extend({
+module.exports.user_resource = Offshore.Collection.extend({
 
   tableName: 'user_resourceTable',
   identity: 'user_resource',
@@ -21,7 +21,7 @@ module.exports.user_resource = Waterline.Collection.extend({
 
 });
 
-module.exports.profile = Waterline.Collection.extend({
+module.exports.profile = Offshore.Collection.extend({
 
   tableName: 'profileTable',
   identity: 'profile',

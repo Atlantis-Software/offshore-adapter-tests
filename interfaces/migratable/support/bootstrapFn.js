@@ -2,7 +2,7 @@
  * Module Dependencies
  */
 
-var Waterline = require('waterline'),
+var Offshore = require('offshore'),
     _ = require('lodash');
 
 // Require Fixtures
@@ -18,17 +18,17 @@ var fixtures = {
 
 module.exports = function(cb) {
 
-  var waterline = new Waterline();
+  var offshore = new Offshore();
 
   Object.keys(fixtures).forEach(function(key) {
-    waterline.loadCollection(fixtures[key]);
+    offshore.loadCollection(fixtures[key]);
   });
 
   var connections = { migratable: _.clone(Connections.test) };
 
-  waterline.initialize({ adapters: { wl_tests: Adapter }, connections: connections }, function(err, _ontology) {
+  offshore.initialize({ adapters: { wl_tests: Adapter }, connections: connections }, function(err, _ontology) {
     if(err) return cb(err);
-    cb(null, { waterline: waterline, ontology: _ontology });
+    cb(null, { offshore: offshore, ontology: _ontology });
   });
 
 };
