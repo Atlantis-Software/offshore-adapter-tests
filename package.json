@@ -1,7 +1,7 @@
 {
   "name": "offshore-adapter-tests",
   "description": "Integration tests for offshore adapters",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "contributors": [
     {
       "name": "Alexandre Tiertant",
@@ -13,15 +13,13 @@
     "bluebird": "~2.9.0",
     "lodash": "^3.10",
     "mocha": "~2.2.5",
-    "sails-memory": "~0.0.1",
+    "offshore-memory": "~0.0.2",
     "should": "^7.0",
     "offshore": "~0.0.1"
   },
   "devDependencies": {
     "jpath": "^0.0.20",
-    "npm": "^2.7.4",
-    "offshore-disk": "~0.0.1",
-    "offshore-sql": "~0.0.1"
+    "npm": "^2.7.4"
   },
   "keywords": [
     "orm",

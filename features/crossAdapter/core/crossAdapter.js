@@ -11,7 +11,7 @@ var Path = require('path'),
     _ = require('lodash'),
     utils = require('../../../lib/utils'),
     mocha = require('mocha'),
-    memoryAdapter = require('sails-memory');
+    memoryAdapter = require('offshore-memory');
 
 /**
  * Test Runner
