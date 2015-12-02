@@ -1,7 +1,7 @@
 {
   "name": "offshore-adapter-tests",
   "description": "Integration tests for offshore adapters",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "contributors": [
     {
       "name": "Alexandre Tiertant",
@@ -13,7 +13,7 @@
     "bluebird": "~2.9.0",
     "lodash": "^3.10",
     "mocha": "~2.2.5",
-    "offshore-memory": "~0.0.2",
+    "offshore-memory": "~0.0.3",
     "should": "^7.0",
     "offshore": "~0.0.1"
   },
