@@ -13,7 +13,7 @@ adapter:
 mysql:
   image: mysql
   environment:
-   - MYSQL_DATABASE=offshore-sql
+   - MYSQL_DATABASE=offshoreSql
    - MYSQL_USER=offshore
    - MYSQL_PASSWORD=offshore
    - MYSQL_ROOT_PASSWORD=offshore
