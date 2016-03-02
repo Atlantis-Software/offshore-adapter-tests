@@ -8,9 +8,9 @@ var customDotReporter = require('./customDotReporter');
 var adapterName = process.env.ADAPTER_NAME || process.argv[2];
 var TestRunner = require('../../lib');
 var Adapter = require(adapterName);
-var settings = { config: {} };
+var settings = {};
 try {
-  settings = require('./config/' + adapterName + '.json');
+  settings = require('./config/' + adapterName);
 } catch(e){
   console.warn("Warning: couldn't find config file for " + adapterName + ".");
 }
@@ -38,7 +38,7 @@ catch (e) {
 
 
 
-console.info('Testing `' + package.name + '`, a Sails adapter.');
+console.info('Testing `' + package.name + '`, a Offshore adapter.');
 console.info('Running `offshore-adapter-tests` against ' + interfaces.length + ' interfaces...');
 console.info('( ' + interfaces.join(', ') + ' )');
 if (features.length) {
@@ -47,7 +47,6 @@ if (features.length) {
 }
 console.log();
 console.log('Latest draft of Offshore adapter interface spec:');
-console.info('https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md');
 console.log();
 
 
@@ -66,42 +65,42 @@ new TestRunner({
   adapter: Adapter,
 
   // Default adapter config to use.
-  config: settings.config,
+  config: settings,
 
   // The set of adapter interfaces to test against.
   // (grabbed these from this adapter's package.json file above)
   interfaces: interfaces,
-  
+
   // The set of adapter features to test against.
   // (grabbed these from this adapter's package.json file above)
   features: features,
-  
+
   // Mocha options
   // reference: https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
   mocha: {
     reporter: customDotReporter
   },
-  
+
   mochaChainableMethods: {},
-  
+
   // Return code != 0 if any test failed
   failOnError: true
-  
+
   // Most databases implement 'semantic' and 'queryable'.
   // 
-  // As of Sails/Offshore v0.10, the 'associations' interface
+  // As of Offshore, the 'associations' interface
   // is also available.  If you don't implement 'associations',
   // it will be polyfilled for you by Offshore core.  The core
   // implementation will always be used for cross-adapter / cross-connection
   // joins.
   // 
-  // In future versions of Sails/Offshore, 'queryable' may be also
+  // In future versions of Offshore, 'queryable' may be also
   // be polyfilled by core.
-  // 
+  //
   // These polyfilled implementations can usually be further optimized at the
   // adapter level, since most databases provide optimizations for internal
   // operations.
-  // 
+  //
   // Full interface reference:
   // https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md
 });

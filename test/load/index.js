@@ -1,7 +1,7 @@
 var exec = require('child_process').exec,
     async = require('async');
 
-var adapters = ['sails-postgresql', 'sails-memory', 'sails-disk', 'sails-mongo', 'sails-mysql', 'sails-redis'];
+var adapters = ['offshore-sql', 'offshore-memory'];
 if (process.argv.length > 2) {
   adapters = process.argv.splice(2);
 }

@@ -3,7 +3,7 @@ var assert = require('assert'),
 
 describe('Semantic Interface', function() {
 
-  describe('Binary Type', function() {
+  describe.skip('Binary Type', function() {
     describe('with valid data', function() {
 
       /////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ describe('Semantic Interface', function() {
           assert(!err, err);
           assert.equal(new Buffer(createdRecord.avatar).toString('utf-8'), str);
           Semantic.User.findOne({id: createdRecord.id}, function (err, record) {
-              assert(!err);
+              assert.ifError(err);
               // read out the stored binary thing
               var outbuf = new Buffer(record.avatar);
               assert.equal(outbuf.toString('utf-8'), str);
