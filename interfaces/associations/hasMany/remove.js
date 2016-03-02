@@ -38,13 +38,13 @@ describe('Association Interface', function() {
         it('should remove the customer_id foreign key from the payment', function(done) {
           customerRecord.payments.remove(paymentRecord.id);
           customerRecord.save(function(err) {
-            assert(!err);
+            assert.ifError(err);
 
             // Look up the customer again to be sure the payment was added
             Associations.Customer.findOne(customerRecord.id)
             .populate('payments')
             .exec(function(err, data) {
-              assert(!err);
+              assert.ifError(err);
 
               assert.strictEqual(data.payments.length, 0);
               done();
@@ -77,9 +77,10 @@ describe('Association Interface', function() {
           customerRecord.payments.remove({ amount: 1337 });
           customerRecord.save(function(err) {
             assert(err);
-            assert(Array.isArray(err));
-            assert.strictEqual(err.length, 1);
-            assert.equal(err[0].type, 'remove');
+            assert(err.failedTransactions)
+            assert(Array.isArray(err.failedTransactions));
+            assert.strictEqual(err.failedTransactions.length, 1);
+            assert.equal(err.failedTransactions[0].type, 'remove');
 
             done();
           });

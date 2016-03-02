@@ -46,13 +46,13 @@ describe('Association Interface', function() {
       it('should remove the record from the join table', function(done) {
         driverRecord.taxis.remove(taxiRecords[0].id);
         driverRecord.save(function(err) {
-          assert(!err);
+          assert.ifError(err);
 
           // Look up the driver again to be sure the taxi was removed
           Associations.Driver.findOne(driverRecord.id)
           .populate('taxis')
           .exec(function(err, data) {
-            assert(!err);
+            assert.ifError(err);
 
             assert.strictEqual(data.taxis.length, 1);
             done();
@@ -86,9 +86,10 @@ describe('Association Interface', function() {
         driverRecord.taxis.remove({ medallion: 1337 });
         driverRecord.save(function(err) {
           assert(err);
-          assert(Array.isArray(err));
-          assert.strictEqual(err.length, 1);
-          assert.equal(err[0].type, 'remove');
+          assert(err.failedTransactions);
+          assert(Array.isArray(err.failedTransactions));
+          assert.strictEqual(err.failedTransactions.length, 1);
+          assert.equal(err.failedTransactions[0].type, 'remove');
 
           done();
         });

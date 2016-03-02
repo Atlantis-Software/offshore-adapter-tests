@@ -1,7 +1,7 @@
 {
   "name": "offshore-adapter-tests",
   "description": "Integration tests for offshore adapters",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "contributors": [
     {
       "name": "Alexandre Tiertant",
@@ -9,17 +9,18 @@
     }
   ],
   "dependencies": {
-    "async": "^1.4",
-    "bluebird": "~2.9.0",
-    "lodash": "^3.10",
-    "mocha": "~2.2.5",
-    "offshore-memory": "~0.0.3",
-    "should": "^7.0",
-    "offshore": "~0.0.1"
+    "async": "1.5.2",
+    "bluebird": "3.2.1",
+    "lodash": "3.10.1",
+    "mocha": "2.4.5",
+    "offshore-memory": "Atlantis-Software/offshore-memory",
+    "should": "8.2.1",
+    "offshore": "~0.0.3"
   },
   "devDependencies": {
-    "jpath": "^0.0.20",
-    "npm": "^2.7.4"
+    "jpath": "0.0.20",
+    "npm": "2.7.4",
+    "offshore-sql": "Atlantis-Software/offshore-sql"
   },
   "keywords": [
     "orm",
@@ -33,7 +34,8 @@
   "main": "./lib/index.js",
   "scripts": {
     "test": "node test/integration/runnerDispatcher.js",
-    "test-load": "node test/load"
+    "test-load": "node test/load",
+    "docker": "docker-compose run adapter bash"
   },
   "engines": {
     "node": "*"

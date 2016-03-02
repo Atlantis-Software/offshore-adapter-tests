@@ -1,0 +1,32 @@
+adapter:
+  build: .
+  volumes:
+   - .:/usr/src/app
+  links:
+   - postgres
+   - mysql
+   - mongo
+   - redis
+  environment:
+   - NODE_ENV=test
+
+mysql:
+  image: mysql
+  environment:
+   - MYSQL_DATABASE=offshoreSql
+   - MYSQL_USER=offshore
+   - MYSQL_PASSWORD=offshore
+   - MYSQL_ROOT_PASSWORD=offshore
+
+postgres:
+  image: postgres:9.4
+  environment:
+   - POSTGRES_PASSWORD=offshore
+   - POSTGRES_USER=offshore
+   - POSTGRES_DB=offshorepg
+
+mongo:
+  image: mongo
+
+redis:
+  image: redis
