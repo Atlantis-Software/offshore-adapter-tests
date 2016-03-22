@@ -4,8 +4,5 @@ module.exports = {
   user: process.env.MYSQL_ENV_MYSQL_USER || 'root',
   password: process.env.MYSQL_ENV_MYSQL_PASSWORD || '',
   database: process.env.MYSQL_ENV_MYSQL_DATABASE || 'offshoreSql',
-  pool: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  waitForConnections: true
+  dbType: 'mysql'
 }
