@@ -22,13 +22,13 @@ var interfaces = [];
 var features = [];
 try {
   package = require('../../node_modules/' + adapterName + '/package.json');
-  interfaces = package['waterlineAdapter'].interfaces;
-  features = package['waterlineAdapter'].features || [];
+  interfaces = package['offshoreAdapter'].interfaces;
+  features = package['offshoreAdapter'].features || [];
 }
 catch (e) {
   throw new Error(
     '\n'+
-    'Could not read supported interfaces from "sails-adapter"."interfaces"'+'\n' +
+    'Could not read supported interfaces from "offshore-adapter"."interfaces"'+'\n' +
     'in this adapter\'s `package.json` file :' + '\n' +
     util.inspect(e)
     );

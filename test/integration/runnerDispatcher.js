@@ -19,7 +19,6 @@ var coreModulesPaths = {
   "offshore-adapter-tests": "."
 };
 
-var wlSequelPath = ".dependencies.%s.dependencies.offshore-sequel";
 
 //
 /////////////////////////////////////////////////////////////////////
@@ -33,9 +32,9 @@ process.env.FORCE_COLORS = true;
 console.time('total time elapsed');
 
 var resultTable = "\n";
-resultTable += " ------------------------------------------------------------------ \n";
-resultTable += "| adapter          | version | result | failed | total | wl-sequel |\n";
-resultTable += "|------------------|---------|--------|--------|-------|-----------|\n";
+resultTable += " ------------------------------------------------------ \n";
+resultTable += "| adapter          | version | result | failed | total |\n";
+resultTable += "|------------------|---------|--------|--------|-------|\n";
 
 function getNpmDetails(cb){
   npm.load({ depth: 2 }, function (er) {
@@ -77,13 +76,11 @@ function runTests(cb){
     child.on('close', function(code) {
       status[adapterName].exitCode = code;
       var message = code == 0 ? "\033[0;32mpassed\033[0m" : "\033[0;31mfailed\033[0m";
-      var wlSequel = getWlSequelVersion(adapterName);
       resultTable += "| " + padRight(adapterName, 16)
         + " | " + padLeft(processVersion(npmData.dependencies[adapterName]), 7)
         + " | " + message
         + " | " + padLeft(status[adapterName].failed, 6)
         + " | " + padLeft(status[adapterName].total, 5)
-        + " | " + padLeft(wlSequel, 9)
         + " |\n";
 
       console.log('exit code: ' + code);
@@ -115,7 +112,7 @@ function getModuleRow(name, module){;
 
 
 async.series([getNpmDetails, runTests, printCoreModulesVersions], function(err, res){
-  resultTable += " ------------------------------------------------------------------- \n";
+  resultTable += " ------------------------------------------------------ \n";
   console.log(resultTable);
   console.timeEnd('total time elapsed');
   if(err){
@@ -166,12 +163,6 @@ function processVersion(dependency){
   }
   // console.warn('WARN: Not sure we found the dependency that was resolved.');
   return dependency.version;
-}
-
-function getWlSequelVersion(adapterName){
-  if(adapterName.indexOf('sql') < 0) { return ""; }
-  var path = wlSequelPath.replace('%s', adapterName);
-  return processVersion(jpath(npmData, path)[0]);
 }
 
 function getAdapterSettings(adapterName){
