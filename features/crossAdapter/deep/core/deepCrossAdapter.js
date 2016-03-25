@@ -9,7 +9,7 @@
 
 var Path = require('path'),
     _ = require('lodash'),
-    utils = require('../../../lib/utils'),
+    utils = require('../../../../lib/utils'),
     mocha = require('mocha'),
     memoryAdapter = require('offshore-memory');
 

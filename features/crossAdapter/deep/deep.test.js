@@ -93,17 +93,6 @@ describe('Deep Cross Adapter', function() {
           });
         }
       ],done);
-/*
-      Associations.Compagny.createEach([
-        {id: 1, name: 'company 1'},
-        {id: 2, name: 'company 2'}
-      ], function(err, _Compagny) {
-        if (err) {
-          return done(err);
-        }
-        done();
-      });
-*/
     });
 
     describe('Populate', function() {
@@ -123,7 +112,7 @@ describe('Deep Cross Adapter', function() {
             assert.equal(companies[1].drivers[0].name, 'driver 2', 'First level not correctly populated.');
 
             //Level 2
-            assert.equal(companies[1].drivers[0].taxis.length, 2, 'Could not populate second level manyToMany collection.');
+            assert.equal(companies[1].drivers[0].taxis.length, 2, 'Could not populate second level manyToMany Through collection.');
             var taxi1 = companies[1].drivers[0].taxis[0];
             var taxi2 = companies[1].drivers[0].taxis[1];
             assert.equal(taxi1.matricule, 'taxi_1', 'Second level not correctly populated.');
@@ -160,7 +149,7 @@ describe('Deep Cross Adapter', function() {
             assert(companies[0].drivers[0].name === 'driver 2', 'First level not correctly populated.');
             assert(companies[0].taxis.length === 2, 'First level not correctly populated.');
             //Level 2 A
-            assert(companies[0].drivers[0].taxis.length === 2, 'Could not populate second level manyToMany collection.');
+            assert(companies[0].drivers[0].taxis.length === 2, 'Could not populate second level manyToMany Through collection.');
             var taxi1 = companies[0].drivers[0].taxis[0];
             assert(taxi1.matricule === 'taxi_1', 'Second level (A) not correctly populated.');
             //Level 2 B
@@ -183,7 +172,7 @@ describe('Deep Cross Adapter', function() {
             assert(companies[0].drivers.length === 1, 'Could not populate first level oneToMany collection.');
             assert(companies[0].drivers[0].name === 'driver 3', 'First level criteria not applied.');
             //Level 2
-            assert(companies[0].drivers[0].taxis.length === 1, 'Could not populate second level manyToMany collection.');
+            assert(companies[0].drivers[0].taxis.length === 1, 'Could not populate second level manyToMany Through collection.');
             var taxi = companies[0].drivers[0].taxis[0];
             assert(taxi.matricule === 'taxi_3', 'Second level criteria not applied.');
             //Level 3

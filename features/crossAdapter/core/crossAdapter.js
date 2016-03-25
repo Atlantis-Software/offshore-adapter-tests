@@ -7,11 +7,12 @@
  * Dependencies
  */
 
-var Path = require('path'),
-    _ = require('lodash'),
-    utils = require('../../../lib/utils'),
-    mocha = require('mocha'),
-    memoryAdapter = require('offshore-memory');
+var Path = require('path');
+var _ = require('lodash');
+var utils = require('../../../lib/utils');
+var mocha = require('mocha');
+var memoryAdapter = require('offshore-memory');
+var deepCrossAdapterRunner = require('../deep/core/deepCrossAdapter');
 
 /**
  * Test Runner
@@ -75,13 +76,29 @@ function CrossAdapter(options, cb) {
   // Allow Adapter to be a global without warning about a leak
   test.globals([Adapter, MemoryAdapter, Associations]);
   test.files = files;
-  
+
+  var exit = function(err, failOnError){
+    if (err && failOnError) {
+      var exitCode = isNaN(err) ? 1 : err;
+      process.exit(exitCode);
+    } else {
+      process.exit(0);
+    }
+  };
+
   console.info('\nTesting Cross Adapter interface...\n');
 
   console.time('time elapsed');
   var runner = test.run(function(err) {
     console.timeEnd('time elapsed');
-    cb(err);
+    if (err) {
+      return cb(err);
+    }
+	// run deep
+	deepCrossAdapterRunner.cleanTestCache(test.files);
+	deepCrossAdapterRunner(options, function(deepCrossAdapterErr){
+	  exit(deepCrossAdapterErr, options.failOnError);
+	});    
   });
 
   runner.on('fail', function (e) {

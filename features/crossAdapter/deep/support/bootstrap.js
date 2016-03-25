@@ -31,30 +31,23 @@ before(function(done) {
   offshore = new Offshore();
 
   Object.keys(fixtures).forEach(function(key) {
-    console.log('key',key);
     offshore.loadCollection(fixtures[key]);
   });
 
   var connections = { deep: _.clone(Connections.test), deep2: _.clone(Connections.test2) };
 
-  // in case previous teardown failed
-  //Adapter.teardown('associations', function adapterTeardown(){
+  offshore.initialize({ adapters: { wl_tests: Adapter, wl_tests2: MemoryAdapter }, connections: connections }, function(err, _ontology) {
+    if(err) return done(err);
 
-    offshore.initialize({ adapters: { wl_tests: Adapter, wl_tests2: MemoryAdapter }, connections: connections }, function(err, _ontology) {
-      if(err) return done(err);
+    ontology = _ontology;
 
-      ontology = _ontology;
-
-      Object.keys(_ontology.collections).forEach(function(key) {
-        var globalName = key.charAt(0).toUpperCase() + key.slice(1);
-        console.log('globalName',globalName);
-        global.Associations[globalName] = _ontology.collections[key];
-      });
-
-      done();
+    Object.keys(_ontology.collections).forEach(function(key) {
+      var globalName = key.charAt(0).toUpperCase() + key.slice(1);
+      global.Associations[globalName] = _ontology.collections[key];
     });
 
-  //});
+    done();
+  });
 });
 
 after(function(done) {
