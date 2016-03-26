@@ -77,14 +77,6 @@ function CrossAdapter(options, cb) {
   test.globals([Adapter, MemoryAdapter, Associations]);
   test.files = files;
 
-  var exit = function(err, failOnError){
-    if (err && failOnError) {
-      var exitCode = isNaN(err) ? 1 : err;
-      process.exit(exitCode);
-    } else {
-      process.exit(0);
-    }
-  };
 
   console.info('\nTesting Cross Adapter interface...\n');
 
@@ -97,7 +89,6 @@ function CrossAdapter(options, cb) {
     // run deep
     deepCrossAdapterRunner.cleanTestCache(test.files);
     deepCrossAdapterRunner(options, function(deepCrossAdapterErr) {
-      //exit(deepCrossAdapterErr, options.failOnError);
       cb(deepCrossAdapterErr);
     });    
   });
