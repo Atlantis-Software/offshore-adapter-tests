@@ -29,7 +29,7 @@ function CrossAdapter(options, cb) {
   this.adapter = options.adapter;
   this.config = options.config || {};
   // The associationTypes must match the folder names in interfaces/associations
-  this.associationTypes = ['belongsTo', 'hasMany', /*'hasManyThrough',*/ 'manyToMany', 'oneToOne'];
+  this.associationTypes = ['belongsTo', 'hasMany','hasManyThrough', 'manyToMany', 'oneToOne'];
 
   // Attach config to adapter
   // this.adapter.config = this.config;
@@ -94,11 +94,12 @@ function CrossAdapter(options, cb) {
     if (err) {
       return cb(err);
     }
-	// run deep
-	deepCrossAdapterRunner.cleanTestCache(test.files);
-	deepCrossAdapterRunner(options, function(deepCrossAdapterErr){
-	  exit(deepCrossAdapterErr, options.failOnError);
-	});    
+    // run deep
+    deepCrossAdapterRunner.cleanTestCache(test.files);
+    deepCrossAdapterRunner(options, function(deepCrossAdapterErr) {
+      //exit(deepCrossAdapterErr, options.failOnError);
+      cb(deepCrossAdapterErr);
+    });    
   });
 
   runner.on('fail', function (e) {

@@ -9,20 +9,32 @@ describe('Association Interface', function() {
     // TEST SETUP
     ////////////////////////////////////////////////////
 
-    var stadiumRecord, teamRecord;
+    var stadiumRecord, stadiumRecord2, teamRecord, teamRecord2;
 
     before(function(done) {
       Associations.Stadium.create({ name: 'hasManyThrough stadium'}, function(err, stadium) {
         if(err) return done(err);
         stadiumRecord = stadium;
-
-        Associations.Team.create({ name: 'hasManyThrough team', mascot: 'elephant' }, function(err, team) {
-          if(err) return done(err);
-          teamRecord = team;
-
-          Associations.Venue.create({ seats: 200, stadium: stadium.id, team: team.id }, function(err, venue) {
+      Associations.Stadium.create({ name: 'hasManyThrough stadium2'}, function(err, stadium2) {
+        if(err) return done(err);
+        stadiumRecord2 = stadium2;
+          Associations.Team.create({ name: 'hasManyThrough team1', mascot: 'elephant' }, function(err, team) {
             if(err) return done(err);
-            done();
+            teamRecord = team;
+
+            Associations.Team.create({ name: 'hasManyThrough team1', mascot: 'fox' }, function(err, team2) {
+              if(err) return done(err);
+              teamRecord2 = team2;
+
+              Associations.Venue.create({ seats: 200, stadium: stadium.id, team: team.id }, function(err, venue) {
+                if(err) return done(err);
+
+                Associations.Venue.create({ seats: 200, stadium: stadium2.id, team: team2.id }, function(err, venue) {
+                  if(err) return done(err);
+                    done();
+                });
+              });
+            });
           });
         });
       });
@@ -35,16 +47,16 @@ describe('Association Interface', function() {
       ////////////////////////////////////////////////////
 
       it('should return teams when the populate criteria is added', function(done) {
-        Associations.Stadium.find({ name: 'hasManyThrough stadium' })
+        Associations.Stadium.find([1,2])
         .populate('teams')
         .exec(function(err, stadiums) {
           assert(!err, err);
-
           assert(Array.isArray(stadiums));
-          assert.strictEqual(stadiums.length, 1);
+          assert.strictEqual(stadiums.length, 2);
           assert(Array.isArray(stadiums[0].teams));
           assert.strictEqual(stadiums[0].teams.length, 1);
-
+          assert(Array.isArray(stadiums[1].teams));
+          assert.strictEqual(stadiums[1].teams.length, 1);
           done();
         });
       });

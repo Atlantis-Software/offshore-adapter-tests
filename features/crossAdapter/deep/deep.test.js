@@ -8,15 +8,15 @@ describe('Deep Cross Adapter', function() {
     before(function(done) {
       async.series([
         function(callback) {
-		  Associations.Address.createEach([
-		  	{id: 1, city: 'city 1'},
-		  	{id: 2, city: 'city 2'},
-		  	{id: 3, city: 'city 3'},
-		  	{id: 4, city: 'city 4'}
-		  ], callback);
+          Associations.Address.createEach([
+            {id: 1, city: 'city 1'},
+            {id: 2, city: 'city 2'},
+            {id: 3, city: 'city 3'},
+            {id: 4, city: 'city 4'}
+          ], callback);
         },
         function(callback) {
-		  Associations.Breakdown.createEach([
+          Associations.Breakdown.createEach([
             {id: 1, level: 5, taxi: 3},
             {id: 2, level: 7, taxi: 2},
             {id: 3, level: 1, taxi: 3},
@@ -25,26 +25,26 @@ describe('Deep Cross Adapter', function() {
             {id: 8, level: 9, taxi: 1},
             {id: 6, level: 10, taxi: 4},
             {id: 7, level: 11, taxi: 5}
-		  ], callback);
-		},
+          ], callback);
+        },
         function(callback) {
           Associations.Company.createEach([
             {id: 1, name: 'company 1'},
             {id: 2, name: 'company 2'}
-		  ], callback);
-		},
+          ], callback);
+        },
         function(callback) {
           Associations.Constructor.createEach([
             {id: 1, name: 'constructor 1'},
             {id: 2, name: 'constructor 2'}
-		  ], callback);
-		},
+          ], callback);
+        },
         function(callback) {
           Associations.Country.createEach([
             {id: 1, name: 'france'},
             {id: 2, name: 'germany'}
-		  ], callback);
-		},
+          ], callback);
+        },
         function(callback) {
           Associations.Department.createEach([
             {id: 1, name: 'dep 1', constructor: 1},
@@ -52,27 +52,27 @@ describe('Deep Cross Adapter', function() {
             {id: 3, name: 'dep 3', constructor: 2},
             {id: 4, name: 'dep 4', constructor: 1},
             {id: 5, name: 'dep 5', constructor: 2}
-		  ], callback);
-		},
+          ], callback);
+        },
         function(callback) {
           Associations.Driver.createEach([
             {id: 1, name: 'driver 1', company: 1, address: 1},
             {id: 2, name: 'driver 2', company: 2, address: 2},
             {id: 3, name: 'driver 3', company: 1, address: 3},
             {id: 4, name: 'driver 4', company: 2, address: 4}
-		  ], callback);
-		},
+          ], callback);
+        },
         function(callback) {
           Associations.Ride.createEach([
-            {taxi: 1, driver: 1},
-            {taxi: 4, driver: 1},
-            {taxi: 5, driver: 1},
-            {taxi: 2, driver: 2},
-            {taxi: 1, driver: 2},
-            {taxi: 3, driver: 3},
-            {taxi: 2, driver: 3}
-		  ], callback);
-		},
+            {id:1, taxi: 1, driver: 1},
+            {id:2, taxi: 4, driver: 1},
+            {id:3, taxi: 5, driver: 1},
+            {id:4, taxi: 2, driver: 2},
+            {id:5, taxi: 1, driver: 2},
+            {id:6, taxi: 3, driver: 3},
+            {id:7, taxi: 2, driver: 3}
+          ], callback);
+        },
         function(callback) {
           Associations.Taxi.createEach([
             {id: 1, matricule: 'taxi_1', company: 1, constructor: 1},
@@ -80,8 +80,8 @@ describe('Deep Cross Adapter', function() {
             {id: 3, matricule: 'taxi_3', company: 2, constructor: 2},
             {id: 4, matricule: 'taxi_4', company: 1, constructor: 1},
             {id: 5, matricule: 'taxi_5', company: 1, constructor: 1}
-		  ], callback);
-		},
+          ], callback);
+        },
         function(callback) {
           Associations.Country.findOne(1, function(err, country) {
             if (err) {
@@ -92,7 +92,7 @@ describe('Deep Cross Adapter', function() {
             country.save(callback);
           });
         }
-      ],done);
+      ], done);
     });
 
     describe('Populate', function() {
