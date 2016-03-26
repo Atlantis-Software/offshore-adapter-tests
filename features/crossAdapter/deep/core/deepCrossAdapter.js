@@ -7,12 +7,11 @@
  * Dependencies
  */
 
-var Path = require('path');
-var _ = require('lodash');
-var utils = require('../../../lib/utils');
-var mocha = require('mocha');
-var memoryAdapter = require('offshore-memory');
-var deepCrossAdapterRunner = require('../deep/core/deepCrossAdapter');
+var Path = require('path'),
+    _ = require('lodash'),
+    utils = require('../../../../lib/utils'),
+    mocha = require('mocha'),
+    memoryAdapter = require('offshore-memory');
 
 /**
  * Test Runner
@@ -28,8 +27,6 @@ function CrossAdapter(options, cb) {
 
   this.adapter = options.adapter;
   this.config = options.config || {};
-  // The associationTypes must match the folder names in interfaces/associations
-  this.associationTypes = ['belongsTo', 'hasMany','hasManyThrough', 'manyToMany', 'oneToOne'];
 
   // Attach config to adapter
   // this.adapter.config = this.config;
@@ -49,15 +46,9 @@ function CrossAdapter(options, cb) {
   var filter = '\\.(' + ['js'].join('|') + ')$';
 
   var files = [];
-
   var bootstrapPath = Path.resolve(__dirname,'../support');
   files = files.concat(utils.fileLookup(bootstrapPath, filter, true));
-
-  this.associationTypes.forEach(function(type) {
-    var interfacePath = Path.resolve(__dirname,'../../../interfaces/associations/' + type);
-    files = files.concat(utils.fileLookup(interfacePath, filter, true));
-  });
- 
+  files.push(Path.resolve(__dirname,'../deep.test.js'));
 
   // Build a Mocha Runner
   var test = new mocha(_.merge({
@@ -76,21 +67,13 @@ function CrossAdapter(options, cb) {
   // Allow Adapter to be a global without warning about a leak
   test.globals([Adapter, MemoryAdapter, Associations]);
   test.files = files;
-
-
-  console.info('\nTesting Cross Adapter interface...\n');
+  
+  console.info('\nTesting Deep Cross Adapter interface...\n');
 
   console.time('time elapsed');
   var runner = test.run(function(err) {
     console.timeEnd('time elapsed');
-    if (err) {
-      return cb(err);
-    }
-    // run deep
-    deepCrossAdapterRunner.cleanTestCache(test.files);
-    deepCrossAdapterRunner(options, function(deepCrossAdapterErr) {
-      cb(deepCrossAdapterErr);
-    });    
+    cb(err);
   });
 
   runner.on('fail', function (e) {

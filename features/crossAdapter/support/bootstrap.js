@@ -21,7 +21,7 @@ var fixtures = {
   CustomerManyFixture: require(associationsFixturesPath + 'fixtures/multipleAssociations.fixture').customer,
   StadiumFixture: require(associationsFixturesPath + 'fixtures/hasManyThrough.stadium.fixture'),
   TeamFixture: require(associationsFixturesPath + 'fixtures/hasManyThrough.team.fixture'),
-  VenueFixture: require(associationsFixturesPath + 'fixtures/hasManyThrough.venue.fixture'),
+  VenueFixture: require('./fixtures/hasManyThrough.venue.fixture'),
   TaxiFixture: require('./fixtures/manyToMany.taxi.fixture'),
   DriverFixture: require(associationsFixturesPath + 'fixtures/manyToMany.driver.fixture'),
   TaxiWithSchemaFixture: require(associationsFixturesPath + './fixtures/manyToMany.taxi.withSchema.fixture'),
