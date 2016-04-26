@@ -71,7 +71,7 @@ describe('Association Interface', function() {
 
               // Look up the driver again to be sure the taxis were added
               Associations.Driver.findOne(values.id)
-              .populate('taxis')
+              .populate('taxis', {sort: 'id ASC'})
               .exec(function(err, model) {
                 assert.ifError(err);
                 assert.strictEqual(model.taxis.length, 2);
