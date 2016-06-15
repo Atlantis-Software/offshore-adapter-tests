@@ -1,7 +1,7 @@
 {
   "name": "offshore-adapter-tests",
   "description": "Integration tests for offshore adapters",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "contributors": [
     {
       "name": "Alexandre Tiertant",
