@@ -9,7 +9,9 @@ var Offshore = require('offshore'),
 var fixtures = {
   Customer: require('./fixtures/customer.fixture'),
   Payment: require('./fixtures/payment.fixture'),
-  Receipt: require('./fixtures/receipt.fixture')
+  Receipt: require('./fixtures/receipt.fixture'),
+  Store: require('./fixtures/store.fixture'),
+  StoreCustomer: require('./fixtures/storecustomer.fixture')
 };
 
 
@@ -22,7 +24,7 @@ module.exports = function(newFixtures, cb) {
   fixtures = _.defaults(newFixtures, fixtures);
 
   var offshore = new Offshore();
-  
+
   Object.keys(fixtures).forEach(function(key) {
     offshore.loadCollection(fixtures[key]);
   });

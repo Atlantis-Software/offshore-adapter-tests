@@ -12,7 +12,7 @@ describe('Transaction cross adapter', function() {
       var customerName = 'Cross-adapter trx test';
       var paymentName = 'Cross-adapter trx test 2';
 
-      Offshore.Transaction([Transactable['Customer'], Transactable['Payment']], function(trx, cb) {
+      Offshore.Transaction([Transactable.Customer, Transactable.Payment], function(trx, cb) {
         trx.customer.create({name: customerName}).exec(function(err, item1) {
           if (err) {
             done(err);
@@ -70,7 +70,7 @@ describe('Transaction cross adapter', function() {
       var child1 = 'Cross-adapter trx child 1';
       var child2 = 'Cross-adapter trx child 2';
 
-      Offshore.Transaction([Transactable['Customer'], Transactable['Payment']], function(trx, cb) {
+      Offshore.Transaction([Transactable.Customer, Transactable.Payment], function(trx, cb) {
         trx.customer.create({name: customerName, payments: [{type: child1},
             {type: child2}]}).exec(function(err, parent) {
           if (err) {
@@ -126,7 +126,7 @@ describe('Transaction cross adapter', function() {
         }
         assert(parent);
         assert.equal(parent.name, customerName);
-        Offshore.Transaction([Transactable['Customer'], Transactable['Payment']], function(trx, cb) {
+        Offshore.Transaction([Transactable.Customer, Transactable.Payment], function(trx, cb) {
           trx.customer.find({name: customerName}).populate('payments').exec(function(err, customers) {
             if (err) {
               return done(err);
@@ -184,7 +184,7 @@ describe('Transaction cross adapter', function() {
     it('should make a cross-adapter transaction rollback', function(done) {
       var customerName = 'Cross-adapter trx rollback test';
       var paymentName = 'Cross-adapter trx rollback test 2';
-      Offshore.Transaction([Transactable['Customer'], Transactable['Payment']], function(trx, cb) {
+      Offshore.Transaction([Transactable.Customer, Transactable.Payment], function(trx, cb) {
         trx.customer.create({name: customerName}).exec(function(err, item1) {
           if (err) {
             return done(err);
@@ -239,7 +239,7 @@ describe('Transaction cross adapter', function() {
       var child1 = 'Cross-adapter trx rollback child 1';
       var child2 = 'Cross-adapter trx rollback child 2';
 
-      Offshore.Transaction([Transactable['Customer'], Transactable['Payment']], function(trx, cb) {
+      Offshore.Transaction([Transactable.Customer, Transactable.Payment], function(trx, cb) {
         trx.customer.create({name: parentName, payments: [{type: child1},
             {type: child2}]}).exec(function(err, parent) {
           if (err) {
@@ -293,7 +293,7 @@ describe('Transaction cross adapter', function() {
         assert(parent);
         assert.equal(parent.name, parentName);
 
-        Offshore.Transaction([Transactable['Customer'], Transactable['Payment']], function(trx, cb) {
+        Offshore.Transaction([Transactable.Customer, Transactable.Payment], function(trx, cb) {
           trx.customer.find({name: parentName}).populate('payments').exec(function(err, customers) {
             if (err) {
               return done(err);

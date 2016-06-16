@@ -5,8 +5,8 @@
 var Offshore = require('offshore');
 
 module.exports = Offshore.Collection.extend({
-  tableName: 'customerTrxTable',
-  identity: 'customer',
+  tableName: 'storeTrxTable',
+  identity: 'store',
   connection: 'transactable',
   migrate: 'alter',
   attributes: {
@@ -21,17 +21,9 @@ module.exports = Offshore.Collection.extend({
       "columnName": "NAME",
       type: 'string'
     },
-    capital: {
-      "columnName": "CAPITAL",
-      type: 'integer'
-    },
-    payments: {
-      collection: 'Payment',
-      via: 'a_customer'
-    },
-    stores:{
-      collection: 'store',
-      via: 'customer',
+    customers:{
+      collection: 'customer',
+      via: 'store',
       through: 'storecustomer'
     }
   }

@@ -28,7 +28,7 @@ describe('Transaction cross adapter', function() {
           }
           assert.equal(receipts.length, 4);
 
-          Offshore.Transaction([Transactable['Customer'], Transactable['Payment'], Transactable['Receipt']], function(trx, cb) {
+          Offshore.Transaction([Transactable.Customer, Transactable.Payment, Transactable.Receipt], function(trx, cb) {
             trx.customer.findOne({name: customerName}).populate('payments.receipts').exec(function(err, populatedCustomer) {
               if (err) {
                 return done(err);
@@ -76,7 +76,7 @@ describe('Transaction cross adapter', function() {
           }
           assert.equal(receipts.length, 4);
 
-          Offshore.Transaction([Transactable['Customer'], Transactable['Payment'], Transactable['Receipt']], function(trx, cb) {
+          Offshore.Transaction([Transactable.Customer, Transactable.Payment, Transactable.Receipt], function(trx, cb) {
             trx.customer.find({payments: {receipts: {label: receiptName1}}}).exec(function(err, populatedCustomers) {
               if (err) {
                 return done(err);
