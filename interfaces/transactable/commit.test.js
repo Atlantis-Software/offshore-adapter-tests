@@ -8,7 +8,7 @@ describe('Transaction commit', function() {
     var id;
     var customerName = 'Test create transaction';
     
-    Offshore.Transaction(Transactable['Customer'], function(trx, cb) {
+    Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       trx.customer.create({name: customerName}).exec(function(err, createResult) {
         if (err) {
           return done(err);
@@ -37,7 +37,7 @@ describe('Transaction commit', function() {
     var customerName = 'Test update transaction';
     var updatedName = 'Updated test transaction';
     
-    Offshore.Transaction(Transactable['Customer'], function(trx, cb) {
+    Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       trx.customer.create({name: customerName}).exec(function(err, createResult) {
         if (err) {
           return done(err);
@@ -83,7 +83,7 @@ describe('Transaction commit', function() {
         return done(err);
       }
       id = customer.id;
-      Offshore.Transaction(Transactable['Customer'], function(trx, cb) {
+      Offshore.Transaction(Transactable.Customer, function(trx, cb) {
         trx.customer.destroy({name: customerName}).exec(function(err, destroyResult) {
           if (err) {
             return done(err);
@@ -112,7 +112,7 @@ describe('Transaction commit', function() {
     var id;
     var customerName = 'Test destroy in transaction';
     
-    Offshore.Transaction(Transactable['Customer'], function(trx, cb) {
+    Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       trx.customer.create({name: customerName}).exec(function(err, createResult) {
         if (err) {
           return done(err);
@@ -145,7 +145,7 @@ describe('Transaction commit', function() {
     var id;
     var customerName = 'Test atomicity transaction';
     
-    Offshore.Transaction(Transactable['Customer'], function(trx, cb) {
+    Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       trx.customer.create({name: customerName}).exec(function(err, createResult) {
         if (err) {
           return done(err);
@@ -195,7 +195,7 @@ describe('Transaction commit', function() {
   });
 
   it('should commit without doing anything', function(done) {
-    Offshore.Transaction(Transactable['Customer'], function(trx, cb) {
+    Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       cb(null, 'ok');
     }).exec(function(err, result) {
       if (err) {
@@ -209,12 +209,12 @@ describe('Transaction commit', function() {
   it('should perform nested transactions', function(done) {
     var customerName = 'Test transaception';
     
-    Offshore.Transaction(Transactable['Customer'], function(trx1, cb1) {
+    Offshore.Transaction(Transactable.Customer, function(trx1, cb1) {
       trx1.customer.create({name: customerName}).exec(function(err, customer1) {
         if (err) {
           return done(err);
         }
-        Offshore.Transaction(Transactable['Customer'], function(trx2, cb2) {
+        Offshore.Transaction(Transactable.Customer, function(trx2, cb2) {
           trx2.customer.create({name: customerName}).exec(function(err, customer2) {
             if (err) {
               return done(err);
@@ -262,7 +262,7 @@ describe('Transaction commit', function() {
           done(err);
         }
         assert.equal(payments.length, 2);
-        Offshore.Transaction([Transactable['Customer'], Transactable['Payment']], function(trx, cb) {
+        Offshore.Transaction([Transactable.Customer, Transactable.Payment], function(trx, cb) {
           trx.customer.findOne({name: customerName}).populate('payments').exec(function(err, populatedCustomer) {
             if (err) {
               return done(err);
@@ -277,6 +277,34 @@ describe('Transaction commit', function() {
           }
           done();
         });
+      });
+    });
+  });
+
+  it('should populate through association', function(done) {
+    var customerName = 'Through customer';
+    var storeName1 = 'Through store 1';
+    var storeName2 = 'Through store 2';
+
+    Transactable.Customer.create({name: customerName, stores: [{name: storeName1}, {name: storeName2}]}, function(err, customer) {
+      if (err) {
+        done(err);
+      }
+      assert.equal(customer.name, customerName);
+      Offshore.Transaction([Transactable.Customer, Transactable.Store], function(trx, cb) {
+        trx.customer.findOne({name: customerName}).populate('stores').exec(function(err, populatedCustomer) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(populatedCustomer.name, customerName);
+          assert.equal(populatedCustomer.stores.length, 2, 'Should populate 2 stores');
+          return cb(null, populatedCustomer);
+        });
+      }).exec(function(err, result) {
+        if (err) {
+          done(err);
+        }
+        done();
       });
     });
   });
@@ -296,7 +324,7 @@ describe('Transaction commit', function() {
           done(err);
         }
         assert.equal(payments.length, 2);
-        Offshore.Transaction([Transactable['Customer']], function(trx, cb) {
+        Offshore.Transaction(Transactable.Customer, function(trx, cb) {
           trx.customer.findOne({name: customerName}).populate('payments').exec(function(err, populatedCustomer) {
             if (err) {
               return done(err);
@@ -319,12 +347,12 @@ describe('Transaction commit', function() {
     var close;
     var customerName = 'Test transaception2';
     
-    Offshore.Transaction(Transactable['Customer'], function(trx1, cb1) {
+    Offshore.Transaction(Transactable.Customer, function(trx1, cb1) {
       trx1.customer.create({name: customerName}).exec(function(err, customer1) {
         if (err) {
           return done(err);
         }
-        Offshore.Transaction(Transactable['Customer'], function(trx2, cb2) {
+        Offshore.Transaction(Transactable.Customer, function(trx2, cb2) {
           trx2.customer.create({name: customerName}).exec(function(err, customer2) {
             if (err) {
               return done(err);
@@ -353,5 +381,57 @@ describe('Transaction commit', function() {
       });
     });
   });
-  
+
+  it('should commit through table', function(done) {
+    var customerName = 'Through commit customer';
+    var storeName1 = 'Through commit store 1';
+    var storeName2 = 'Through commit 2';
+
+    Offshore.Transaction([Transactable.Customer, Transactable.Store], function(trx, cb) {
+      trx.customer.create({name: customerName, stores: [{name: storeName1}, {name: storeName2}]}).exec(function(err, customer) {
+        if (err) {
+          done(err);
+        }
+        assert.equal(customer.name, customerName);
+        trx.customer.findOne({name: customerName}).populate('stores').exec(function(err, populatedCustomer) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(populatedCustomer.name, customerName);
+          assert.equal(populatedCustomer.stores.length, 2, 'Should populate 2 stores');
+          return cb(null, populatedCustomer);
+        });
+      });
+    }).exec(function(err, result) {
+      if (err) {
+        done(err);
+      }
+      Transactable.Customer.find({name: customerName}).populate('stores').exec(function(err, customer) {
+        if (err) {
+          done(err);
+        }
+        assert.equal(customer.length, 1);
+        assert.equal(customer[0].name, customerName);
+        assert.equal(customer[0].stores.length, 2, 'Should populate 2 stores');
+        Transactable.Store.find({name: storeName1}).populate('customers').exec(function(err, store1) {
+          if (err) {
+            done(err);
+          }
+          assert.equal(store1.length, 1);
+          assert.equal(store1[0].name, storeName1);
+          assert.equal(store1[0].customers.length, 1, 'Should populate 1 customer');
+          Transactable.Store.find({name: storeName2}).populate('customers').exec(function(err, store2) {
+            if (err) {
+              done(err);
+            }
+            assert.equal(store2.length, 1);
+            assert.equal(store2[0].name, storeName2);
+            assert.equal(store2[0].customers.length, 1, 'Should populate 1 customer');
+            done();
+          });
+        });
+      });
+    });
+  });
+
 });
