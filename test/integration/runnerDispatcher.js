@@ -55,9 +55,6 @@ function getNpmDetails(cb){
 
 function runTests(cb){
   async.eachSeries(adapters, function(adapter, next){
-    if(adapter.name !== 'offshore-sql (Mysql)') {
-      return next();
-    }
     var adapterName = adapter.name;
     var settings = adapter.config;
     status[adapterName] = { failed: 0, total: 0, exitCode: 0 };
