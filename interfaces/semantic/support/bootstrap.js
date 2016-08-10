@@ -29,7 +29,7 @@ before(function(done) {
   });
 
   var connections = { semantic: _.clone(Connections.test) };
-  
+
   var defaults = { migrate: 'alter' };
 
   offshore.initialize({ adapters: { wl_tests: Adapter }, connections: connections, defaults: defaults }, function(err, _ontology) {
@@ -60,6 +60,6 @@ after(function(done) {
   async.each(Object.keys(ontology.collections), dropCollection, function(err) {
     if(err) return done(err);
     offshore.teardown(done);
-  });
+    });
 
 });

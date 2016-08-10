@@ -1,8 +1,15 @@
+var package = require('../../../node_modules/offshore-sql/package.json');
+var _ = require('lodash');
 module.exports = {
-  host: process.env.MYSQL_PORT_3306_TCP_ADDR || 'localhost',
-  port: 3306,
-  user: process.env.MYSQL_ENV_MYSQL_USER || 'root',
-  password: process.env.MYSQL_ENV_MYSQL_PASSWORD || '',
-  database: process.env.MYSQL_ENV_MYSQL_DATABASE || 'offshoreSql',
-  dbType: 'mysql'
-}
+  name: 'offshore-sql (Sqlite3)',
+  adapter: require('../../../node_modules/offshore-sql'),
+  // sqlite3 only support one thread in writing mode so can't pass transactable tests
+  interfaces: _.filter(package['offshoreAdapter'].interfaces, function(interface) {
+    return interface !== 'transactable';
+  }),
+  config: {
+    filename: './db.sqlite',
+    dbType: 'sqlite3'
+  },
+  features: package['offshoreAdapter'].features || []
+};
