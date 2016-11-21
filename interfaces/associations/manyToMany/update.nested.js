@@ -189,10 +189,10 @@ describe('Association Interface', function() {
 
             });
           });
-          
+
         });
-        
-        
+
+
         describe('when associations already exist', function() {
 
           /////////////////////////////////////////////////////
@@ -222,7 +222,7 @@ describe('Association Interface', function() {
           ////////////////////////////////////////////////////
 
           it('should update association values with save()', function(done) {
-            
+
             Associations.Driver.findOne({ id: Driver.id })
             .populate('taxis')
             .exec(function(err, model) {
@@ -230,7 +230,7 @@ describe('Association Interface', function() {
               taxi.medallion = 1001;
               taxi.save(function(err){
                 assert.ifError(err);
-                
+
                 Associations.Driver.findOne({ id: Driver.id })
                 .populate('taxis')
                 .exec(function(err, model) {
@@ -240,12 +240,12 @@ describe('Association Interface', function() {
                   done();
                 });
               });
-              
+
             });
           });
         });
 
-        
+
         describe('when associations are sync\'ed rapidly', function() {
 
           /////////////////////////////////////////////////////
@@ -270,18 +270,18 @@ describe('Association Interface', function() {
               {medallion: 202},
               {medallion: 203}
             ];
-            
+
             Associations.Driver.createEach(driversData).exec(function(err, drivers) {
               if(err) return done(err);
               Drivers = drivers;
-              
+
               Associations.Taxi.createEach(taxisData).exec(function(err, taxis) {
                 if(err) return done(err);
                 Taxis = taxis;
-                
+
                 done();
               });
-              
+
             });
 
           });
@@ -292,60 +292,60 @@ describe('Association Interface', function() {
           ////////////////////////////////////////////////////
 
           it('should create the correct associations', function(done) {
-            
+
             // Construct promises
             var associationMap = {};
             var associationPromises = [];
-            
+
             var driverId, taxiId;
             for (var i = 0, il = Drivers.length; i < il; ++i) {
-              
-              driverId = _.findWhere(Drivers, {name: "Rapid " + i}).id;
-              taxiId   = _.findWhere(Taxis,   {medallion: 200 + i}).id;
-              
+
+              driverId = _.find(Drivers, {name: "Rapid " + i}).id;
+              taxiId   = _.find(Taxis,   {medallion: 200 + i}).id;
+
               // Set map for testing later.  Maps driver to taxi being associated.
               associationMap[driverId] = taxiId;
-              
+
               associationPromises.push(
                 Associations.Driver.update(driverId, {taxis: [{id: taxiId}]})
               );
             }
-            
+
             // Perform all updates at once
             Promise.all(associationPromises)
             .then(function(results){
-            
+
               // Check to see if associations were created as expected
               Associations.Driver.find({id: _.map(Drivers, 'id')})
               .populate('taxis')
               .exec(function(err, drivers) {
-                
+
                 if (err) return done(err);
-                
+
                 assert.equal(drivers.length, Drivers.length);
-                
+
                 // Ensure the correct operations happened per record using associationMap
                 var driver;
                 for (var i = 0, il = drivers.length; i < il; ++i) {
-                  
+
                   driver = drivers[i];
-                  
+
                   assert(typeof driver === "object" && driver !== null);
                   assert(Array.isArray(driver.taxis));
                   assert.equal(driver.taxis.length, 1);
                   assert.equal(driver.taxis[0].id, associationMap[driver.id]);
                 }
-                
+
                 done();
-                
+
               });
-              
+
             })
             .catch(done);
-            
+
           });
         });
-        
+
       });
     });
   });

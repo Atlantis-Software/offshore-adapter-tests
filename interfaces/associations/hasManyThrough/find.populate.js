@@ -47,7 +47,7 @@ describe('Association Interface', function() {
       ////////////////////////////////////////////////////
 
       it('should return teams when the populate criteria is added', function(done) {
-        Associations.Stadium.find([1,2])
+        Associations.Stadium.find()
         .populate('teams')
         .exec(function(err, stadiums) {
           assert(!err, err);
