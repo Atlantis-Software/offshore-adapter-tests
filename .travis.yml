@@ -1,36 +1,4 @@
 language: node_js
-node_js:
-  - "5.0"
-  - "4.0"
-  - "0.12"
-  - "0.10"
-
-services:
-  - postgresql
-  - mongodb
-  - mysql
-  - redis-server
-
-addons:
-  postgresql: "9.4"
-
-env:
-  - DB_USER=postgres DB_PASS=''
-
-# run in docker
-sudo: false
-
-before_script:
-  - npm install Atlantis-Software/offshore
-  - mysql -e 'create database offshoreSql;'
-  - npm install mysql --save
-  - npm install oracledb --save
-
-
-
-
-# .travis.yml
-language: node_js
 sudo: required
 
 node_js:
@@ -49,9 +17,7 @@ before_script:
   - npm install Atlantis-Software/offshore
   - psql -c 'create database offshorepg;' -U postgres
   - mysql -e 'create database offshoresql;'
-  - "$ORACLE_HOME/bin/sqlplus" -L -S / AS SYSDBA <<SQL
-    CREATE DATABASE offshoreora;
-    SQL
+  - "$ORACLE_HOME/bin/sqlplus" -L -S / AS SYSDBA <<SQL CREATE DATABASE offshoreora; SQL
 
 
 env:
