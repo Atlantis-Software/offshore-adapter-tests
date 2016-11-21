@@ -17,7 +17,7 @@ before_script:
   - npm install Atlantis-Software/offshore
   - psql -c 'create database offshorepg;' -U postgres
   - mysql -e 'create database offshoresql;'
-  - $ORACLE_HOME/bin/sqlplus -L -S / AS SYSDBA <<SQL CREATE DATABASE offshoreora; SQL
+  - sqlplus -L -S / AS SYSDBA <<SQL CREATE DATABASE offshoreora SQL
 
 env:
   - CXX=g++-4.8 KNEX_TEST_TIMEOUT=60000 ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe ORACLE_SID=XE OCI_LIB_DIR=/u01/app/oracle/product/11.2.0/xe/lib LD_LIBRARY_PATH=/u01/app/oracle/product/11.2.0/xe/lib
