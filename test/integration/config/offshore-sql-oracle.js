@@ -5,11 +5,11 @@ module.exports = {
   interfaces: package['offshoreAdapter'].interfaces,
   features: package['offshoreAdapter'].features || [],
   config: {
-    host: 'localhost/XE',
+    host: 'localhost',
     port: 1521,
     user: 'travis',
     password: 'travis',
-    database: 'offshoreora',
+    database: 'xe',
     dbType: 'oracle',
     stmtCacheSize: 0
   }
