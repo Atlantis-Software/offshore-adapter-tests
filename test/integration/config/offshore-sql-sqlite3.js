@@ -7,7 +7,7 @@ module.exports = {
   interfaces: _.filter(package['offshoreAdapter'].interfaces, function(interface) {
     return interface !== 'transactable';
   }),
-  features: package['offshoreAdapter'].features || []
+  features: package['offshoreAdapter'].features || [],
   config: {
     filename: './db.sqlite',
     dbType: 'sqlite3'
