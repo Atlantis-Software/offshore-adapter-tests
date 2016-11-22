@@ -5,10 +5,10 @@ module.exports = {
   interfaces: package['offshoreAdapter'].interfaces,
   features: package['offshoreAdapter'].features || [],
   config: {
-    host: 'localhost',
+    host: 'localhost/XE',
     port: 1521,
-    user: 'root',
-    password: '',
+    user: 'travis',
+    password: 'travis',
     database: 'offshoreora',
     dbType: 'oracle',
     stmtCacheSize: 0
