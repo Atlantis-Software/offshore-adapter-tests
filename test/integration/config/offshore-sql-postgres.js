@@ -15,10 +15,9 @@ module.exports = {
   config: {
     host: 'localhost',
     port: 5432,
-    user: 'dev',
+    user: 'postgres',
     password: '',
-    database: 'offshoreSql',
+    database: 'offshorepg',
     dbType: 'postgres'
   }
 };
-

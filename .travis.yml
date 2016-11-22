@@ -1,26 +1,33 @@
 language: node_js
+sudo: required
+
 node_js:
-  - "5.0"
-  - "4.0"
-  - "0.12"
-  - "0.10"
+  - '0.12'
+  - '4'
+  - '5'
+  - '6'
 
-services:
-  - postgresql
-  - mongodb
-  - mysql
-  - redis-server
-
-addons:
-  postgresql: "9.4"
-
-env:
-  - DB_USER=postgres DB_PASS=''
-
-# run in docker
-sudo: false
+before_install:
+  - wget https://raw.githubusercontent.com/Vincit/travis-oracledb-xe/master/accept_the_license_agreement_for_oracledb_xe_11g_and_install.sh
+  - bash ./accept_the_license_agreement_for_oracledb_xe_11g_and_install.sh
+  - npm install oracledb
+  - npm install mysql
+  - npm install pg
+  - npm install sqlite3
 
 before_script:
   - npm install Atlantis-Software/offshore
-  - mysql -e 'create database offshoreSql;'
-  - npm install mysql --save
+  - psql -c 'create database offshorepg;' -U postgres
+  - mysql -e 'create database offshoresql;'
+
+env:
+  - CXX=g++-4.8 KNEX_TEST_TIMEOUT=60000 ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe PATH=$ORACLE_HOME/bin:$PATH ORACLE_SID=XE OCI_LIB_DIR=/u01/app/oracle/product/11.2.0/xe/lib LD_LIBRARY_PATH=/u01/app/oracle/product/11.2.0/xe/lib
+
+addons:
+  postgresql: '9.4'
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+      - gcc-4.8

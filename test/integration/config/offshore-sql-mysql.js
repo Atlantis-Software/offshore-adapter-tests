@@ -9,8 +9,7 @@ module.exports = {
     port: 3306,
     user: process.env.MYSQL_ENV_MYSQL_USER || 'root',
     password: process.env.MYSQL_ENV_MYSQL_PASSWORD || '',
-    database: process.env.MYSQL_ENV_MYSQL_DATABASE || 'offshoreSql',
+    database: process.env.MYSQL_ENV_MYSQL_DATABASE || 'offshoresql',
     dbType: 'mysql'
   }
 };
-

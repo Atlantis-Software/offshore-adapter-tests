@@ -38,9 +38,9 @@ process.env.FORCE_COLORS = true;
 console.time('total time elapsed');
 
 var resultTable = "\n";
-resultTable += " ---------------------------------------------------------------- \n";
-resultTable += "| adapter                    | version | result | failed | total |\n";
-resultTable += "|----------------------------|---------|--------|--------|-------|\n";
+resultTable += " ------------------------------------------------------------------------------------- \n";
+resultTable += "| adapter                    | version | result | failed | total |        time        |\n";
+resultTable += "|----------------------------|---------|--------|--------|-------|--------------------|\n";
 
 function getNpmDetails(cb){
   npm.load({ depth: 2 }, function (er) {
@@ -57,7 +57,7 @@ function runTests(cb){
   async.eachSeries(adapters, function(adapter, next){
     var adapterName = adapter.name;
     var settings = adapter.config;
-    status[adapterName] = { failed: 0, total: 0, exitCode: 0 };
+    status[adapterName] = { failed: 0, total: 0, exitCode: 0, startTime: new Date().getTime() };
 
     console.log("\n");
     console.log("\033[0;34m-------------------------------------------------------------------------------------------\033[0m");
@@ -88,6 +88,7 @@ function runTests(cb){
         + " | " + message
         + " | " + padLeft(status[adapterName].failed, 6)
         + " | " + padLeft(status[adapterName].total, 5)
+        + " | " + padLeft((new Date().getTime() - status[adapterName].startTime) + ' ms', 18)
         + " |\n";
 
       console.log('exit code: ' + code);
@@ -119,7 +120,7 @@ function getModuleRow(name, module){;
 
 
 async.series([getNpmDetails, runTests, printCoreModulesVersions], function(err, res){
-  resultTable += " ---------------------------------------------------------------- \n";
+  resultTable += " ------------------------------------------------------------------------------------- \n";
   console.log(resultTable);
   console.timeEnd('total time elapsed');
   if(err){
@@ -171,4 +172,3 @@ function processVersion(dependency){
   // console.warn('WARN: Not sure we found the dependency that was resolved.');
   return dependency.version;
 }
-
