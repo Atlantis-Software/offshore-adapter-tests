@@ -1,4 +1,5 @@
 var package = require('../../../node_modules/offshore-sql/package.json');
+var _ = require('lodash');
 var features = _.filter(package['offshoreAdapter'].features || [], function(feature) {
   return feature !== 'autoIncrement.sequential';
 });
