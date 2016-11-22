@@ -2,6 +2,7 @@ var exec = require('child_process').exec;
 var async = require('async');
 var npm = require('npm');
 var jpath = require('jpath');
+var fs = require('fs');
 
 
 /////////////////////////////////////////////////////////////////////
@@ -9,12 +10,17 @@ var jpath = require('jpath');
 // Config
 
 // The adapters being tested
-var adapters = ['offshore-sql', 'offshore-memory'];
+var adapters = [];
+fs.readdirSync(__dirname + '/config').forEach(function(adapter) {
+  var config = require('./config/' + adapter);
+  config.fileName = adapter.slice(0, -3);
+  adapters.push(config);
+});
 
 // Core modules npm Dependencies path
 var coreModulesPaths = {
   "offshore":               ".dependencies.offshore",
-  "- offshore-validator":                ".dependencies.offshore.dependencies.offshore-validator",
+  "- offshore-validator":   ".dependencies.offshore.dependencies.offshore-validator",
   "- offshore-schema":      ".dependencies.offshore.dependencies.offshore-schema",
   "offshore-adapter-tests": "."
 };
@@ -32,9 +38,9 @@ process.env.FORCE_COLORS = true;
 console.time('total time elapsed');
 
 var resultTable = "\n";
-resultTable += " ------------------------------------------------------ \n";
-resultTable += "| adapter          | version | result | failed | total |\n";
-resultTable += "|------------------|---------|--------|--------|-------|\n";
+resultTable += " ------------------------------------------------------------------------------------- \n";
+resultTable += "| adapter                    | version | result | failed | total |        time        |\n";
+resultTable += "|----------------------------|---------|--------|--------|-------|--------------------|\n";
 
 function getNpmDetails(cb){
   npm.load({ depth: 2 }, function (er) {
@@ -48,9 +54,10 @@ function getNpmDetails(cb){
 }
 
 function runTests(cb){
-  async.eachSeries(adapters, function(adapterName, next){
-    var settings = getAdapterSettings(adapterName);
-    status[adapterName] = { failed: 0, total: 0, exitCode: 0 };
+  async.eachSeries(adapters, function(adapter, next){
+    var adapterName = adapter.name;
+    var settings = adapter.config;
+    status[adapterName] = { failed: 0, total: 0, exitCode: 0, startTime: new Date().getTime() };
 
     console.log("\n");
     console.log("\033[0;34m-------------------------------------------------------------------------------------------\033[0m");
@@ -58,7 +65,7 @@ function runTests(cb){
     console.log("\033[0;34m-------------------------------------------------------------------------------------------\033[0m");
     console.log();
 
-    var child = exec('node ./test/integration/runner.js ' + adapterName, { env: process.env });
+    var child = exec('node ./test/integration/runner.js ' + adapter.fileName, { env: process.env });
 
     child.stdout.on('data', function(data) {
       if(isDot(data)) { status[adapterName].total++; }
@@ -76,15 +83,16 @@ function runTests(cb){
     child.on('close', function(code) {
       status[adapterName].exitCode = code;
       var message = code == 0 ? "\033[0;32mpassed\033[0m" : "\033[0;31mfailed\033[0m";
-      resultTable += "| " + padRight(adapterName, 16)
+      resultTable += "| " + padRight(adapterName, 26)
         + " | " + padLeft(processVersion(npmData.dependencies[adapterName]), 7)
         + " | " + message
         + " | " + padLeft(status[adapterName].failed, 6)
         + " | " + padLeft(status[adapterName].total, 5)
+        + " | " + padLeft((new Date().getTime() - status[adapterName].startTime) + ' ms', 18)
         + " |\n";
 
       console.log('exit code: ' + code);
-      if(code != 0 && !settings.returnZeroOnError) { exitCode = exitCode + code; }
+      if(code != 0 && (!settings || !settings.returnZeroOnError)) { exitCode = exitCode + code; }
       next();
     });
   },
@@ -112,7 +120,7 @@ function getModuleRow(name, module){;
 
 
 async.series([getNpmDetails, runTests, printCoreModulesVersions], function(err, res){
-  resultTable += " ------------------------------------------------------ \n";
+  resultTable += " ------------------------------------------------------------------------------------- \n";
   console.log(resultTable);
   console.timeEnd('total time elapsed');
   if(err){
@@ -163,14 +171,4 @@ function processVersion(dependency){
   }
   // console.warn('WARN: Not sure we found the dependency that was resolved.');
   return dependency.version;
-}
-
-function getAdapterSettings(adapterName){
-  var settings = {};
-  try {
-    settings = require('./config/' + adapterName);
-  } catch(e){
-    console.warn("Warning: couldn't find config file for " + adapterName + ".");
-  }
-  return settings;
 }
