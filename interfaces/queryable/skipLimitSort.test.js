@@ -36,7 +36,7 @@ describe('Queryable Interface', function() {
         assert(Array.isArray(users));
         assert.strictEqual(users.length, 2);
         assert.strictEqual(users[0].first_name, 'limit_user3');
-        assert.strictEqual(users[0].first_name, 'limit_user4');
+        assert.strictEqual(users[1].first_name, 'limit_user4');
         done();
       });
     });
