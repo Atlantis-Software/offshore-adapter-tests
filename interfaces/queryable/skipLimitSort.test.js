@@ -17,7 +17,7 @@ describe('Queryable Interface', function() {
       users.push({first_name: 'limit_user1', type: 'skip limit sort test', age: 20});
       users.push({first_name: 'limit_user2', type: 'skip limit sort test', age: 25});
       users.push({first_name: 'limit_user3', type: 'skip limit sort test', age: 23});
-      users.push({first_name: 'limit_user4', type: 'skip limit sort test', age: 21});
+      users.push({first_name: 'limit_user4', type: 'skip limit sort test', age: 23});
       
 
       Queryable.User.createEach(users, function(err, users) {
@@ -31,12 +31,12 @@ describe('Queryable Interface', function() {
     ////////////////////////////////////////////////////
 
     it('should return the correct records', function(done) {
-      Queryable.User.find({ where: { type: 'skip limit sort test' }, limit: 2, skip: 1, sort: 'age desc' }, function(err, users) {
+      Queryable.User.find({ where: { type: 'skip limit sort test' }, limit: 2, skip: 1, sort: {age: 1, first_name: 0} }, function(err, users) {
         assert.ifError(err);
         assert(Array.isArray(users));
         assert.strictEqual(users.length, 2);
-        assert.strictEqual(users[0].first_name, 'limit_user3');
-        assert.strictEqual(users[1].first_name, 'limit_user4');
+        assert.strictEqual(users[0].first_name, 'limit_user4');
+        assert.strictEqual(users[1].first_name, 'limit_user3');
         done();
       });
     });
