@@ -11,10 +11,12 @@ module.exports = Offshore.Collection.extend({
   migrate: 'alter',
   attributes: {
     customer:{
-      model:'customer'
+      model:'customer',
+      columnName: 'storecustomerCustomer'
     },
     store: {
-      model: 'store'
+      model: 'store',
+      columnName: 'storecustomerStore'
     }
   }
 });

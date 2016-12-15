@@ -11,7 +11,10 @@ module.exports = Offshore.Collection.extend({
   connection: 'associations',
 
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string',
+      columnName: 'stadiumName'
+    },
     teams: {
       collection: 'Team',
       through: 'venue',

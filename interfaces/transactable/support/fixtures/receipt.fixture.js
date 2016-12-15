@@ -11,19 +11,19 @@ module.exports = Offshore.Collection.extend({
   migrate: 'alter',
   attributes: {
     id: {
-      columnName: 'ID',
+      columnName: 'receiptId',
       type: 'integer',
       primaryKey: true,
       unique: true,
       autoIncrement: true
     },
     label: {
-      "columnName": "LABEL",
+      columnName: 'receiptLabel',
       type: 'string'
     },
     a_payment: {
       model: 'Payment',
-      columnName: 'receipt_id'
+      columnName: 'receiptPayment'
     }
   }
 });

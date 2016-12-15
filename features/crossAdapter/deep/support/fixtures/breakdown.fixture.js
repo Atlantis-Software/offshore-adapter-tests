@@ -19,7 +19,8 @@ module.exports = Offshore.Collection.extend({
       type: 'integer'
     },
     taxi: {
-      model: 'Taxi'
+      model: 'Taxi',
+      columnName: 'breakdownTaxi'
     }
   }
 });

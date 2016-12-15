@@ -14,7 +14,10 @@ module.exports = Offshore.Collection.extend({
       type: 'integer',
       primaryKey: true
     },
-    name: 'string',
+    name: {
+      type: 'string',
+      columnName: 'countryName'
+    },
     constructors: {
       collection: 'Constructor',
       via: 'countries'

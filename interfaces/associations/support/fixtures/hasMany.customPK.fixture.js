@@ -12,11 +12,15 @@ module.exports = Offshore.Collection.extend({
   autoPK: false,
 
   attributes: {
-    building: 'string',
+    building: {
+      type: 'string',
+      columnName: 'apartmentBuilding'
+    },
     number: {
       type: 'string',
       primaryKey: true,
-      unique: true
+      unique: true,
+      columnName: 'apartmentNumber'
     },
     payments: {
       collection: 'Payment',

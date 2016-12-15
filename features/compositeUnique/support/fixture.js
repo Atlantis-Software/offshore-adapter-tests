@@ -7,9 +7,13 @@ module.exports = Offshore.Collection.extend({
   connection: 'compositeUniqueConnection',
 
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string',
+      columnName: 'compositeUniqueName'
+    },
     uniqueOne: {
       type: 'string',
+      columnName: 'compositeUniqueUniqueOne',
       unique: {
         unique: false,
         composite: [ 'uniqueTwo' ]
@@ -18,6 +22,7 @@ module.exports = Offshore.Collection.extend({
 
     uniqueTwo: {
       type: 'string',
+      columnName: 'compositeUniqueUniqueTwo',
       unique: {
         unique: false,
         composite: [ 'uniqueOne' ]
@@ -26,4 +31,3 @@ module.exports = Offshore.Collection.extend({
   }
 
 });
-

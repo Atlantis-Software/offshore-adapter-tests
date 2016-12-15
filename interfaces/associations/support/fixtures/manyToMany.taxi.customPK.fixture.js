@@ -15,9 +15,13 @@ module.exports = Offshore.Collection.extend({
   attributes: {
     vin: {
       type: 'string',
-      primaryKey: true
+      primaryKey: true,
+      columnName: 'taxicustomVin'
     },
-    medallion: 'integer',
+    medallion: {
+      type: 'integer',
+      columnName: 'customerMedallion'
+    },
     drivers: {
       collection: 'drivercustom',
       via: 'taxis'

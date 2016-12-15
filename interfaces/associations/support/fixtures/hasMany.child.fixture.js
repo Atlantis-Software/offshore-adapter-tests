@@ -11,8 +11,14 @@ module.exports = Offshore.Collection.extend({
   connection: 'associations',
 
   attributes: {
-    amount: 'integer',
-    type: 'string',
+    amount: {
+      type: 'integer',
+      columnName: 'paymentAmount'
+    },
+    type: {
+      type: 'string',
+      columnName: 'paymentType'
+    },
     apartment: {
       model: 'apartment',
       columnName: 'apartment_id'

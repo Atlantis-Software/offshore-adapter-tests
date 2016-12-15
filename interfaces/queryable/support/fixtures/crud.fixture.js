@@ -11,25 +11,60 @@ module.exports = Offshore.Collection.extend({
   connection: 'queryable',
 
   attributes: {
-    first_name: 'string',
-    last_name: 'string',
-    email: 'string',
-    title: 'string',
-    phone: 'string',
-    type: 'string',
+    first_name: {
+      type: 'string',
+      columnName: 'userFirstName'
+    },
+    last_name: {
+      type: 'string',
+      columnName: 'userLastName'
+    },
+    email: {
+      type: 'string',
+      columnName: 'userEmail'
+    },
+    title: {
+      type: 'string',
+      columnName: 'userTitle'
+    },
+    phone: {
+      type: 'string',
+      columnName: 'userPhone'
+    },
+    type: {
+      type: 'string',
+      columnName: 'userType'
+    },
     favoriteFruit: {
       defaultsTo: 'blueberry',
-      type: 'string'
+      type: 'string',
+      columnName: 'userFavoriteFruit'
     },
-    age: 'integer', // integer field that's not auto-incrementable
-    dob: 'date',
+    age: {
+      type: 'integer',
+      columnName: 'userAge'
+    }, // integer field that's not auto-incrementable
+    dob: {
+      type: 'date',
+      columnName: 'userDob'
+    },
     status: {
       type: 'boolean',
-      defaultsTo: false
+      defaultsTo: false,
+      columnName: 'userStatus'
     },
-    percent: 'float',
-    list: 'array',
-    obj: 'json',
+    percent: {
+      type: 'float',
+      columnName: 'userPercent'
+    },
+    list: {
+      type: 'array',
+      columnName: 'userList'
+    },
+    obj: {
+      type: 'json',
+      columnName: 'userObj'
+    },
     fullName: function() {
       return this.first_name + ' ' + this.last_name;
     }

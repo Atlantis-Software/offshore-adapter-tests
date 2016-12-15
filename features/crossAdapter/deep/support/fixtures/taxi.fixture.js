@@ -24,10 +24,12 @@ module.exports = Offshore.Collection.extend({
       through: 'ride'
     },
     company: {
-      model: 'Company'
+      model: 'Company',
+      columnName: 'taxiCompany'
     },
     constructor: {
-      model: 'Constructor'
+      model: 'Constructor',
+      columnName: 'taxiConstructor'
     },
     breakdowns: {
       collection: 'BreakDown',

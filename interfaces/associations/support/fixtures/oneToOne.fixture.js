@@ -11,8 +11,14 @@ module.exports.user_resource = Offshore.Collection.extend({
   connection: 'associations',
 
   attributes: {
-    name: 'string',
-    quantity: 'integer',
+    name: {
+      type: 'string',
+      columnName: 'user_resourceName'
+    },
+    quantity: {
+      type: 'integer',
+      columnName: 'user_resourceQuantity'
+    },
     profile: {
       model: 'profile',
       columnName: 'profile_id'
@@ -28,8 +34,14 @@ module.exports.profile = Offshore.Collection.extend({
   connection: 'associations',
 
   attributes: {
-    name: 'string',
-    level : 'integer',
+    name: {
+      type: 'string',
+      columnName: 'profileName'
+    },
+    level : {
+      type: 'integer',
+      columnName: 'profileLevel'
+    },
     user: {
       model: 'user_resource',
       columnName: 'user_resource_id'

@@ -11,32 +11,64 @@ module.exports = Offshore.Collection.extend({
   connection: 'sql',
 
   attributes: {
-    first_name: 'string',
-    last_name: 'string',
+    first_name: {
+      type: 'string',
+      columnName: 'userFirstName'
+    },
+    last_name: {
+      type: 'string',
+      columnName: 'userLastName'
+    },
     email: {
       type: 'string',
       columnName: 'emailAddress'
     },
-    avatar: 'binary',
-    title: 'string',
-    phone: 'string',
-    type: 'string',
+    avatar: {
+      type: 'binary',
+      columnName: 'userAvatar'
+    },
+    title: {
+      type: 'string',
+      columnName: 'userTitle'
+    },
+    phone: {
+      type: 'string',
+      columnName: 'userPhone'
+    },
+    type: {
+      type: 'string',
+      columnName: 'userType'
+    },
     favoriteFruit: {
       defaultsTo: 'blueberry',
-      type: 'string'
+      type: 'string',
+      columnName: 'userFavoriteFruit'
     },
-    age: 'integer', // integer field that's not auto-incrementable
-    dob: 'datetime',
+    age: {
+      type: 'integer',
+      columnName: 'userAge'
+    }, // integer field that's not auto-incrementable
+    dob: {
+      type: 'datetime',
+      columnName: 'userDob'
+    },
     status: {
       type: 'boolean',
-      defaultsTo: false
+      defaultsTo: false,
+      columnName: 'userStatus'
     },
-    percent: 'float',
+    percent: {
+      type: 'float',
+      columnName: 'userPercent'
+    },
     list: {
       type: 'array',
       columnName: 'arrList'
     },
-    obj: 'json',
+    obj: {
+      type: 'json',
+      columnName: 'userObj'
+    },
     fullName: function() {
       return this.first_name + ' ' + this.last_name;
     }

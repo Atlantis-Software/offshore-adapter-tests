@@ -10,9 +10,12 @@ module.exports = Offshore.Collection.extend({
   identity: 'taxi',
   connection: 'associations2',
 
-  // migrate: 'drop', 
+  // migrate: 'drop',
   attributes: {
-    medallion: 'integer',
+    medallion: {
+      type: 'integer',
+      columnName: 'taxiTableMedallion'
+    },
     drivers: {
       collection: 'driver',
       via: 'taxis'

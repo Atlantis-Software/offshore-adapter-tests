@@ -11,8 +11,14 @@ module.exports.payment = Offshore.Collection.extend({
   connection: 'associations',
 
   attributes: {
-    amount: 'integer',
-    type: 'string',
+    amount: {
+      type: 'integer',
+      columnName: 'payment_manyAmount'
+    },
+    type: {
+      type: 'string',
+      columnName: 'payment_manyType'
+    },
     customer: {
       model: 'customer_many',
       columnName: 'customer_many_id'
@@ -38,7 +44,10 @@ module.exports.customer = Offshore.Collection.extend({
   connection: 'associations',
 
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string',
+      columnName: 'customer_manyName'
+    },
     payments: {
       collection: 'payment_many',
       via: 'customer'

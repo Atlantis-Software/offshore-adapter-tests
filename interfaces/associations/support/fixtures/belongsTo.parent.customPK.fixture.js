@@ -15,10 +15,17 @@ module.exports = Offshore.Collection.extend({
   attributes: {
     username: {
       type: 'string',
-      primaryKey: true
+      primaryKey: true,
+      columnName: 'customerbelongscustomUsername'
     },
-    name: 'string',
-    title: 'string',
+    name: {
+      type: 'string',
+      columnName: 'customerbelongscustomName'
+    },
+    title: {
+      type: 'string',
+      columnName: 'customerbelongscustomTitle'
+    },
     payments: {
       collection: 'Paymentbelongscustom',
       via: 'customer'

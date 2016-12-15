@@ -15,10 +15,17 @@ module.exports = Offshore.Collection.extend({
   attributes: {
     invoice: {
       type: 'integer',
-      primaryKey: true
+      primaryKey: true,
+      columnName: 'paymentbelongscustomInvoice'
     },
-    amount: 'integer',
-    type: 'string',
+    amount: {
+      type: 'integer',
+      columnName: 'paymentbelongscustomAmount'
+    },
+    type: {
+      type: 'string',
+      columnName: 'paymentbelongscustomString'
+    },
     customer: {
       model: 'Customerbelongscustom',
       columnName: 'customer_belongs'

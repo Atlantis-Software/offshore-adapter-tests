@@ -15,9 +15,13 @@ module.exports = Offshore.Collection.extend({
   attributes: {
     number: {
       type: 'integer',
-      primaryKey: true
+      primaryKey: true,
+      columnName: 'drivercustomNumber'
     },
-    name: 'string',
+    name: {
+      type: 'string',
+      columnName: 'drivercustomName'
+    },
     taxis: {
       collection: 'taxicustom',
       via: 'drivers',

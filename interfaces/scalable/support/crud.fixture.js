@@ -11,28 +11,60 @@ module.exports = Offshore.Collection.extend({
   adapter: 'test',
 
   attributes: {
-    first_name: 'string',
-    last_name: 'string',
+    first_name: {
+      type: 'string',
+      columnName: 'loadtestFirstName'
+    },
+    last_name: {
+      type: 'string',
+      columnName: 'loadtestLastName'
+    },
     email: {
       type: 'string',
       columnName: 'emailAddress'
-    }, 
-    title: 'string',
-    phone: 'string',
-    type: 'string',
+    },
+    title: {
+      type: 'string',
+      columnName: 'loadtestTitle'
+    },
+    phone: {
+      type: 'string',
+      columnName: 'loadtestPhone'
+    },
+    type: {
+      type: 'string',
+      columnName: 'loadtestType'
+    },
     favoriteFruit: {
       defaultsTo: 'blueberry',
-      type: 'string'
+      type: 'string',
+      columnName: 'loadtestFavoriteFruit'
     },
-    age: 'integer', // integer field that's not auto-incrementable
-    dob: 'datetime',
+    age: {
+      type: 'string',
+      columnName: 'loadtestAge'
+    }, // integer field that's not auto-incrementable
+    dob: {
+      type: 'datetime',
+      columnName: 'loadtestDob'
+    },
     status: {
       type: 'boolean',
-      defaultsTo: false
+      defaultsTo: false,
+      columnName: 'loadtestStatus'
     },
-    percent: 'float',
-    list: 'array',
-    obj: 'json',
+    percent: {
+      type: 'float',
+      columnName: 'loadtestPercent'
+    },
+    list: {
+      type: 'array',
+      columnName: 'loadtestList'
+    },
+    obj: {
+      type: 'json',
+      columnName: 'loadtestObj'
+    },
     fullName: function() {
       return this.first_name + ' ' + this.last_name;
     }

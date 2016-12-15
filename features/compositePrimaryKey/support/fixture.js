@@ -8,17 +8,20 @@ module.exports = Offshore.Collection.extend({
   autoPK: false,
 
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string',
+      columnName: 'compositePrimaryKeyName'
+    },
     pkOne: {
       type: 'integer',
+      columnName: 'compositePrimaryKeyPkOne',
       primaryKey: true
     },
-
     pkTwo: {
       type: 'string',
+      columnName: 'compositePrimaryKeyPkTwo',
       primaryKey: true
     }
   }
 
 });
-

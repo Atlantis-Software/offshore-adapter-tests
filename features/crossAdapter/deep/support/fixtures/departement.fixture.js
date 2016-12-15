@@ -19,7 +19,8 @@ module.exports = Offshore.Collection.extend({
       type: 'string'
     },
     constructor: {
-      model: 'Constructor'
+      model: 'Constructor',
+      columnName: 'departmentConstructor'
     }
   }
 });

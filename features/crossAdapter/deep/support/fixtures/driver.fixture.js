@@ -24,10 +24,12 @@ module.exports = Offshore.Collection.extend({
       through: 'ride'
     },
     address: {
-      model: 'Address'
+      model: 'Address',
+      columnName: 'driverAddress'
     },
     company: {
-      model: 'Company'
+      model: 'Company',
+      columnName: 'driverCompany'
     }
   }
 });

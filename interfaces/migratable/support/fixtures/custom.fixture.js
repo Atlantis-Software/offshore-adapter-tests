@@ -16,7 +16,10 @@ module.exports = Offshore.Collection.extend({
     	type: 'string',
     	columnName: 'nameColumn'
     },
-    age: 'integer'
+    age: {
+      type: 'integer',
+      columnName: 'customerAge'
+    }
   }
 
 });

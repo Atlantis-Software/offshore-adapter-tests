@@ -15,10 +15,12 @@ module.exports = Offshore.Collection.extend({
       primaryKey: true
     },
     taxi: {
-      model: 'Taxi'
+      model: 'Taxi',
+      columnName: 'rideTaxi'
     },
     driver: {
-      model: 'Driver'
+      model: 'Driver',
+      columnName: 'rideDriver'
     }
   }
 });

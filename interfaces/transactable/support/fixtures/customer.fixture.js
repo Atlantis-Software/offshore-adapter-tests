@@ -11,18 +11,18 @@ module.exports = Offshore.Collection.extend({
   migrate: 'alter',
   attributes: {
     id: {
-      columnName: 'ID',
+      columnName: 'customerId',
       type: 'integer',
       primaryKey: true,
       unique: true,
       autoIncrement: true
     },
     name: {
-      "columnName": "NAME",
+      columnName: 'customerName',
       type: 'string'
     },
     capital: {
-      "columnName": "CAPITAL",
+      columnName: 'customerCapital',
       type: 'integer'
     },
     payments: {

@@ -10,9 +10,12 @@ module.exports = Offshore.Collection.extend({
   identity: 'driver',
   connection: 'associations',
 
-  // migrate: 'drop', 
+  // migrate: 'drop',
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string',
+      columnName: 'driverName'
+    },
     taxis: {
       collection: 'taxi',
       via: 'drivers',

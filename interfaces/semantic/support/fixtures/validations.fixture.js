@@ -13,15 +13,20 @@ module.exports = Offshore.Collection.extend({
   attributes: {
     name: {
       type: 'string',
-      required: true
+      required: true,
+      columnName: 'thingName'
     },
     age: {
       type: 'integer',
       required: true,
       min: 5,
-      max: 20
+      max: 20,
+      columnName: 'thingAge'
     },
-    description: 'string'
+    description: {
+      type: 'string',
+      columnName: 'thingDescription'
+    },
   }
 
 });
