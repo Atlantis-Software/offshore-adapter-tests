@@ -18,9 +18,12 @@ describe('Association Interface', function() {
           var Driver;
 
           before(function(done) {
+            // Check Driver hasManytoMany Taxis
+            assert.strictEqual(Associations.Drivercustom.attributes.taxis.collection, 'taxicustom');
+            assert.strictEqual(Associations.Taxicustom.attributes.drivers.collection, 'drivercustom');
 
             Associations.Drivercustom.create({ number: 1000, name: 'm:m update nested' }).exec(function(err, driver) {
-              if(err) return done(err);
+              assert.ifError(err);
               Driver = driver;
               done();
             });
@@ -83,7 +86,7 @@ describe('Association Interface', function() {
             };
 
             Associations.Drivercustom.create(data).exec(function(err, driver) {
-              if(err) return done(err);
+              assert.ifError(err);
               Driver = driver;
               done();
             });
@@ -159,11 +162,11 @@ describe('Association Interface', function() {
             };
 
             Associations.Taxicustom.create(taxiData).exec(function(err, taxis) {
-              if(err) return done(err);
+              assert.ifError(err);
               Taxis = taxis;
 
               Associations.Drivercustom.create(data).exec(function(err, driver) {
-                if(err) return done(err);
+                assert.ifError(err);
                 Driver = driver;
                 done();
               });
@@ -226,7 +229,7 @@ describe('Association Interface', function() {
             };
 
             Associations.Drivercustom.create(data).exec(function(err, driver) {
-              if(err) return done(err);
+              assert.ifError(err);
               Driver = driver;
               done();
             });
@@ -290,11 +293,11 @@ describe('Association Interface', function() {
             ];
 
             Associations.Drivercustom.createEach(driversData).exec(function(err, drivers) {
-              if(err) return done(err);
+              assert.ifError(err);
               Drivers = drivers;
 
               Associations.Taxicustom.createEach(taxisData).exec(function(err, taxis) {
-                if(err) return done(err);
+                assert.ifError(err);
                 Taxis = taxis;
 
                 done();

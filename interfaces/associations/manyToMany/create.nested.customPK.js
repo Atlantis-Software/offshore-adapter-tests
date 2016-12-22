@@ -10,6 +10,13 @@ describe('Association Interface', function() {
 
         describe('and objects', function() {
 
+          before(function(done) {
+            // Check Driver hasManytoMany Taxis
+            assert.strictEqual(Associations.Driver.attributes.taxis.collection, 'taxi');
+            assert.strictEqual(Associations.Taxi.attributes.drivers.collection, 'driver');
+            done();
+          });
+
           /////////////////////////////////////////////////////
           // TEST METHODS
           ////////////////////////////////////////////////////
@@ -54,7 +61,7 @@ describe('Association Interface', function() {
 
           before(function(done) {
             Associations.Taxicustom.create({ vin: 'a003', medallion: 1337 }).exec(function(err, taxi) {
-              if(err) return done(err);
+              assert.ifError(err);
               taxiId = taxi.vin;
               done();
             });

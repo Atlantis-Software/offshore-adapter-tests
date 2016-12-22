@@ -3,7 +3,7 @@ var assert = require('assert'),
 
 describe('Association Interface', function() {
 
-  describe('1:1 association :: .update()', function() {
+  describe('Belongs To Association', function() {
     describe('update nested associations with custom primary keys()', function() {
       describe('with single level depth', function() {
 
@@ -16,6 +16,9 @@ describe('Association Interface', function() {
           var Payment;
 
           before(function(done) {
+            // Check Payment belongsTo Customer
+            assert.strictEqual(Associations.Paymentbelongscustom.attributes.customer.model, 'customerbelongscustom');
+            assert.strictEqual(Associations.Customerbelongscustom.attributes.payments.collection, 'paymentbelongscustom');
 
             var data = {
               invoice: 100,
@@ -24,7 +27,7 @@ describe('Association Interface', function() {
 
             Associations.Paymentbelongscustom.create(data)
             .exec(function(err, values) {
-              if(err) return done(err);
+              assert.ifError(err);
               Payment = values;
               done();
             });
@@ -87,7 +90,7 @@ describe('Association Interface', function() {
 
             Associations.Paymentbelongscustom.create(data)
             .exec(function(err, values) {
-              if(err) return done(err);
+              assert.ifError(err);
               Payment = values;
               done();
             });

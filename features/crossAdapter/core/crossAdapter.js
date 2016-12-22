@@ -29,7 +29,7 @@ function CrossAdapter(options, cb) {
   this.adapter = options.adapter;
   this.config = options.config || {};
   // The associationTypes must match the folder names in interfaces/associations
-  this.associationTypes = ['belongsTo', 'hasMany','hasManyThrough', 'manyToMany', 'oneToOne'];
+  this.associationTypes = ['belongsTo', 'hasMany', 'manyToMany', 'manyToManyThrough', 'oneToOne'];
 
   // Attach config to adapter
   // this.adapter.config = this.config;
@@ -57,13 +57,12 @@ function CrossAdapter(options, cb) {
     var interfacePath = Path.resolve(__dirname,'../../../interfaces/associations/' + type);
     files = files.concat(utils.fileLookup(interfacePath, filter, true));
   });
- 
 
   // Build a Mocha Runner
   var test = new mocha(_.merge({
     timeout: 6000
   }, options.mocha||{}));
-  
+
   if (options.mochaChainableMethods){
     _.forEach(options.mochaChainableMethods, function(arg, method){
       test[method](arg);
@@ -90,7 +89,7 @@ function CrossAdapter(options, cb) {
     deepCrossAdapterRunner.cleanTestCache(test.files);
     deepCrossAdapterRunner(options, function(deepCrossAdapterErr) {
       cb(deepCrossAdapterErr);
-    });    
+    });
   });
 
   runner.on('fail', function (e) {

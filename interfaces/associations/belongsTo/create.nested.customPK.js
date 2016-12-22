@@ -5,6 +5,14 @@ var util = require('util');
 describe('Association Interface', function() {
 
   describe('Belongs To Associations', function() {
+
+    before(function(done) {
+      // Check Payment belongsTo Customer
+      assert.strictEqual(Associations.Paymentbelongscustom.attributes.customer.model, 'customerbelongscustom');
+      assert.strictEqual(Associations.Customerbelongscustom.attributes.payments.collection, 'paymentbelongscustom');
+      done();
+    });
+
     describe('create nested association when a custom primary key is used', function() {
 
       /////////////////////////////////////////////////////
@@ -24,7 +32,7 @@ describe('Association Interface', function() {
         // Create the Parent and Child records
         Associations.Paymentbelongscustom.create(data)
         .exec(function(err, payment) {
-          assert(!err, err);
+          assert.ifError(err);
 
           // Ensure the foreignKey get set
           assert.equal(payment.customer, 'belongsTo');
@@ -33,7 +41,7 @@ describe('Association Interface', function() {
           Associations.Paymentbelongscustom.findOne(payment.invoice)
           .populate('customer')
           .exec(function(err, _payment) {
-            assert(!err, err);
+            assert.ifError(err);
 
             // Test the parent is correct
             assert.equal(_payment.invoice, 1000);

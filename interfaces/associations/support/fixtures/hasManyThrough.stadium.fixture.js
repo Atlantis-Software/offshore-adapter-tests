@@ -15,6 +15,10 @@ module.exports = Offshore.Collection.extend({
       type: 'string',
       columnName: 'stadiumName'
     },
+    budget: {
+      type: 'integer',
+      columnName: 'stadiumBudget'
+    },
     teams: {
       collection: 'Team',
       through: 'venue',

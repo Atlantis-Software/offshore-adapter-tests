@@ -17,8 +17,14 @@ var fixtures = {
   ApartmentHasManyFixture: require('./fixtures/hasMany.customPK.fixture'),
   PaymentManyFixture: require('./fixtures/multipleAssociations.fixture').payment,
   CustomerManyFixture: require('./fixtures/multipleAssociations.fixture').customer,
+  StadiumManyFixture: require('./fixtures/multipleThroughAssociations.fixture').stadium,
+  TeamManyFixture: require('./fixtures/multipleThroughAssociations.fixture').team,
+  VenueManyFixture: require('./fixtures/multipleThroughAssociations.fixture').venue,
   StadiumFixture: require('./fixtures/hasManyThrough.stadium.fixture'),
   TeamFixture: require('./fixtures/hasManyThrough.team.fixture'),
+  StadiumCustomFixture: require('./fixtures/hasManyThrough.parent.customPK.fixture'),
+  TeamCustomFixture: require('./fixtures/hasManyThrough.child.customPK.fixture'),
+  VenueCustomFixture: require('./fixtures/hasManyThrough.through.customPK.fixture'),
   VenueFixture: require('./fixtures/hasManyThrough.venue.fixture'),
   TaxiFixture: require('./fixtures/manyToMany.taxi.fixture'),
   DriverFixture: require('./fixtures/manyToMany.driver.fixture'),
@@ -27,7 +33,11 @@ var fixtures = {
   TaxiCustomFixture: require('./fixtures/manyToMany.taxi.customPK.fixture'),
   DriverCustomFixture: require('./fixtures/manyToMany.driver.customPK.fixture'),
   UserOneFixture: require('./fixtures/oneToOne.fixture').user_resource,
-  ProfileOneFixture: require('./fixtures/oneToOne.fixture').profile
+  ProfileOneFixture: require('./fixtures/oneToOne.fixture').profile,
+  UserOneCustomFixture: require('./fixtures/oneToOne.customPK.fixture').user_resource,
+  ProfileOneCustomFixture: require('./fixtures/oneToOne.customPK.fixture').profile,
+  UserOneManyFixture: require('./fixtures/multipleOneToOneAssociations.fixture').user_resource,
+  ProfileOneManyFixture: require('./fixtures/multipleOneToOneAssociations.fixture').profile
 };
 
 
@@ -48,7 +58,9 @@ before(function(done) {
   var connections = { associations: _.clone(Connections.test) };
 
   offshore.initialize({ adapters: { wl_tests: Adapter }, connections: connections }, function(err, _ontology) {
-    if(err) return done(err);
+    if (err) {
+      return done(err);
+    }
 
     ontology = _ontology;
 
@@ -73,7 +85,9 @@ after(function(done) {
   }
 
   async.each(Object.keys(ontology.collections), dropCollection, function(err) {
-    if(err) return done(err);
+    if (err) {
+      return done(err);
+    }
     offshore.teardown(done);
   });
 

@@ -12,8 +12,12 @@ describe('Association Interface', function() {
     var driverRecord;
 
     before(function(done) {
+      // Check Driver hasManytoMany Taxis
+      assert.strictEqual(Associations.Driver.attributes.taxis.collection, 'taxi');
+      assert.strictEqual(Associations.Taxi.attributes.drivers.collection, 'driver');
+
       Associations.Driver.create({ name: 'manymany destroy'}, function(err, driver) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         driverRecord = driver;
 
@@ -23,7 +27,7 @@ describe('Association Interface', function() {
         }
 
         driverRecord.save(function(err) {
-          if(err) return done(err);
+          assert.ifError(err);
           done();
         });
       });
@@ -62,7 +66,7 @@ describe('Association Interface', function() {
 
     before(function(done) {
       Associations.Driver.create({ name: 'manymany destroy'}, function(err, driver) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         driverRecord = driver;
 
@@ -72,7 +76,7 @@ describe('Association Interface', function() {
         }
 
         driverRecord.save(function(err) {
-          if(err) return done(err);
+          assert.ifError(err);
           done();
         });
       });
@@ -88,7 +92,7 @@ describe('Association Interface', function() {
 
         // Find records in the join table
         Associations.Driver_taxis__taxi_drivers.find({ driver_taxis: driverRecord.id }).exec(function(err, records) {
-          if(err) return done(err);
+          assert.ifError(err);
           if(!records.length) {
             return done(new Error('Removed all the join table records!'));
           }

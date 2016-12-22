@@ -6,21 +6,21 @@ var Offshore = require('offshore');
 
 module.exports = Offshore.Collection.extend({
 
-  tableName: 'venueTable',
-  identity: 'venue',
-  connection: 'associations2',
+  tableName: 'venueCustomTable',
+  identity: 'venueCustom',
+  connection: 'associations',
 
   attributes: {
     seats: {
       type: 'integer',
-      columnName: 'venueTableSeats'
+      columnName: 'venueSeats'
     },
     team: {
-      model: 'team',
+      model: 'teamcustom',
       columnName: 'team_id'
     },
     stadium: {
-      model: 'stadium',
+      model: 'stadiumcustom',
       columnName: 'stadium_id'
     }
   }

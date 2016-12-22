@@ -141,5 +141,20 @@ describe('Queryable Interface', function() {
       });
     });
 
+    it('should sort records using multiple sort criteria (array notation), with first name asc', function(done) {
+      Queryable.User.find({ where: { type: 'sort test multi' }, sort: [ 'last_name asc', 'first_name asc'] }, function(err, users) {
+        assert.ifError(err);
+
+        // check the smith's are together and ordered by first_name
+        assert.equal(users[0].first_name, 'bob');
+        assert.equal(users[1].last_name, 'smith');
+        assert.equal(users[2].last_name, 'smith');
+
+        assert.equal(users[1].first_name, 'foo');
+        assert.equal(users[2].first_name, 'joe');
+        done();
+      });
+    });
+
   });
 });

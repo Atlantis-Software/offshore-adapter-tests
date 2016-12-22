@@ -2,7 +2,7 @@ var assert = require('assert'),
     _ = require('lodash');
 
 describe('Association Interface', function() {
-  
+
   describe('n:m association :: .update()', function() {
 
     describe('update parent association()', function() {
@@ -14,9 +14,12 @@ describe('Association Interface', function() {
       var Driver;
 
       before(function(done) {
-        
+        // Check Driver hasManytoMany Taxis
+        assert.strictEqual(Associations.Driver.attributes.taxis.collection, 'taxi');
+        assert.strictEqual(Associations.Taxi.attributes.drivers.collection, 'driver');
+
         Associations.Driver.create({ name: 'm:m update', taxis: [ { medallion: 1 } ] }).exec(function(err, driver) {
-          if(err) return done(err);
+          assert.ifError(err);
           Driver = driver;
           done();
         });
@@ -34,7 +37,7 @@ describe('Association Interface', function() {
           assert(Array.isArray(drivers));
           assert.equal(drivers.length, 1);
           assert.equal(drivers[0].name, 'm:m updated');
-          
+
           Associations.Driver.findOne({ name: 'm:m updated' })
           .populate('taxis')
           .then(function(driver){
@@ -43,7 +46,7 @@ describe('Association Interface', function() {
             done();
           })
           .catch(done);
-          
+
         });
       });
     });
@@ -58,9 +61,9 @@ describe('Association Interface', function() {
       var Driver;
 
       before(function(done) {
-        
+
         Associations.Driver.create({ name: 'm:m update add', taxis: [ { medallion: 2 } ] }).exec(function(err, driver) {
-          if(err) return done(err);
+          assert.ifError(err);
           Driver = driver;
           done();
         });
@@ -76,11 +79,11 @@ describe('Association Interface', function() {
         Associations.Driver.findOne({ name: 'm:m update add' })
         .populate('taxis')
         .then(function(driver){
-          
+
           driver.name = 'm:m updated add';
           driver.save(function(err){
             assert.ifError(err);
-            
+
             Associations.Driver.findOne({ name: 'm:m updated add' })
             .populate('taxis')
             .then(function(driver){
@@ -90,11 +93,11 @@ describe('Association Interface', function() {
               done();
             })
             .catch(done);
-            
+
           });
         })
         .catch(done);
-        
+
       });
     });
 

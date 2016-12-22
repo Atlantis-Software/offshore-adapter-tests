@@ -54,7 +54,7 @@ function CrossAdapter(options, cb) {
   var test = new mocha(_.merge({
     timeout: 6000
   }, options.mocha||{}));
-  
+
   if (options.mochaChainableMethods){
     _.forEach(options.mochaChainableMethods, function(arg, method){
       test[method](arg);
@@ -67,7 +67,7 @@ function CrossAdapter(options, cb) {
   // Allow Adapter to be a global without warning about a leak
   test.globals([Adapter, MemoryAdapter, Associations]);
   test.files = files;
-  
+
   console.info('\nTesting Deep Cross Adapter interface...\n');
 
   console.time('time elapsed');

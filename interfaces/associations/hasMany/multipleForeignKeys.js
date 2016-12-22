@@ -15,8 +15,14 @@ describe('Association Interface', function() {
         var customer;
 
         before(function(done) {
+          // Check Customer hasMany Payments
+          assert.strictEqual(Associations.Customer_many.attributes.payments.collection, 'payment_many');
+          assert.strictEqual(Associations.Customer_many.attributes.transactions.collection, 'payment_many');
+          assert.strictEqual(Associations.Payment_many.attributes.customer.model, 'customer_many');
+          assert.strictEqual(Associations.Payment_many.attributes.patron.model, 'customer_many');
+
           Associations.Customer_many.create({ name: 'manyAssociations uno hasMany add' }, function(err, model) {
-            if(err) return done(err);
+            assert.ifError(err);
 
             customer = model;
             Associations.Payment_many.create({ amount: 1, customer: customer.id }, done);
@@ -67,11 +73,11 @@ describe('Association Interface', function() {
           ];
 
           Associations.Customer_many.createEach(records, function(err, models) {
-            if(err) return done(err);
+            assert.ifError(err);
 
             customer = models[0];
             Associations.Payment_many.create({ amount: 1, customer: models[1].id }, function(err, paymentModel) {
-              if(err) return done(err);
+              assert.ifError(err);
 
               payment = paymentModel;
               done();

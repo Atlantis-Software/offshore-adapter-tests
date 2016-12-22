@@ -19,6 +19,10 @@ module.exports = Offshore.Collection.extend({
       type: 'string',
       columnName: 'customerbelongsTitle'
     },
+    capital : {
+      type: 'integer',
+      columnName: 'customerCapital'
+    },
     payments: {
       collection: 'Paymentbelongs',
       via: 'customer'

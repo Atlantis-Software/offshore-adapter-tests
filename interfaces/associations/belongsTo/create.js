@@ -3,7 +3,7 @@ var assert = require('assert'),
 
 describe('Association Interface', function() {
 
-  describe('Belongs To Associationz', function() {
+  describe('Belongs To Associations', function() {
     describe('create', function() {
 
       /////////////////////////////////////////////////////
@@ -13,8 +13,12 @@ describe('Association Interface', function() {
       var customerId;
 
       before(function(done) {
+        // Check payment belongsTo Customer
+        assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
+        assert.strictEqual(Associations.Customer.attributes.payments.collection, 'payment');
+
         Associations.Customer.create({ name: 'belongsTo add' }).exec(function(err, cust) {
-          if(err) return done(err);
+          assert.ifError(err);
           customerId = cust.id;
           done();
         });

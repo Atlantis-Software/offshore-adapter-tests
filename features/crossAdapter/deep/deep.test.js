@@ -328,7 +328,7 @@ describe('Deep Cross Adapter', function() {
             //Level 1
             assert(taxi.constructor, 'Could not populate first level with criteria.');
             assert(taxi.constructor.name === 'constructor 1', 'First level criteria not applied.');
-            //Level 2 
+            //Level 2
             assert(taxi.constructor.departments, 'Second level not populated.');
             assert(taxi.constructor.departments[0].name === 'dep 4', 'Second level criteria not applied.');
             done();
@@ -347,7 +347,7 @@ describe('Deep Cross Adapter', function() {
             //Level 1
             assert(company.taxis, 'Could not populate first level');
             assert(company.taxis[0].matricule === 'taxi_4', 'First level criteria not applied.');
-            //Level 2 
+            //Level 2
             assert(company.taxis[0].breakdowns, 'Second level not populated.');
             assert(company.taxis[0].breakdowns[0].level === 10, 'Second level criteria not applied.');
             done();
@@ -403,7 +403,7 @@ describe('Deep Cross Adapter', function() {
             //Level 1
             assert(taxi.constructor, 'Could not populate first level with criteria.');
             assert(taxi.constructor.name === 'constructor 1', 'First level criteria not applied.');
-            //Level 2 
+            //Level 2
             assert(taxi.constructor.departments, 'Second level not populated.');
             assert(taxi.constructor.departments[0].name === 'dep 4', 'Second level criteria not applied.');
             done();

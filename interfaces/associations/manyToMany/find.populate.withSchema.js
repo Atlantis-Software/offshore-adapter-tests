@@ -13,8 +13,12 @@ if (adapterFeatures.indexOf('schemas') > -1) {
       var driverRecord;
 
       before(function(done) {
+        // Check Driver hasManytoMany Taxis
+        assert.strictEqual(Associations.Driverwithschema.attributes.taxis.collection, 'taxiwithschema');
+        assert.strictEqual(Associations.TaxiwithSchema.attributes.drivers.collection, 'driverwithschema');
+
         Associations.Driverwithschema.create({ name: 'manymany find'}, function(err, driver) {
-          if(err) return done(err);
+          assert.ifError(err);
 
           driverRecord = driver;
 
@@ -24,7 +28,7 @@ if (adapterFeatures.indexOf('schemas') > -1) {
           }
 
           driverRecord.save(function(err) {
-            if(err) return done(err);
+            assert.ifError(err);
             done();
           });
         });

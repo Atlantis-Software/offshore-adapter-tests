@@ -16,6 +16,10 @@ module.exports = Offshore.Collection.extend({
       type: 'string',
       columnName: 'driverName'
     },
+    drivingTime: {
+      type: 'integer',
+      columnName: 'driverDrivingTime'
+    },
     taxis: {
       collection: 'taxi',
       via: 'drivers',

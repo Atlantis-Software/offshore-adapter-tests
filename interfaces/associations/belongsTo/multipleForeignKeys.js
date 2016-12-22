@@ -13,12 +13,18 @@ describe('Association Interface', function() {
       var customer_1_id, customer_2_id;
 
       before(function(done) {
+        // Check Payment belongsTo Customer
+        assert.strictEqual(Associations.Payment_many.attributes.customer.model, 'customer_many');
+        assert.strictEqual(Associations.Payment_many.attributes.patron.model, 'customer_many');
+        assert.strictEqual(Associations.Customer_many.attributes.payments.collection, 'payment_many');
+        assert.strictEqual(Associations.Customer_many.attributes.transactions.collection, 'payment_many');
+
         Associations.Customer_many.create({ name: 'manyAssociations uno add' }).exec(function(err, cust) {
-          if(err) return done(err);
+          assert.ifError(err);
           customer_1_id = cust.id;
 
           Associations.Customer_many.create({ name: 'manyAssociations dos add' }).exec(function(err, cust) {
-            if(err) return done(err);
+            assert.ifError(err);
             customer_2_id = cust.id;
             done();
           });

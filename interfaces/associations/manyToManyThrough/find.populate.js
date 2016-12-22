@@ -12,25 +12,31 @@ describe('Association Interface', function() {
     var stadiumRecord, stadiumRecord2, teamRecord, teamRecord2;
 
     before(function(done) {
-      Associations.Stadium.create({ name: 'hasManyThrough stadium'}, function(err, stadium) {
-        if(err) return done(err);
+      // Check Stadium hasManytoMany Team through Venue
+      assert.strictEqual(Associations.Stadium.attributes.teams.collection, 'team');
+      assert.strictEqual(Associations.Team.attributes.stadiums.collection, 'stadium');
+      assert.strictEqual(Associations.Venue.attributes.stadium.model, 'stadium');
+      assert.strictEqual(Associations.Venue.attributes.team.model, 'team');
+
+      Associations.Stadium.create({ name: 'hasManyThrough find stadium'}, function(err, stadium) {
+        assert.ifError(err);
         stadiumRecord = stadium;
-      Associations.Stadium.create({ name: 'hasManyThrough stadium2'}, function(err, stadium2) {
-        if(err) return done(err);
+      Associations.Stadium.create({ name: 'hasManyThrough find stadium2'}, function(err, stadium2) {
+        assert.ifError(err);
         stadiumRecord2 = stadium2;
           Associations.Team.create({ name: 'hasManyThrough team1', mascot: 'elephant' }, function(err, team) {
-            if(err) return done(err);
+            assert.ifError(err);
             teamRecord = team;
 
             Associations.Team.create({ name: 'hasManyThrough team1', mascot: 'fox' }, function(err, team2) {
-              if(err) return done(err);
+              assert.ifError(err);
               teamRecord2 = team2;
 
               Associations.Venue.create({ seats: 200, stadium: stadium.id, team: team.id }, function(err, venue) {
-                if(err) return done(err);
+                assert.ifError(err);
 
                 Associations.Venue.create({ seats: 200, stadium: stadium2.id, team: team2.id }, function(err, venue) {
-                  if(err) return done(err);
+                  assert.ifError(err);
                     done();
                 });
               });
@@ -47,10 +53,10 @@ describe('Association Interface', function() {
       ////////////////////////////////////////////////////
 
       it('should return teams when the populate criteria is added', function(done) {
-        Associations.Stadium.find()
+        Associations.Stadium.find({name: {startsWith: 'hasManyThrough find stadium'}})
         .populate('teams')
         .exec(function(err, stadiums) {
-          assert(!err, err);
+          assert.ifError(err);
           assert(Array.isArray(stadiums));
           assert.strictEqual(stadiums.length, 2);
           assert(Array.isArray(stadiums[0].teams));
@@ -74,11 +80,13 @@ describe('Association Interface', function() {
       });
 
       it('should call toJSON on all associated records if available', function(done) {
-        Associations.Stadium.find({ name: 'hasManyThrough stadium' })
+        Associations.Stadium.find({ name: 'hasManyThrough find stadium' })
         .populate('teams')
         .exec(function(err, stadiums) {
-          assert(!err, err);
+          assert.ifError(err);
 
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 1);
           var obj = stadiums[0].toJSON();
 
           assert(Array.isArray(obj.teams));

@@ -52,6 +52,18 @@ module.exports = Offshore.Collection.extend({
       type: 'datetime',
       columnName: 'userDob'
     },
+    birthday: {
+      type: 'date',
+      columnName: 'userBirthday'
+    },
+    dailyDelivery: {
+      type: 'time',
+      columnName: 'userDailyDelivery'
+    },
+    description: {
+      type: 'text',
+      columnName: 'userDescription'
+    },
     status: {
       type: 'boolean',
       defaultsTo: false,

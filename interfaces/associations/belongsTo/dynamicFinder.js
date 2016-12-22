@@ -12,11 +12,14 @@ describe('Association Interface', function() {
     var customerRecord, paymentRecord;
 
     before(function(done) {
+      // Check Payment belongsTo Customer
+      assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
+
       Associations.Customer.create({ name: 'foobar' }, function(err, customer) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         Associations.Payment.create({ amount: 1, customer: customer.id }, function(err, payment) {
-          if(err) return done(err);
+          assert.ifError(err);
 
           // Cache customer and payment
           customerRecord = customer;
@@ -27,7 +30,7 @@ describe('Association Interface', function() {
       });
     });
 
-    describe.skip('dynamic finders', function() {
+    describe('dynamic finders', function() {
 
       /////////////////////////////////////////////////////
       // TEST METHODS

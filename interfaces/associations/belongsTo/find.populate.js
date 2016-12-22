@@ -12,12 +12,17 @@ describe('Association Interface', function() {
     var customers, payments;
 
     before(function(done) {
+
+      // Check Payment belongsTo Customer
+      assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
+      assert.strictEqual(Associations.Customer.attributes.payments.collection, 'payment');
+
       Associations.Customer.createEach([{
           name: 'foo'
         }, {
           name: 'bar'
         }], function(err, _customers) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         // Expose results for examination below
         customers = _customers;
@@ -31,7 +36,7 @@ describe('Association Interface', function() {
             type: 'belongsTo find',
             a_customer: customers[1].id
           }], function(err, _payments) {
-          if(err) return done(err);
+          assert.ifError(err);
 
           // Expose results for examination below
           payments = _payments;

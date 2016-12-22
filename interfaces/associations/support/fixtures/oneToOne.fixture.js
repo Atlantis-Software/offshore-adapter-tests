@@ -22,8 +22,16 @@ module.exports.user_resource = Offshore.Collection.extend({
     profile: {
       model: 'profile',
       columnName: 'profile_id'
+    },
+
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.name;
+      return obj;
     }
   }
+
 
 });
 
@@ -45,6 +53,13 @@ module.exports.profile = Offshore.Collection.extend({
     user: {
       model: 'user_resource',
       columnName: 'user_resource_id'
+    },
+
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.level;
+      return obj;
     }
   }
 
