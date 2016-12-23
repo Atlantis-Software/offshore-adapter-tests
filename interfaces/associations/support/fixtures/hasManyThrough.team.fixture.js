@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'teamTable',
   identity: 'team',
@@ -36,4 +30,4 @@ module.exports = Offshore.Collection.extend({
     }
   }
 
-});
+};

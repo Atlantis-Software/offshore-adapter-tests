@@ -14,11 +14,12 @@ describe('Association Interface', function() {
     before(function(done) {
       // Check Payment belongsTo Customer
       assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
+      assert.strictEqual(Associations.Customer.attributes.payments.collection, 'payment');
 
       Associations.Customer.create({ name: 'foobar' }, function(err, customer) {
         assert.ifError(err);
 
-        Associations.Payment.create({ amount: 1, customer: customer.id }, function(err, payment) {
+        Associations.Payment.create({ amount: 1, a_customer: customer.id }, function(err, payment) {
           assert.ifError(err);
 
           // Cache customer and payment
@@ -42,8 +43,7 @@ describe('Association Interface', function() {
           assert.ifError(err);
 
           assert(payment.a_customer);
-          assert.equal(payment.a_customer.id, customerRecord.id);
-          assert.equal(payment.a_customer.name, 'foobar');
+          assert.equal(payment.a_customer, customerRecord.id);
 
           done();
         });
@@ -55,8 +55,7 @@ describe('Association Interface', function() {
           assert.ifError(err);
 
           assert(payments[0].a_customer);
-          assert.equal(payments[0].a_customer.id, customerRecord.id);
-          assert.equal(payments[0].a_customer.name, 'foobar');
+          assert.equal(payments[0].a_customer, customerRecord.id);
 
           done();
         });

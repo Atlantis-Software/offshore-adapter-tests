@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
   identity: 'Country',
   connection: 'deep2',
   tableName: 'country_table',
@@ -18,9 +12,9 @@ module.exports = Offshore.Collection.extend({
       type: 'string',
       columnName: 'countryName'
     },
-    constructors: {
-      collection: 'Constructor',
+    sellers: {
+      collection: 'Seller',
       via: 'countries'
     }
   }
-});
+};

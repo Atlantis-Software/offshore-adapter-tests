@@ -13,24 +13,29 @@ describe('Association Interface', function() {
     // TEST SETUP
     ////////////////////////////////////////////////////
 
+    var customerRecords, paymentRecords
+
     before(function(done) {
 
       // Check Customer hasMany Payments
       assert.strictEqual(Associations.Customer.attributes.payments.collection, 'payment');
       assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
 
-      var customerRecords = [
+      var customers = [
         { name: 'hasMany find pop' },
         { name: 'hasMany find pop' }
       ];
 
-      Associations.Customer.createEach(customerRecords, function(err, customers) {
+      Associations.Customer.createEach(customers, function(err, customers) {
         assert.ifError(err);
+
+        customerRecords = customers;
 
         Associations.Customer.find({ name: 'hasMany find pop'})
         .sort('id asc')
         .exec(function(err, customers) {
           assert.ifError(err);
+
 
           // Create 8 payments, 4 from one customer, 4 from another
           var payments = [];
@@ -41,6 +46,8 @@ describe('Association Interface', function() {
 
           Associations.Payment.createEach(payments, function(err, payments) {
             assert.ifError(err);
+
+            paymentRecords = payments;
             done();
           });
         });
@@ -171,6 +178,21 @@ describe('Association Interface', function() {
           assert(!obj.payments[1].hasOwnProperty('type'));
           assert(!obj.payments[2].hasOwnProperty('type'));
           assert(!obj.payments[3].hasOwnProperty('type'));
+
+          done();
+        });
+      });
+
+      it('should find association key in parent model', function(done) {
+        Associations.Payment.find({a_customer: customerRecords[0].id})
+        .populate('a_customer')
+        .exec(function(err, payments) {
+          assert.ifError(err);
+          assert.strictEqual(payments.length, 4);
+          assert.strictEqual(payments[0].a_customer.id, customerRecords[0].id);
+          assert.strictEqual(payments[1].a_customer.id, customerRecords[0].id);
+          assert.strictEqual(payments[2].a_customer.id, customerRecords[0].id);
+          assert.strictEqual(payments[3].a_customer.id, customerRecords[0].id);
 
           done();
         });

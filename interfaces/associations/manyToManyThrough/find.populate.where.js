@@ -128,11 +128,11 @@ describe('Association Interface', function() {
       it('should allow filtering by primary key', function(done) {
 
         // Find the teams
-        Associations.Team.findOne({ name: 'teamWhere1', stadiums: Stadium.id }).exec(function(err, stadium) {
+        Associations.Team.findOne({ name: 'teamWhere1'}).exec(function(err, teams) {
           assert.ifError(err);
 
           Associations.Stadium.find({ name: {startsWith: 'hasMany find where'}})
-          .populate('teams', {where : {}, sort : {name : 1}})
+          .populate('teams', {where : { id: teams.id }, sort : {name : 1}})
           .sort('name asc')
           .exec(function(err, stadiums) {
             assert.ifError(err);

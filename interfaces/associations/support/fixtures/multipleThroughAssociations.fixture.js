@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports.team = Offshore.Collection.extend({
+module.exports.team = {
 
   tableName: 'teamManyTable',
   identity: 'teamMany',
@@ -37,9 +31,9 @@ module.exports.team = Offshore.Collection.extend({
     }
   }
 
-});
+};
 
-module.exports.stadium = Offshore.Collection.extend({
+module.exports.stadium = {
 
   tableName: 'stadiumManyTable',
   identity: 'stadiumMany',
@@ -62,9 +56,9 @@ module.exports.stadium = Offshore.Collection.extend({
     }
   }
 
-});
+};
 
-module.exports.venue = Offshore.Collection.extend({
+module.exports.venue = {
 
   tableName: 'venueManyTable',
   identity: 'venueMany',
@@ -93,4 +87,4 @@ module.exports.venue = Offshore.Collection.extend({
     }
   }
 
-});
+};

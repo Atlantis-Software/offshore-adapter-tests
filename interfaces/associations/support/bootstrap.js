@@ -52,7 +52,7 @@ before(function(done) {
   offshore = new Offshore();
 
   Object.keys(fixtures).forEach(function(key) {
-    offshore.loadCollection(fixtures[key]);
+    offshore.loadCollection(Offshore.Collection.extend(fixtures[key]));
   });
 
   var connections = { associations: _.clone(Connections.test) };

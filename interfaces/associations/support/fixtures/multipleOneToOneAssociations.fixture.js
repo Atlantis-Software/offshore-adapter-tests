@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports.user_resource = Offshore.Collection.extend({
+module.exports.user_resource = {
 
   tableName: 'user_resourceManyTable',
   identity: 'user_resourceMany',
@@ -29,9 +23,9 @@ module.exports.user_resource = Offshore.Collection.extend({
     }
   }
 
-});
+};
 
-module.exports.profile = Offshore.Collection.extend({
+module.exports.profile = {
 
   tableName: 'profileManyTable',
   identity: 'profileMany',
@@ -52,4 +46,4 @@ module.exports.profile = Offshore.Collection.extend({
     }
   }
 
-});
+};

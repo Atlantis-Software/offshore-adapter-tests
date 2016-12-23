@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
   identity: 'Address',
   connection: 'deep',
   tableName: 'address_table',
@@ -19,4 +13,4 @@ module.exports = Offshore.Collection.extend({
       type: 'string'
     }
   }
-});
+};

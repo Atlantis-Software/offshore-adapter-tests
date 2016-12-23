@@ -34,9 +34,9 @@ describe('Deep Cross Adapter', function() {
           ], callback);
         },
         function(callback) {
-          Associations.Constructor.createEach([
-            {id: 1, name: 'constructor 1'},
-            {id: 2, name: 'constructor 2'}
+          Associations.Seller.createEach([
+            {id: 1, name: 'seller 1'},
+            {id: 2, name: 'seller 2'}
           ], callback);
         },
         function(callback) {
@@ -47,11 +47,11 @@ describe('Deep Cross Adapter', function() {
         },
         function(callback) {
           Associations.Department.createEach([
-            {id: 1, name: 'dep 1', constructor: 1},
-            {id: 2, name: 'dep 2', constructor: 1},
-            {id: 3, name: 'dep 3', constructor: 2},
-            {id: 4, name: 'dep 4', constructor: 1},
-            {id: 5, name: 'dep 5', constructor: 2}
+            {id: 1, name: 'dep 1', seller: 1},
+            {id: 2, name: 'dep 2', seller: 1},
+            {id: 3, name: 'dep 3', seller: 2},
+            {id: 4, name: 'dep 4', seller: 1},
+            {id: 5, name: 'dep 5', seller: 2}
           ], callback);
         },
         function(callback) {
@@ -75,20 +75,18 @@ describe('Deep Cross Adapter', function() {
         },
         function(callback) {
           Associations.Taxi.createEach([
-            {id: 1, matricule: 'taxi_1', company: 1, constructor: 1},
-            {id: 2, matricule: 'taxi_2', company: 2, constructor: 2},
-            {id: 3, matricule: 'taxi_3', company: 2, constructor: 2},
-            {id: 4, matricule: 'taxi_4', company: 1, constructor: 1},
-            {id: 5, matricule: 'taxi_5', company: 1, constructor: 1}
+            {id: 1, matricule: 'taxi_1', company: 1, seller: 1},
+            {id: 2, matricule: 'taxi_2', company: 2, seller: 2},
+            {id: 3, matricule: 'taxi_3', company: 2, seller: 2},
+            {id: 4, matricule: 'taxi_4', company: 1, seller: 1},
+            {id: 5, matricule: 'taxi_5', company: 1, seller: 1}
           ], callback);
         },
         function(callback) {
           Associations.Country.findOne(1, function(err, country) {
-            if (err) {
-              return done(err);
-            }
-            country.constructors.add(1);
-            country.constructors.add(2);
+            assert.ifError(err);
+            country.sellers.add(1);
+            country.sellers.add(2);
             country.save(callback);
           });
         }
@@ -99,11 +97,9 @@ describe('Deep Cross Adapter', function() {
       it('should deeply populate a branch', function(done) {
         Associations.Company.find().sort('id asc')
           .populate('drivers.taxis', {sort: {id: 1}})
-          .populate('drivers.taxis.constructor.departments', {sort: {id: 1}})
+          .populate('drivers.taxis.seller.departments', {sort: {id: 1}})
           .exec(function(err, companies) {
-            if (err) {
-              return done(err);
-            }
+            assert.ifError(err);
             // Root Level
             assert.equal(companies.length, 2, 'Root criteria not applied.');
             assert.equal(companies[1].name, 'company 2', 'Root criteria not applied.');
@@ -118,17 +114,17 @@ describe('Deep Cross Adapter', function() {
             assert.equal(taxi1.matricule, 'taxi_1', 'Second level not correctly populated.');
             assert.equal(taxi2.matricule, 'taxi_2', 'Second level not correctly populated.');
             //Level 3
-            assert(taxi1.constructor, 'Could not populate third level manyToOne model.');
-            var constructor1 = taxi1.constructor;
-            var constructor2 = taxi2.constructor;
-            assert(constructor1.name === 'constructor 1' && constructor2.name === 'constructor 2',
+            assert(taxi1.seller, 'Could not populate third level manyToOne model.');
+            var seller1 = taxi1.seller;
+            var seller2 = taxi2.seller;
+            assert(seller1.name === 'seller 1' && seller2.name === 'seller 2',
               'Third level not correctly populated.');
             //Level 4
-            assert(constructor1.departments.length === 3, 'Could not populate fourth level oneToMany collection.');
-            assert(constructor1.departments[0].name === 'dep 1' && constructor1.departments[1].name === 'dep 2'
-              && constructor1.departments[2].name === 'dep 4', 'Fourth level not correctly populated.');
-            assert(constructor2.departments.length === 2, 'Could not populate fourth level oneToMany collection.');
-            assert(constructor2.departments[0].name === 'dep 3',
+            assert(seller1.departments.length === 3, 'Could not populate fourth level oneToMany collection.');
+            assert(seller1.departments[0].name === 'dep 1' && seller1.departments[1].name === 'dep 2'
+              && seller1.departments[2].name === 'dep 4', 'Fourth level not correctly populated.');
+            assert(seller2.departments.length === 2, 'Could not populate fourth level oneToMany collection.');
+            assert(seller2.departments[0].name === 'dep 3',
               'Fourth level not correctly populated.');
             done();
           });
@@ -140,8 +136,7 @@ describe('Deep Cross Adapter', function() {
           .populate('drivers.address')
           .populate('taxis')
           .exec(function(err, companies) {
-            if (err)
-              return done(err);
+            assert.ifError(err);
             // Root Level
             assert(companies.length === 1 && companies[0].name === 'company 2', 'Root criteria not applied.');
             //Level 1
@@ -164,8 +159,7 @@ describe('Deep Cross Adapter', function() {
           .populate('drivers.taxis', {matricule: 'taxi_3'})
           .populate('drivers.taxis.breakdowns', {where: {level: {'>': 2}}, sort: {level: 1}})
           .exec(function(err, companies) {
-            if (err)
-              return done(err);
+            assert.ifError(err);
             // Root Level
             assert(companies.length === 1 && companies[0].name === 'company 1', 'Root criteria not applied.');
             //Level 1
@@ -188,8 +182,7 @@ describe('Deep Cross Adapter', function() {
           .populate('taxis')
           .populate('taxis.breakdowns')
           .exec(function(err, company) {
-            if (err)
-              return done(err);
+            assert.ifError(err);
             assert(company[0].taxis[0].breakdowns.length === 1);
             assert(company[0].taxis[1].breakdowns.length === 3);
             done();
@@ -201,9 +194,7 @@ describe('Deep Cross Adapter', function() {
           .populate('taxis')
           .populate('taxis.breakdowns')
           .exec(function(err, company) {
-            if (err) {
-              return done(err);
-            }
+            assert.ifError(err);
             assert(company === void(0));
             done();
           });
@@ -211,23 +202,19 @@ describe('Deep Cross Adapter', function() {
     });
     describe('Criteria', function() {
       it('should find model using deep criteria on belongsTo', function(done) {
-        Associations.Taxi.find({where: {constructor: {name: 'constructor 1'}}}).populate('constructor').exec(function(err, taxis) {
-          if (err) {
-            return done(err);
-          }
-          assert(taxis.length === 3);
-          assert(taxis[0].constructor.name === 'constructor 1');
-          assert(taxis[1].constructor.name === 'constructor 1');
-          assert(taxis[2].constructor.name === 'constructor 1');
+        Associations.Taxi.find({where: {seller: {name: 'seller 1'}}}).populate('seller').exec(function(err, taxis) {
+          assert.ifError(err);
+          assert.strictEqual(taxis.length, 3);
+          assert.strictEqual(taxis[0].seller.name, 'seller 1');
+          assert.strictEqual(taxis[1].seller.name, 'seller 1');
+          assert.strictEqual(taxis[2].seller.name, 'seller 1');
           done();
         });
       });
 
       it('should find model using deep criteria on hasManyToOne', function(done) {
         Associations.Taxi.find({where: {breakdowns: {level: 11}}}).populate('breakdowns').exec(function(err, taxis) {
-          if (err) {
-            return done(err);
-          }
+          assert.ifError(err);
           assert(taxis[0].id === 5);
           assert(taxis[0].breakdowns[0].id === 7);
           assert(taxis[0].breakdowns[0].level === 11);
@@ -236,22 +223,18 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should find model using deep criteria on hasManyToMany', function(done) {
-        Associations.Constructor.find({where: {countries: {name: 'france'}}}).populate('countries').exec(function(err, constructors) {
-          if (err) {
-            return done(err);
-          }
-          assert(constructors.length === 2);
-          assert(constructors[0].countries[0].name === 'france');
-          assert(constructors[1].countries[0].name === 'france');
+        Associations.Seller.find({where: {countries: {name: 'france'}}}).populate('countries').exec(function(err, sellers) {
+          assert.ifError(err);
+          assert(sellers.length === 2);
+          assert(sellers[0].countries[0].name === 'france');
+          assert(sellers[1].countries[0].name === 'france');
           done();
         });
       });
 
       it('should find model using deep criteria on hasManyToMany through', function(done) {
         Associations.Driver.find({where: {taxis: {matricule: 'taxi_4'}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
-          if (err) {
-            return done(err);
-          }
+          assert.ifError(err);
           assert(drivers.length === 1);
           assert(drivers[0].id === 1);
           assert(drivers[0].taxis.length === 3);
@@ -264,9 +247,7 @@ describe('Deep Cross Adapter', function() {
 
       it('should find model using deep criteria with operator', function(done) {
         Associations.Driver.find({sort: 'id', where: {taxis: {or: [{matricule: 'taxi_1'}, {matricule: 'taxi_2'}]}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
-          if (err) {
-            return done(err);
-          }
+          assert.ifError(err);
           assert(drivers.length === 3);
           assert(drivers[0].id === 1);
           assert(drivers[0].taxis.length === 3);
@@ -287,9 +268,7 @@ describe('Deep Cross Adapter', function() {
 
       it('should find model using deep criteria in operator', function(done) {
         Associations.Driver.find({sort: 'id', where: {or: [{taxis: {matricule: 'taxi_3'}}, {address: {city: 'city 4'}}]}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
-          if (err) {
-            return done(err);
-          }
+          assert.ifError(err);
           assert(drivers.length === 2);
           assert(drivers[0].id === 3);
           assert(drivers[0].taxis.length === 2);
@@ -304,9 +283,7 @@ describe('Deep Cross Adapter', function() {
 
       it('should populate using deep criteria', function(done) {
         Associations.Driver.findOne(3).populate('taxis', {sort: 'matricule', where: {breakdowns: {level: 5}}}).exec(function(err, driver) {
-          if (err) {
-            return done(err);
-          }
+          assert.ifError(err);
           assert(driver.taxis.length === 1);
           assert(driver.taxis[0].id === 3);
           done();
@@ -318,19 +295,18 @@ describe('Deep Cross Adapter', function() {
 
       it('should deeply populate and apply criteria on associations (One-to-One)', function(done) {
         Associations.Taxi.findOne({where: {matricule: 'taxi_1'}})
-          .populate('constructor', {where: {name: 'constructor 1'}})
-          .populate('constructor.departments', {name: {contains: '4'}})
+          .populate('seller', {where: {name: 'seller 1'}})
+          .populate('seller.departments', {name: {contains: '4'}})
           .exec(function(err, taxi) {
-            if (err)
-              return done(err);
+            assert.ifError(err);
             // Root Level
             assert(taxi.matricule === 'taxi_1', 'Root criteria not applied.');
             //Level 1
-            assert(taxi.constructor, 'Could not populate first level with criteria.');
-            assert(taxi.constructor.name === 'constructor 1', 'First level criteria not applied.');
+            assert(taxi.seller, 'Could not populate first level with criteria.');
+            assert(taxi.seller.name === 'seller 1', 'First level criteria not applied.');
             //Level 2
-            assert(taxi.constructor.departments, 'Second level not populated.');
-            assert(taxi.constructor.departments[0].name === 'dep 4', 'Second level criteria not applied.');
+            assert(taxi.seller.departments, 'Second level not populated.');
+            assert(taxi.seller.departments[0].name === 'dep 4', 'Second level criteria not applied.');
             done();
           });
       });
@@ -340,8 +316,7 @@ describe('Deep Cross Adapter', function() {
           .populate('taxis', {matricule: 'taxi_4'})
           .populate('taxis.breakdowns', {level: 10})
           .exec(function(err, company) {
-            if (err)
-              return done(err);
+            assert.ifError(err);
             // Root Level
             assert(company.name === 'company 1', 'Root criteria not applied.');
             //Level 1
@@ -359,8 +334,7 @@ describe('Deep Cross Adapter', function() {
           .populate('taxis', {matricule: 'taxi_4'})
           .populate('taxis.breakdowns', {level: 10})
           .exec(function(err, driver) {
-            if (err)
-              return done(err);
+            assert.ifError(err);
             // Root Level
             assert(driver.name === 'driver 1', 'Root criteria not applied.');
             //Level 1
@@ -375,37 +349,33 @@ describe('Deep Cross Adapter', function() {
 
       it('should deeply populate and apply criteria on associations (Many-to-Many)', function(done) {
         Associations.Country.findOne({name: 'france'})
-          .populate('constructors', {name: 'constructor 1'})
-          .populate('constructors.departments', {name: 'dep 4'})
+          .populate('sellers', {name: 'seller 1'})
+          .populate('sellers.departments', {name: 'dep 4'})
           .exec(function(err, country) {
-            if (err) {
-              done(err);
-            }
+            assert.ifError(err);
             assert(country.name === 'france', 'Root criteria not applied.');
-            assert(country.constructors, 'Could not populate first level with criteria.');
-            assert(country.constructors[0].name === 'constructor 1', 'first level criteria not applied.');
-            assert(country.constructors[0].departments, 'Second level not populated.');
-            assert(country.constructors[0].departments[0].name === 'dep 4', 'Second level criteria not applied.');
+            assert(country.sellers, 'Could not populate first level with criteria.');
+            assert(country.sellers[0].name === 'seller 1', 'first level criteria not applied.');
+            assert(country.sellers[0].departments, 'Second level not populated.');
+            assert(country.sellers[0].departments[0].name === 'dep 4', 'Second level criteria not applied.');
             done();
           });
       });
 
       it('should deeply populate and apply criteria on associations (Many-to-One)', function(done) {
         Associations.Taxi.findOne({where: {matricule: 'taxi_1'}})
-          .populate('constructor', {where: {name: 'constructor 1'}})
-          .populate('constructor.departments', {name: {contains: '4'}})
+          .populate('seller', {where: {name: 'seller 1'}})
+          .populate('seller.departments', {name: {contains: '4'}})
           .exec(function(err, taxi) {
-            if (err) {
-              return done(err);
-            }
+            assert.ifError(err);
             // Root Level
             assert(taxi.matricule === 'taxi_1', 'Root criteria not applied.');
             //Level 1
-            assert(taxi.constructor, 'Could not populate first level with criteria.');
-            assert(taxi.constructor.name === 'constructor 1', 'First level criteria not applied.');
+            assert(taxi.seller, 'Could not populate first level with criteria.');
+            assert(taxi.seller.name === 'seller 1', 'First level criteria not applied.');
             //Level 2
-            assert(taxi.constructor.departments, 'Second level not populated.');
-            assert(taxi.constructor.departments[0].name === 'dep 4', 'Second level criteria not applied.');
+            assert(taxi.seller.departments, 'Second level not populated.');
+            assert(taxi.seller.departments[0].name === 'dep 4', 'Second level criteria not applied.');
             done();
           });
       });

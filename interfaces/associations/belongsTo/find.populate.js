@@ -108,6 +108,19 @@ describe('Association Interface', function() {
           done();
         });
       });
+
+      it('should find association key in parent model', function(done) {
+        Associations.Payment.find({where: {a_customer: customers[0].id}})
+        .populate('a_customer')
+        .exec(function(err, payments) {
+          assert.ifError(err);
+          assert.strictEqual(payments.length, 1);
+          assert.strictEqual(payments[0].a_customer.id, customers[0].id);
+
+          done();
+        });
+      });
+
     });
 
   });

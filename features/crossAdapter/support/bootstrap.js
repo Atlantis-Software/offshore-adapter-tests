@@ -48,7 +48,6 @@ fixtures.CustomerBelongsCustomFixture.connection = 'associations2';
 fixtures.CustomerHasManyFixture.connection = 'associations2';
 fixtures.CustomerManyFixture.connection = 'associations2';
 fixtures.VenueManyFixture.connection = 'associations2';
-fixtures.PaymentHasManyFixture.connection = 'associations2';
 fixtures.VenueFixture.connection = 'associations2';
 fixtures.VenueCustomFixture.connection = 'associations2';
 fixtures.TaxiFixture.connection = 'associations2';
@@ -67,7 +66,7 @@ before(function(done) {
   offshore = new Offshore();
 
   Object.keys(fixtures).forEach(function(key) {
-    offshore.loadCollection(fixtures[key]);
+    offshore.loadCollection(Offshore.Collection.extend(fixtures[key]));
   });
 
   var connections = { associations: _.clone(Connections.test), associations2: _.clone(Connections.test2) };

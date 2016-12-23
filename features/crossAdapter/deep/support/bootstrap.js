@@ -7,11 +7,11 @@ var _ = require('lodash');
 var async = require('async');
 
 
-var fixtures = {  
+var fixtures = {
   AddressFixture: require('./fixtures/address.fixture'),
   BreakdownFixture: require('./fixtures/breakdown.fixture'),
   CompanyFixture: require('./fixtures/company.fixture'),
-  ConstructorFixture: require('./fixtures/constructor.fixture'),
+  SellerFixture: require('./fixtures/seller.fixture'),
   CountryFixture: require('./fixtures/country.fixture'),
   DepartementFixture: require('./fixtures/departement.fixture'),
   DriverFixture: require('./fixtures/driver.fixture'),
@@ -31,7 +31,7 @@ before(function(done) {
   offshore = new Offshore();
 
   Object.keys(fixtures).forEach(function(key) {
-    offshore.loadCollection(fixtures[key]);
+    offshore.loadCollection(Offshore.Collection.extend(fixtures[key]));
   });
 
   var connections = { deep: _.clone(Connections.test), deep2: _.clone(Connections.test2) };

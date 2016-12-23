@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports.payment = Offshore.Collection.extend({
+module.exports.payment = {
 
   tableName: 'payment_manyTable',
   identity: 'payment_many',
@@ -35,9 +29,9 @@ module.exports.payment = Offshore.Collection.extend({
     }
   }
 
-});
+};
 
-module.exports.customer = Offshore.Collection.extend({
+module.exports.customer = {
 
   tableName: 'customer_manyTable',
   identity: 'customer_many',
@@ -64,4 +58,4 @@ module.exports.customer = Offshore.Collection.extend({
     }
   }
 
-});
+};

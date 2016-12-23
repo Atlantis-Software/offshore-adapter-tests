@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'driverTableCustomPK',
   identity: 'drivercustom',
@@ -28,4 +22,4 @@ module.exports = Offshore.Collection.extend({
       dominant: true
     }
   }
-});
+};

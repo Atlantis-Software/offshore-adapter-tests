@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
   identity: 'Ride',
   connection: 'deep',
   tableName: 'ride_table',
@@ -23,4 +17,4 @@ module.exports = Offshore.Collection.extend({
       columnName: 'rideDriver'
     }
   }
-});
+};

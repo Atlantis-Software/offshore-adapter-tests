@@ -43,8 +43,7 @@ describe('Association Interface', function() {
           assert.ifError(err);
 
           assert(profile.user);
-          assert.equal(profile.user.id, userRecord.id);
-          assert.equal(profile.user.name, 'foobar');
+          assert.equal(profile.user, userRecord.id);
 
           done();
         });
@@ -58,8 +57,7 @@ describe('Association Interface', function() {
           assert(Array.isArray(profile));
           assert.strictEqual(profile.length, 1);
           assert(profile[0].user);
-          assert.equal(profile[0].user.id, userRecord.id);
-          assert.equal(profile[0].user.name, 'foobar');
+          assert.equal(profile[0].user, userRecord.id);
 
           done();
         });

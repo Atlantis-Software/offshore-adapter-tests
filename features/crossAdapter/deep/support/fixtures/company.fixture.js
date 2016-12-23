@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
   identity: 'Company',
   connection: 'deep',
   tableName: 'company_table',
@@ -27,4 +21,4 @@ module.exports = Offshore.Collection.extend({
       via: 'company'
     }
   }
-});
+};

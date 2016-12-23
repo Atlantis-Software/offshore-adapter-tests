@@ -23,7 +23,7 @@ describe('Semantic Interface', function() {
           textId = createdRecord.id;
           Semantic.User.findOne({id: createdRecord.id}, function (err, record) {
             assert.ifError(err);
-            assert.equal(record.description, description);
+            assert(record.description === description, 'text should match');
             done();
           });
         });
@@ -34,7 +34,7 @@ describe('Semantic Interface', function() {
           assert.ifError(err);
           assert.strictEqual(record.length, 1, 'should have 1 result');
           assert.strictEqual(record[0].id, textId, 'id should correspond');
-          assert.strictEqual(record[0].description, description, 'text should correspond');
+          assert(record[0].description === description, 'text should match');
           done();
         });
       });
