@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'safe',
   connection: 'migratable',
@@ -15,4 +9,4 @@ module.exports = Offshore.Collection.extend({
     age: 'integer'
   }
 
-});
+};

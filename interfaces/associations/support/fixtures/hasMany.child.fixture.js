@@ -2,24 +2,19 @@ module.exports = {
 
   tableName: 'paymentTable',
   identity: 'payment',
-  connection: 'associations',
 
   attributes: {
     amount: {
-      type: 'integer',
-      columnName: 'paymentAmount'
+      type: 'integer'
     },
     type: {
-      type: 'string',
-      columnName: 'paymentType'
+      type: 'string'
     },
     apartment: {
-      model: 'apartment',
-      columnName: 'apartment_id'
+      model: 'apartment'
     },
     a_customer: {
-      model: 'Customer',
-      columnName: 'customer_id'
+      model: 'Customer'
     },
 
     toJSON: function() {

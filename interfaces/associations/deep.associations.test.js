@@ -2,13 +2,13 @@ var _ = require('lodash');
 var assert = require('assert');
 var async = require('async');
 
-describe('Deep Cross Adapter', function() {
+describe('Association Interface', function() {
 
   describe('Deep Associations', function() {
     before(function(done) {
       async.series([
         function(callback) {
-          Associations.Address.createEach([
+          Associations.Addressdeep.createEach([
             {id: 1, city: 'city 1'},
             {id: 2, city: 'city 2'},
             {id: 3, city: 'city 3'},
@@ -16,7 +16,7 @@ describe('Deep Cross Adapter', function() {
           ], callback);
         },
         function(callback) {
-          Associations.Breakdown.createEach([
+          Associations.Breakdowndeep.createEach([
             {id: 1, level: 5, taxi: 3},
             {id: 2, level: 7, taxi: 2},
             {id: 3, level: 1, taxi: 3},
@@ -28,25 +28,25 @@ describe('Deep Cross Adapter', function() {
           ], callback);
         },
         function(callback) {
-          Associations.Company.createEach([
+          Associations.Companydeep.createEach([
             {id: 1, name: 'company 1'},
             {id: 2, name: 'company 2'}
           ], callback);
         },
         function(callback) {
-          Associations.Seller.createEach([
+          Associations.Sellerdeep.createEach([
             {id: 1, name: 'seller 1'},
             {id: 2, name: 'seller 2'}
           ], callback);
         },
         function(callback) {
-          Associations.Country.createEach([
+          Associations.Countrydeep.createEach([
             {id: 1, name: 'france'},
             {id: 2, name: 'germany'}
           ], callback);
         },
         function(callback) {
-          Associations.Department.createEach([
+          Associations.Departmentdeep.createEach([
             {id: 1, name: 'dep 1', seller: 1},
             {id: 2, name: 'dep 2', seller: 1},
             {id: 3, name: 'dep 3', seller: 2},
@@ -55,7 +55,7 @@ describe('Deep Cross Adapter', function() {
           ], callback);
         },
         function(callback) {
-          Associations.Driver.createEach([
+          Associations.Driverdeep.createEach([
             {id: 1, name: 'driver 1', company: 1, address: 1},
             {id: 2, name: 'driver 2', company: 2, address: 2},
             {id: 3, name: 'driver 3', company: 1, address: 3},
@@ -63,7 +63,7 @@ describe('Deep Cross Adapter', function() {
           ], callback);
         },
         function(callback) {
-          Associations.Ride.createEach([
+          Associations.Ridedeep.createEach([
             {id:1, taxi: 1, driver: 1},
             {id:2, taxi: 4, driver: 1},
             {id:3, taxi: 5, driver: 1},
@@ -74,7 +74,7 @@ describe('Deep Cross Adapter', function() {
           ], callback);
         },
         function(callback) {
-          Associations.Taxi.createEach([
+          Associations.Taxideep.createEach([
             {id: 1, matricule: 'taxi_1', company: 1, seller: 1},
             {id: 2, matricule: 'taxi_2', company: 2, seller: 2},
             {id: 3, matricule: 'taxi_3', company: 2, seller: 2},
@@ -83,7 +83,7 @@ describe('Deep Cross Adapter', function() {
           ], callback);
         },
         function(callback) {
-          Associations.Country.findOne(1, function(err, country) {
+          Associations.Countrydeep.findOne(1, function(err, country) {
             assert.ifError(err);
             country.sellers.add(1);
             country.sellers.add(2);
@@ -95,7 +95,7 @@ describe('Deep Cross Adapter', function() {
 
     describe('Populate', function() {
       it('should deeply populate a branch', function(done) {
-        Associations.Company.find().sort('id asc')
+        Associations.Companydeep.find().sort('id asc')
           .populate('drivers.taxis', {sort: {id: 1}})
           .populate('drivers.taxis.seller.departments', {sort: {id: 1}})
           .exec(function(err, companies) {
@@ -131,7 +131,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should deeply populate multiple branchs', function(done) {
-        Associations.Company.find().where({name: 'company 2'})
+        Associations.Companydeep.find().where({name: 'company 2'})
           .populate('drivers.taxis', {sort: {id: 1}})
           .populate('drivers.address')
           .populate('taxis')
@@ -154,7 +154,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should apply criteria to current populate path last alias', function(done) {
-        Associations.Company.find().where({name: 'company 1'})
+        Associations.Companydeep.find().where({name: 'company 1'})
           .populate('drivers', {name: 'driver 3'})
           .populate('drivers.taxis', {matricule: 'taxi_3'})
           .populate('drivers.taxis.breakdowns', {where: {level: {'>': 2}}, sort: {level: 1}})
@@ -178,7 +178,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should deeply populate nested collections', function(done) {
-        Associations.Company.find().where({id: 2})
+        Associations.Companydeep.find().where({id: 2})
           .populate('taxis')
           .populate('taxis.breakdowns')
           .exec(function(err, company) {
@@ -190,7 +190,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('findOne with populate deep should return undefined if there is no results', function(done) {
-        Associations.Company.findOne().where({id: 999})
+        Associations.Companydeep.findOne().where({id: 999})
           .populate('taxis')
           .populate('taxis.breakdowns')
           .exec(function(err, company) {
@@ -202,7 +202,7 @@ describe('Deep Cross Adapter', function() {
     });
     describe('Criteria', function() {
       it('should find model using deep criteria on belongsTo', function(done) {
-        Associations.Taxi.find({where: {seller: {name: 'seller 1'}}}).populate('seller').exec(function(err, taxis) {
+        Associations.Taxideep.find({where: {seller: {name: 'seller 1'}}}).populate('seller').exec(function(err, taxis) {
           assert.ifError(err);
           assert.strictEqual(taxis.length, 3);
           assert.strictEqual(taxis[0].seller.name, 'seller 1');
@@ -213,7 +213,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should find model using deep criteria on hasManyToOne', function(done) {
-        Associations.Taxi.find({where: {breakdowns: {level: 11}}}).populate('breakdowns').exec(function(err, taxis) {
+        Associations.Taxideep.find({where: {breakdowns: {level: 11}}}).populate('breakdowns').exec(function(err, taxis) {
           assert.ifError(err);
           assert(taxis[0].id === 5);
           assert(taxis[0].breakdowns[0].id === 7);
@@ -223,7 +223,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should find model using deep criteria on hasManyToMany', function(done) {
-        Associations.Seller.find({where: {countries: {name: 'france'}}}).populate('countries').exec(function(err, sellers) {
+        Associations.Sellerdeep.find({where: {countries: {name: 'france'}}}).populate('countries').exec(function(err, sellers) {
           assert.ifError(err);
           assert(sellers.length === 2);
           assert(sellers[0].countries[0].name === 'france');
@@ -233,7 +233,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should find model using deep criteria on hasManyToMany through', function(done) {
-        Associations.Driver.find({where: {taxis: {matricule: 'taxi_4'}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
+        Associations.Driverdeep.find({where: {taxis: {matricule: 'taxi_4'}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
           assert.ifError(err);
           assert(drivers.length === 1);
           assert(drivers[0].id === 1);
@@ -246,7 +246,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should find model using deep criteria with operator', function(done) {
-        Associations.Driver.find({sort: 'id', where: {taxis: {or: [{matricule: 'taxi_1'}, {matricule: 'taxi_2'}]}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
+        Associations.Driverdeep.find({sort: 'id', where: {taxis: {or: [{matricule: 'taxi_1'}, {matricule: 'taxi_2'}]}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
           assert.ifError(err);
           assert(drivers.length === 3);
           assert(drivers[0].id === 1);
@@ -267,7 +267,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should find model using deep criteria in operator', function(done) {
-        Associations.Driver.find({sort: 'id', where: {or: [{taxis: {matricule: 'taxi_3'}}, {address: {city: 'city 4'}}]}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
+        Associations.Driverdeep.find({sort: 'id', where: {or: [{taxis: {matricule: 'taxi_3'}}, {address: {city: 'city 4'}}]}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
           assert.ifError(err);
           assert(drivers.length === 2);
           assert(drivers[0].id === 3);
@@ -282,7 +282,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should populate using deep criteria', function(done) {
-        Associations.Driver.findOne(3).populate('taxis', {sort: 'matricule', where: {breakdowns: {level: 5}}}).exec(function(err, driver) {
+        Associations.Driverdeep.findOne(3).populate('taxis', {sort: 'matricule', where: {breakdowns: {level: 5}}}).exec(function(err, driver) {
           assert.ifError(err);
           assert(driver.taxis.length === 1);
           assert(driver.taxis[0].id === 3);
@@ -294,7 +294,7 @@ describe('Deep Cross Adapter', function() {
     describe('Associations', function() {
 
       it('should deeply populate and apply criteria on associations (One-to-One)', function(done) {
-        Associations.Taxi.findOne({where: {matricule: 'taxi_1'}})
+        Associations.Taxideep.findOne({where: {matricule: 'taxi_1'}})
           .populate('seller', {where: {name: 'seller 1'}})
           .populate('seller.departments', {name: {contains: '4'}})
           .exec(function(err, taxi) {
@@ -312,7 +312,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should deeply populate and apply criteria on associations (One-to-Many)', function(done) {
-        Associations.Company.findOne({where: {name: 'company 1'}})
+        Associations.Companydeep.findOne({where: {name: 'company 1'}})
           .populate('taxis', {matricule: 'taxi_4'})
           .populate('taxis.breakdowns', {level: 10})
           .exec(function(err, company) {
@@ -330,7 +330,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should deeply populate and apply criteria on associations (Many-to-Many Through)', function(done) {
-        Associations.Driver.findOne({where: {name: 'driver 1'}})
+        Associations.Driverdeep.findOne({where: {name: 'driver 1'}})
           .populate('taxis', {matricule: 'taxi_4'})
           .populate('taxis.breakdowns', {level: 10})
           .exec(function(err, driver) {
@@ -348,7 +348,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should deeply populate and apply criteria on associations (Many-to-Many)', function(done) {
-        Associations.Country.findOne({name: 'france'})
+        Associations.Countrydeep.findOne({name: 'france'})
           .populate('sellers', {name: 'seller 1'})
           .populate('sellers.departments', {name: 'dep 4'})
           .exec(function(err, country) {
@@ -363,7 +363,7 @@ describe('Deep Cross Adapter', function() {
       });
 
       it('should deeply populate and apply criteria on associations (Many-to-One)', function(done) {
-        Associations.Taxi.findOne({where: {matricule: 'taxi_1'}})
+        Associations.Taxideep.findOne({where: {matricule: 'taxi_1'}})
           .populate('seller', {where: {name: 'seller 1'}})
           .populate('seller.departments', {name: {contains: '4'}})
           .exec(function(err, taxi) {

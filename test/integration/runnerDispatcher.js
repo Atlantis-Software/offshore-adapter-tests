@@ -1,4 +1,4 @@
-var exec = require('child_process').exec;
+var child_process = require('child_process');
 var async = require('async');
 var npm = require('npm');
 var jpath = require('jpath');
@@ -57,7 +57,7 @@ function runTests(cb){
   async.eachSeries(adapters, function(adapter, next){
     var adapterName = adapter.name;
     var settings = adapter.config;
-    status[adapterName] = { failed: 0, total: 0, exitCode: 0, startTime: new Date().getTime() };
+    status[adapterName] = { passed: 0, failed: 0, total: 0, exitCode: 0, startTime: new Date().getTime() };
 
     console.log("\n");
     console.log("\033[0;34m-------------------------------------------------------------------------------------------\033[0m");
@@ -65,19 +65,15 @@ function runTests(cb){
     console.log("\033[0;34m-------------------------------------------------------------------------------------------\033[0m");
     console.log();
 
-    var child = exec('node ./test/integration/runner.js ' + adapter.fileName, { env: process.env });
+    var child = child_process.fork('./test/integration/runner.js', [adapter.fileName], { env: process.env });
 
-    child.stdout.on('data', function(data) {
-      if(isDot(data)) { status[adapterName].total++; }
-      process.stdout.write(data);
-    });
-
-    child.stderr.on('data', function(data) {
-      if(isDot(data)) {
-        status[adapterName].total++;
+    child.on('message', function(msg) {
+      status[adapterName].total++;
+      if (msg.state === 'passed') {
+        status[adapterName].passed++;
+      } else {
         status[adapterName].failed++;
       }
-      process.stdout.write(data);
     });
 
     child.on('close', function(code) {
@@ -134,9 +130,6 @@ async.series([getNpmDetails, runTests, printCoreModulesVersions], function(err, 
 /**
  * Aux functions
  */
-function isDot(data){
-  return data == '․' || (data.length === 10 /*&& data[0] === '\u001b'*/ && data.charAt(5) === '․'.charAt(0));
-}
 
 function padRight(str, padding){
   var res = "" + str;

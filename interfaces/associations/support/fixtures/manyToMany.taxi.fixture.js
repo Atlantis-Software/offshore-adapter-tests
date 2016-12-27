@@ -2,17 +2,13 @@ module.exports = {
 
   tableName: 'taxiTable',
   identity: 'taxi',
-  connection: 'associations',
 
-  // migrate: 'drop',
   attributes: {
     medallion: {
-      type: 'integer',
-      columnName: 'taxiMedallion'
+      type: 'integer'
     },
     type: {
-      type: 'string',
-      columnName: 'taxiType'
+      type: 'string'
     },
     drivers: {
       collection: 'driver',

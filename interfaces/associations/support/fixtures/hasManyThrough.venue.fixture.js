@@ -2,20 +2,16 @@ module.exports = {
 
   tableName: 'venueTable',
   identity: 'venue',
-  connection: 'associations',
 
   attributes: {
     seats: {
-      type: 'integer',
-      columnName: 'venueSeats'
+      type: 'integer'
     },
     team: {
-      model: 'team',
-      columnName: 'team_id'
+      model: 'team'
     },
     stadium: {
-      model: 'stadium',
-      columnName: 'stadium_id'
+      model: 'stadium'
     }
   }
 

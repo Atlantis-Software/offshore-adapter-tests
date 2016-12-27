@@ -2,27 +2,22 @@ module.exports.user_resource = {
 
   tableName: 'user_resourceCustomTable',
   identity: 'user_resourceCustom',
-  connection: 'associations',
 
   autoPk: false,
 
   attributes: {
     number: {
       type: 'integer',
-      primaryKey: true,
-      columnName: 'user_resourceCustomNumber'
+      primaryKey: true
     },
     name: {
-      type: 'string',
-      columnName: 'user_resourceCustomName'
+      type: 'string'
     },
     quantity: {
-      type: 'integer',
-      columnName: 'user_resourceCustomQuantity'
+      type: 'integer'
     },
     profile: {
-      model: 'profileCustom',
-      columnName: 'profileCustom_id'
+      model: 'profileCustom'
     }
   }
 
@@ -39,16 +34,13 @@ module.exports.profile = {
   attributes: {
     name: {
       type: 'string',
-      primaryKey: true,
-      columnName: 'profileCustomName'
+      primaryKey: true
     },
     level : {
-      type: 'integer',
-      columnName: 'profileCustomLevel'
+      type: 'integer'
     },
     user: {
-      model: 'user_resourceCustom',
-      columnName: 'user_resourceCustom_id'
+      model: 'user_resourceCustom'
     }
   }
 

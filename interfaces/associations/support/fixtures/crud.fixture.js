@@ -2,62 +2,48 @@ module.exports = {
 
   tableName: 'userTableAssoc',
   identity: 'user',
-  connection: 'associations',
 
   attributes: {
     first_name: {
-      type: 'string',
-      columnName: 'userFirstName'
+      type: 'string'
     },
     last_name: {
-      type: 'string',
-      columnName: 'userLastName'
+      type: 'string'
     },
     email: {
-      type: 'string',
-      columnName: 'userEmail'
+      type: 'string'
     },
     title: {
-      type: 'string',
-      columnName: 'userTitle'
+      type: 'string'
     },
     phone: {
-      type: 'string',
-      columnName: 'userPhone'
+      type: 'string'
     },
     type: {
-      type: 'string',
-      columnName: 'userType'
+      type: 'string'
     },
     favoriteFruit: {
       defaultsTo: 'blueberry',
-      type: 'string',
-      columnName: 'userFavoriteFruit'
+      type: 'string'
     },
     age: {
-      type: 'integer',
-      columnName: 'userAge'
+      type: 'integer'
     }, // integer field that's not auto-incrementable
     dob: {
-      type: 'date',
-      columnName: 'userDob'
+      type: 'date'
     },
     status: {
       type: 'boolean',
-      defaultsTo: false,
-      columnName: 'userStatus'
+      defaultsTo: false
     },
     percent: {
-      type: 'float',
-      columnName: 'userPercent'
+      type: 'float'
     },
     list: {
-      type: 'array',
-      columnName: 'userList'
+      type: 'array'
     },
     obj: {
-      type: 'json',
-      columnName: 'userObj'
+      type: 'json'
     },
     fullName: function() {
       return this.first_name + ' ' + this.last_name;

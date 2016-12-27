@@ -1,28 +1,32 @@
 module.exports = {
-  identity: 'Seller',
-  connection: 'deep',
-  tableName: 'seller_table',
+
+  identity: 'SellerDeep',
+  tableName: 'sellerDeepTable',
+
   attributes: {
     id: {
-      columnName: 'sellerId',
       type: 'integer',
       primaryKey: true
     },
     name: {
-      columnName: 'sellerName',
       type: 'string'
     },
     taxis: {
-      collection: 'Taxi',
+      collection: 'TaxiDeep',
       via: 'seller'
     },
     departments: {
-      collection: 'Department',
+      collection: 'DepartmentDeep',
       via: 'seller'
     },
     countries: {
-      collection: 'Country',
+      collection: 'CountryDeep',
       via: 'sellers'
+    },
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.name;
+      return obj;
     }
   }
 };

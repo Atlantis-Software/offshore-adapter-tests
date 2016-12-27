@@ -2,19 +2,16 @@ module.exports = {
 
   tableName: 'taxiTableCustomPK',
   identity: 'taxicustom',
-  connection: 'associations',
 
   autoPK: false,
 
   attributes: {
     vin: {
       type: 'string',
-      primaryKey: true,
-      columnName: 'taxicustomVin'
+      primaryKey: true
     },
     medallion: {
-      type: 'integer',
-      columnName: 'customerMedallion'
+      type: 'integer'
     },
     drivers: {
       collection: 'drivercustom',

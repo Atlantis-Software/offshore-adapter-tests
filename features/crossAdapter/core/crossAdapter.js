@@ -12,7 +12,6 @@ var _ = require('lodash');
 var utils = require('../../../lib/utils');
 var mocha = require('mocha');
 var memoryAdapter = require('offshore-memory');
-var deepCrossAdapterRunner = require('../deep/core/deepCrossAdapter');
 
 /**
  * Test Runner
@@ -82,21 +81,29 @@ function CrossAdapter(options, cb) {
   console.time('time elapsed');
   var runner = test.run(function(err) {
     console.timeEnd('time elapsed');
-    if (err) {
-      return cb(err);
-    }
-    // run deep
-    deepCrossAdapterRunner.cleanTestCache(test.files);
-    deepCrossAdapterRunner(options, function(deepCrossAdapterErr) {
-      cb(deepCrossAdapterErr);
+    cb(err);
+  });
+
+  runner.on('pass', function (test) {
+    process.send({
+      file: test.file,
+      title: test.title,
+      state: test.state,
+      duration: test.duration
     });
   });
 
-  runner.on('fail', function (e) {
-    console.error(e.err);
+  runner.on('fail', function (test, error) {
+    console.error(test.err);
+    process.send({
+      file: test.file,
+      title: test.title,
+      state: test.state,
+      duration: test.duration,
+      err: test.err
+    });
   });
 };
-
 
 /**
  * Mocha keeps the test files cached through require, we need to clean them in order to not

@@ -8,12 +8,10 @@ module.exports = Offshore.Collection.extend({
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'compositeUniqueName'
+      type: 'string'
     },
     uniqueOne: {
       type: 'string',
-      columnName: 'compositeUniqueUniqueOne',
       unique: {
         unique: false,
         composite: [ 'uniqueTwo' ]
@@ -22,7 +20,6 @@ module.exports = Offshore.Collection.extend({
 
     uniqueTwo: {
       type: 'string',
-      columnName: 'compositeUniqueUniqueTwo',
       unique: {
         unique: false,
         composite: [ 'uniqueOne' ]

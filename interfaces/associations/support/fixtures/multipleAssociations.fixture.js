@@ -2,24 +2,19 @@ module.exports.payment = {
 
   tableName: 'payment_manyTable',
   identity: 'payment_many',
-  connection: 'associations',
 
   attributes: {
     amount: {
-      type: 'integer',
-      columnName: 'payment_manyAmount'
+      type: 'integer'
     },
     type: {
-      type: 'string',
-      columnName: 'payment_manyType'
+      type: 'string'
     },
     customer: {
-      model: 'customer_many',
-      columnName: 'customer_many_id'
+      model: 'customer_many'
     },
     patron: {
-      model: 'customer_many',
-      columnName: 'customer_many_patron_id'
+      model: 'customer_many'
     },
 
     toJSON: function() {
@@ -35,12 +30,10 @@ module.exports.customer = {
 
   tableName: 'customer_manyTable',
   identity: 'customer_many',
-  connection: 'associations',
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'customer_manyName'
+      type: 'string'
     },
     payments: {
       collection: 'payment_many',

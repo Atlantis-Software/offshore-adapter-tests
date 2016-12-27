@@ -12,58 +12,45 @@ module.exports = Offshore.Collection.extend({
 
   attributes: {
     first_name: {
-      type: 'string',
-      columnName: 'loadtestFirstName'
+      type: 'string'
     },
     last_name: {
-      type: 'string',
-      columnName: 'loadtestLastName'
+      type: 'string'
     },
     email: {
-      type: 'string',
-      columnName: 'emailAddress'
+      type: 'string'
     },
     title: {
-      type: 'string',
-      columnName: 'loadtestTitle'
+      type: 'string'
     },
     phone: {
-      type: 'string',
-      columnName: 'loadtestPhone'
+      type: 'string'
     },
     type: {
-      type: 'string',
-      columnName: 'loadtestType'
+      type: 'string'
     },
     favoriteFruit: {
       defaultsTo: 'blueberry',
-      type: 'string',
-      columnName: 'loadtestFavoriteFruit'
+      type: 'string'
     },
     age: {
-      type: 'string',
-      columnName: 'loadtestAge'
+      type: 'string'
     }, // integer field that's not auto-incrementable
     dob: {
-      type: 'datetime',
-      columnName: 'loadtestDob'
+      type: 'datetime'
     },
     status: {
       type: 'boolean',
-      defaultsTo: false,
-      columnName: 'loadtestStatus'
+      defaultsTo: false
     },
     percent: {
-      type: 'float',
-      columnName: 'loadtestPercent'
+      type: 'float'
     },
     list: {
-      type: 'array',
-      columnName: 'loadtestList'
+      type: 'array'
     },
     obj: {
-      type: 'json',
-      columnName: 'loadtestObj'
+      type: 'json'
     },
     fullName: function() {
       return this.first_name + ' ' + this.last_name;

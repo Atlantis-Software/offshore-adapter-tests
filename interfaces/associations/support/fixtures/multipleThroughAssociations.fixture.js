@@ -2,16 +2,13 @@ module.exports.team = {
 
   tableName: 'teamManyTable',
   identity: 'teamMany',
-  connection: 'associations',
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'teamManyName'
+      type: 'string'
     },
     mascot: {
-      type: 'string',
-      columnName: 'teamManyMascot'
+      type: 'string'
     },
     stadiums: {
       collection: 'stadiumMany',
@@ -37,12 +34,10 @@ module.exports.stadium = {
 
   tableName: 'stadiumManyTable',
   identity: 'stadiumMany',
-  connection: 'associations',
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'stadiumManyName'
+      type: 'string'
     },
     teams: {
       collection: 'teamMany',
@@ -62,28 +57,22 @@ module.exports.venue = {
 
   tableName: 'venueManyTable',
   identity: 'venueMany',
-  connection: 'associations',
 
   attributes: {
     seats: {
-      type: 'integer',
-      columnName: 'venueManySeats'
+      type: 'integer'
     },
     team: {
-      model: 'teamMany',
-      columnName: 'teamMany_id'
+      model: 'teamMany'
     },
     nativeTeam: {
-      model: 'teamMany',
-      columnName: 'nativeTeamMany_id'
+      model: 'teamMany'
     },
     stadium: {
-      model: 'stadiumMany',
-      columnName: 'stadiumMany_id'
+      model: 'stadiumMany'
     },
     nativeStadium: {
-      model: 'stadiumMany',
-      columnName: 'nativeStadiumMany_id'
+      model: 'stadiumMany'
     }
   }
 

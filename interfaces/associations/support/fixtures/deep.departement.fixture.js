@@ -1,21 +1,19 @@
 module.exports = {
 
-  tableName: 'driverTable',
-  identity: 'driver',
+  identity: 'DepartmentDeep',
+  tableName: 'departmentDeepTable',
 
   attributes: {
+    id: {
+      type: 'integer',
+      primaryKey: true
+    },
     name: {
       type: 'string'
     },
-    drivingTime: {
-      type: 'integer'
+    seller: {
+      model: 'SellerDeep'
     },
-    taxis: {
-      collection: 'taxi',
-      via: 'drivers',
-      dominant: true
-    },
-
     toJSON: function() {
       var obj = this.toObject();
       delete obj.name;

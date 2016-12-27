@@ -6,16 +6,13 @@ module.exports = {
 
   attributes: {
     amount: {
-      type: 'integer',
-      columnName: 'paymentbelongsAmount'
+      type: 'integer'
     },
     type: {
-      type: 'string',
-      columnName: 'paymentbelongsType'
+      type: 'string'
     },
     customer: {
-      model: 'Customerbelongs',
-      columnName: 'customer_belongs'
+      model: 'Customerbelongs'
     },
 
     toJSON: function() {

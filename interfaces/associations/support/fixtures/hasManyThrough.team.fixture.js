@@ -2,20 +2,16 @@ module.exports = {
 
   tableName: 'teamTable',
   identity: 'team',
-  connection: 'associations',
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'stadiumName'
+      type: 'string'
     },
     mascot: {
-      type: 'string',
-      columnName: 'teamMascot'
+      type: 'string'
     },
     followers: {
-      type: 'integer',
-      columnName: 'teamFollowers'
+      type: 'integer'
     },
     stadiums: {
       collection: 'Stadium',

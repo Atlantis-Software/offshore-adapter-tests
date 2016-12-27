@@ -9,17 +9,14 @@ module.exports = Offshore.Collection.extend({
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'compositePrimaryKeyName'
+      type: 'string'
     },
     pkOne: {
       type: 'integer',
-      columnName: 'compositePrimaryKeyPkOne',
       primaryKey: true
     },
     pkTwo: {
       type: 'string',
-      columnName: 'compositePrimaryKeyPkTwo',
       primaryKey: true
     }
   }

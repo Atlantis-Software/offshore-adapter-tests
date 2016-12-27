@@ -5,13 +5,10 @@ module.exports = {
     schemaName: 'bar'
   },
   identity: 'taxiwithschema',
-  connection: 'associations',
 
-  // migrate: 'drop',
   attributes: {
     medallion: {
-      type: 'integer',
-      columnName: 'taxiwithschemaMedallion'
+      type: 'integer'
     },
     drivers: {
       collection: 'driver',

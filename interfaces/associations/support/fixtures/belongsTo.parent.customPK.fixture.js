@@ -9,16 +9,13 @@ module.exports = {
   attributes: {
     username: {
       type: 'string',
-      primaryKey: true,
-      columnName: 'customerbelongscustomUsername'
+      primaryKey: true
     },
     name: {
-      type: 'string',
-      columnName: 'customerbelongscustomName'
+      type: 'string'
     },
     title: {
-      type: 'string',
-      columnName: 'customerbelongscustomTitle'
+      type: 'string'
     },
     payments: {
       collection: 'Paymentbelongscustom',

@@ -7,8 +7,7 @@ module.exports = Offshore.Collection.extend({
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'geomodelName'
+      type: 'string'
     },
     prop1: {
       type: 'string',

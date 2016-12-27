@@ -2,19 +2,16 @@ module.exports = {
 
   tableName: 'stadiumCustomTable',
   identity: 'stadiumCustom',
-  connection: 'associations',
 
   autoPK: false,
 
   attributes: {
     address: {
       type: 'string',
-      primaryKey: true,
-      columnName: 'customAddress'
+      primaryKey: true
     },
     name: {
-      type: 'string',
-      columnName: 'customName'
+      type: 'string'
     },
     teams: {
       collection: 'teamcustom',

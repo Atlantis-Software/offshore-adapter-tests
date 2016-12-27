@@ -12,16 +12,14 @@ module.exports = Offshore.Collection.extend({
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'uniqueName'
+      type: 'string'
     },
     email: {
       type: 'string',
       unique: true
     },
     type: {
-      type: 'string',
-      columnName: 'uniqueType'
+      type: 'string'
     }
   }
 

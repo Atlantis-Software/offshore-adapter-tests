@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   identity: 'thing',
   tableName: 'thingTable',
@@ -13,20 +7,17 @@ module.exports = Offshore.Collection.extend({
   attributes: {
     name: {
       type: 'string',
-      required: true,
-      columnName: 'thingName'
+      required: true
     },
     age: {
       type: 'integer',
       required: true,
       min: 5,
-      max: 20,
-      columnName: 'thingAge'
+      max: 20
     },
     description: {
-      type: 'string',
-      columnName: 'thingDescription'
+      type: 'string'
     },
   }
 
-});
+};

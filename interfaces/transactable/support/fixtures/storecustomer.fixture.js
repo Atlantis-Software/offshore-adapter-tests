@@ -1,22 +1,14 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
   tableName: 'storeCustomerTrxTable',
   identity: 'storecustomer',
   connection: 'transactable',
   migrate: 'alter',
   attributes: {
     customer:{
-      model:'customer',
-      columnName: 'storecustomerCustomer'
+      model:'customer'
     },
     store: {
-      model: 'store',
-      columnName: 'storecustomerStore'
+      model: 'store'
     }
   }
-});
+};

@@ -2,20 +2,16 @@ module.exports = {
 
   tableName: 'venueCustomTable',
   identity: 'venueCustom',
-  connection: 'associations',
 
   attributes: {
     seats: {
-      type: 'integer',
-      columnName: 'venueSeats'
+      type: 'integer'
     },
     team: {
-      model: 'teamcustom',
-      columnName: 'team_id'
+      model: 'teamcustom'
     },
     stadium: {
-      model: 'stadiumcustom',
-      columnName: 'stadium_id'
+      model: 'stadiumcustom'
     }
   }
 

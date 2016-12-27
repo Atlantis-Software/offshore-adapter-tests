@@ -9,20 +9,16 @@ module.exports = {
   attributes: {
     invoice: {
       type: 'integer',
-      primaryKey: true,
-      columnName: 'paymentbelongscustomInvoice'
+      primaryKey: true
     },
     amount: {
-      type: 'integer',
-      columnName: 'paymentbelongscustomAmount'
+      type: 'integer'
     },
     type: {
-      type: 'string',
-      columnName: 'paymentbelongscustomString'
+      type: 'string'
     },
     customer: {
-      model: 'Customerbelongscustom',
-      columnName: 'customer_belongs'
+      model: 'Customerbelongscustom'
     }
   }
 

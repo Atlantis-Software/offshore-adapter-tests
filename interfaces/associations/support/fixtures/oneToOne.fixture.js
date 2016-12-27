@@ -2,20 +2,16 @@ module.exports.user_resource = {
 
   tableName: 'user_resourceTable',
   identity: 'user_resource',
-  connection: 'associations',
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'user_resourceName'
+      type: 'string'
     },
     quantity: {
-      type: 'integer',
-      columnName: 'user_resourceQuantity'
+      type: 'integer'
     },
     profile: {
-      model: 'profile',
-      columnName: 'profile_id'
+      model: 'profile'
     },
 
 
@@ -33,20 +29,16 @@ module.exports.profile = {
 
   tableName: 'profileTable',
   identity: 'profile',
-  connection: 'associations',
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'profileName'
+      type: 'string'
     },
     level : {
-      type: 'integer',
-      columnName: 'profileLevel'
+      type: 'integer'
     },
     user: {
-      model: 'user_resource',
-      columnName: 'user_resource_id'
+      model: 'user_resource'
     },
 
 

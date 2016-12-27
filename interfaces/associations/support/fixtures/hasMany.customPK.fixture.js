@@ -2,19 +2,16 @@ module.exports = {
 
   tableName: 'apartmentTable',
   identity: 'apartment',
-  connection: 'associations',
   autoPK: false,
 
   attributes: {
     building: {
-      type: 'string',
-      columnName: 'apartmentBuilding'
+      type: 'string'
     },
     number: {
       type: 'string',
       primaryKey: true,
-      unique: true,
-      columnName: 'apartmentNumber'
+      unique: true
     },
     payments: {
       collection: 'Payment',

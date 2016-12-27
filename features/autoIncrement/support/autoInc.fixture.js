@@ -12,16 +12,13 @@ module.exports = Offshore.Collection.extend({
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'autoIncName'
+      type: 'string'
     },
     normalField: {
-      type: 'integer',
-      columnName: 'autoIncNormalField'
+      type: 'integer'
     },
     type: {
-      type: 'string',
-      columnName: 'column_type'
+      type: 'string'
     },
   }
 

@@ -24,7 +24,20 @@ before(function(done) {
   offshore = new Offshore();
 
   Object.keys(fixtures).forEach(function(key) {
-    offshore.loadCollection(fixtures[key]);
+    var collection = fixtures[key];
+    _.keys(collection.attributes).forEach(function(attr) {
+      // skip collection
+      if (collection.attributes[attr].collection) {
+        return;
+      }
+      // skip functions
+      if (_.isFunction(collection.attributes[attr])) {
+        return;
+      }
+      // add columnName
+      collection.attributes[attr].columnName = collection.identity + _.capitalize(attr);
+    });
+    offshore.loadCollection(Offshore.Collection.extend(collection));
   });
 
   var connections = { queryable: _.clone(Connections.test) };

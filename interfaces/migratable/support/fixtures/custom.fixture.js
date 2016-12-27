@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   // tableName: 'customTable',
   identity: 'custom',
@@ -13,13 +7,11 @@ module.exports = Offshore.Collection.extend({
 
   attributes: {
     name: {
-    	type: 'string',
-    	columnName: 'nameColumn'
+    	type: 'string'
     },
     age: {
-      type: 'integer',
-      columnName: 'customerAge'
+      type: 'integer'
     }
   }
 
-});
+};

@@ -2,19 +2,16 @@ module.exports = {
 
   tableName: 'driverTableCustomPK',
   identity: 'drivercustom',
-  connection: 'associations',
 
   autoPK: false,
 
   attributes: {
     number: {
       type: 'integer',
-      primaryKey: true,
-      columnName: 'drivercustomNumber'
+      primaryKey: true
     },
     name: {
-      type: 'string',
-      columnName: 'drivercustomName'
+      type: 'string'
     },
     taxis: {
       collection: 'taxicustom',

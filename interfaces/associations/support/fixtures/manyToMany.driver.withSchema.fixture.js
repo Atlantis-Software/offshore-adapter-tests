@@ -5,13 +5,10 @@ module.exports = {
     schemaName: 'foo'
   },
   identity: 'driverwithschema',
-  connection: 'associations',
 
-  // migrate: 'drop',
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'driverwithschemaName'
+      type: 'string'
     },
     taxis: {
       collection: 'taxiwithschema',

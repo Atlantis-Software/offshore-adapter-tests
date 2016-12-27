@@ -2,20 +2,16 @@ module.exports = {
 
   tableName: 'customerbelongsTable',
   identity: 'customerbelongs',
-  connection: 'associations',
 
   attributes: {
     name: {
-      type: 'string',
-      columnName: 'customerbelongsName'
+      type: 'string'
     },
     title: {
-      type: 'string',
-      columnName: 'customerbelongsTitle'
+      type: 'string'
     },
     capital : {
-      type: 'integer',
-      columnName: 'customerCapital'
+      type: 'integer'
     },
     payments: {
       collection: 'Paymentbelongs',
