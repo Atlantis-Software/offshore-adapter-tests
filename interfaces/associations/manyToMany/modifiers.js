@@ -279,7 +279,7 @@ describe('Association Interface', function() {
 
       it('should return records with select modifier', function(done) {
         Associations.Driver.find({ where: { name: 'modifier2' }})
-          .populate('taxis', {medallion: 180, select: ['type'], sort: 'id desc'})
+          .populate('taxis', {medallion: 180, select: ['type'], sort: 'type desc'})
           .exec(function(err, Drivers) {
           assert.ifError(err);
           assert(Array.isArray(Drivers));

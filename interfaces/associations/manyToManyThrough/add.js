@@ -42,6 +42,7 @@ describe('Association Interface', function() {
             Associations.Stadium.findOne(stadiumRecord.id)
             .populate('teams', {sort: 'id asc'})
             .exec(function(err, model) {
+
               assert.ifError(err);
 
               assert.strictEqual(model.teams.length, 2);

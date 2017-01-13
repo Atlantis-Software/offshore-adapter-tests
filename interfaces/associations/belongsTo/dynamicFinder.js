@@ -113,10 +113,9 @@ describe('Association Interface', function() {
       });
 
       it('should return customer when the dynamic finder method is used for findIn', function(done) {
-        Associations.Payment.findByA_customerIn([customerRecords[0].id, customerRecords[1].id]).sort('invoice asc')
+        Associations.Payment.findByA_customerIn([customerRecords[0].id, customerRecords[1].id]).sort('a_customer asc')
         .exec(function(err, payments) {
           assert.ifError(err);
-
           assert.strictEqual(payments.length, 2);
           assert.equal(payments[0].a_customer, customerRecords[0].id);
           assert.equal(payments[1].a_customer, customerRecords[1].id);

@@ -8,7 +8,7 @@ var util = require('util');
 
 describe('Association Interface', function() {
 
-  describe('Has Many Through Association', function() {
+  describe('Many to Many Through Association', function() {
 
     var Stadium;
 
@@ -68,7 +68,7 @@ describe('Association Interface', function() {
       ////////////////////////////////////////////////////
 
       it('should return only payments less than or equal to 2', function(done) {
-        Associations.Stadium.find({ name: {startsWith: 'hasMany find where'}})
+        Associations.Stadium.find({ name: {startsWith: 'hasMany find where'}, sort: 'name asc'})
         .populate('teams', { mascot:'Platypus' , limit: 2, sort: { name: 1 }})
         .sort('name asc')
         .exec(function(err, stadiums) {

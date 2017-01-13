@@ -281,7 +281,7 @@ describe('Association Interface', function() {
 
       it('should return records with select modifier', function(done) {
         Associations.Stadium.find({ where: { name: 'modifier2' }})
-          .populate('teams', {followers: 180, select: ['mascot'], sort: 'id desc'})
+          .populate('teams', {followers: 180, select: ['mascot'], sort: 'mascot desc'})
           .exec(function(err, Stadiums) {
           assert.ifError(err);
           assert(Array.isArray(Stadiums));

@@ -43,9 +43,11 @@ describe('Association Interface', function() {
           .populate('payments', {average: ['amount'] })
           .exec(function(err, customers) {
           assert.ifError(err);
+
           assert(Array.isArray(customers));
           assert.strictEqual(customers.length, 1);
           assert.strictEqual(customers[0].name, 'modifier2');
+
           assert(Array.isArray(customers[0].payments));
           assert.strictEqual(customers[0].payments.length, 1);
           assert.strictEqual(customers[0].payments[0].amount, 215);
@@ -280,7 +282,7 @@ describe('Association Interface', function() {
 
       it('should return records with select modifier', function(done) {
         Associations.Customer.find({ where: { name: 'modifier2' }})
-          .populate('payments', {amount: 180, select: ['type'], sort: 'id desc'})
+          .populate('payments', {amount: 180, select: ['type'], sort: 'type desc'})
           .exec(function(err, customers) {
           assert.ifError(err);
           assert(Array.isArray(customers));

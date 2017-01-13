@@ -12,7 +12,7 @@ describe('Semantic Interface', function() {
 
       var textId;
       var description = 'a';
-      for(var i = 0; i < 10000; ++i) {
+      for(var i = 0; i < 1000; ++i) {
         description += 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb';
       }
       description += 'c';
@@ -26,16 +26,6 @@ describe('Semantic Interface', function() {
             assert(record.description === description, 'text should match');
             done();
           });
-        });
-      });
-
-      it('should find record by text criteria', function(done) {
-        Semantic.User.find({description: description}, function (err, record) {
-          assert.ifError(err);
-          assert.strictEqual(record.length, 1, 'should have 1 result');
-          assert.strictEqual(record[0].id, textId, 'id should correspond');
-          assert(record[0].description === description, 'text should match');
-          done();
         });
       });
 

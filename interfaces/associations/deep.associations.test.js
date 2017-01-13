@@ -96,7 +96,9 @@ describe('Association Interface', function() {
     describe('Populate', function() {
       it('should deeply populate a branch', function(done) {
         Associations.Companydeep.find().sort('id asc')
+          .populate('drivers', {sort: {id: 1}})
           .populate('drivers.taxis', {sort: {id: 1}})
+          .populate('drivers.taxis.seller', {sort: {id: 1}})
           .populate('drivers.taxis.seller.departments', {sort: {id: 1}})
           .exec(function(err, companies) {
             assert.ifError(err);
@@ -132,6 +134,7 @@ describe('Association Interface', function() {
 
       it('should deeply populate multiple branchs', function(done) {
         Associations.Companydeep.find().where({name: 'company 2'})
+          .populate('drivers', {sort: {id: 1}})
           .populate('drivers.taxis', {sort: {id: 1}})
           .populate('drivers.address')
           .populate('taxis')
@@ -179,12 +182,12 @@ describe('Association Interface', function() {
 
       it('should deeply populate nested collections', function(done) {
         Associations.Companydeep.find().where({id: 2})
-          .populate('taxis')
+          .populate('taxis', {sort: 'matricule asc'})
           .populate('taxis.breakdowns')
           .exec(function(err, company) {
             assert.ifError(err);
-            assert(company[0].taxis[0].breakdowns.length === 1);
-            assert(company[0].taxis[1].breakdowns.length === 3);
+            assert.strictEqual(company[0].taxis[0].breakdowns.length, 1);
+            assert.strictEqual(company[0].taxis[1].breakdowns.length, 3);
             done();
           });
       });

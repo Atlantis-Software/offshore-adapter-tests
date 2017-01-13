@@ -38,7 +38,7 @@ describe('Association Interface', function() {
 
             // Look up the customer again to be sure the payment was added
             Associations.Customer.findOne(customer.id)
-            .populate('payments', {sort: 'id asc'})
+            .populate('payments', {sort: 'amount asc'})
             .exec(function(err, model) {
               assert.ifError(err);
 

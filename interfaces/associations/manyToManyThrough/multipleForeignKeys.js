@@ -3,7 +3,7 @@ var assert = require('assert'),
 
 describe('Association Interface', function() {
 
-  describe('Multiple Has Many Through Associations', function() {
+  describe('Multiple Many to Many Through Associations', function() {
     describe('association .add()', function() {
 
       describe('with an object', function() {
@@ -47,14 +47,14 @@ describe('Association Interface', function() {
             // Look up the stadium again to be sure the team was added
             Associations.Stadiummany.findOne(stadiumRecord.id)
             .populate('teams', {sort: 'id asc'})
-            .populate('nativeTeams')
+            .populate('nativeTeams', {sort: 'id asc'})
             .exec(function(err, stadium) {
               assert.ifError(err);
               assert.strictEqual(stadium.teams.length, 2);
               assert.strictEqual(stadium.teams[0].name, 'team many 1');
               assert.strictEqual(stadium.teams[1].name, 'team many 2');
 
-              assert.strictEqual(stadium.nativeTeams.length, 1, 'Expected stadium to have 1 nativeTeam, but actually it has '+stadiumRecord.nativeTeams.length+', see?  \n'+require('util').inspect(stadium,false,null));
+              assert.strictEqual(stadium.nativeTeams.length, 1, 'Expected stadium to have 1 nativeTeam, but actually it has '+stadium.nativeTeams.length+', see?  \n'+require('util').inspect(stadium,false,null));
               assert.strictEqual(stadium.nativeTeams[0].name, 'nativeTeam many 1');
               done();
             });
