@@ -10,6 +10,8 @@ describe('Association Interface', function() {
       // TEST SETUP
       ////////////////////////////////////////////////////
 
+      var names = ['modifier1', 'modifier2', 'modifier3', 'modifier4'];
+
       before(function(done) {
 
         // Check Customer hasMany Payments
@@ -37,6 +39,190 @@ describe('Association Interface', function() {
       /////////////////////////////////////////////////////
       // TEST METHODS
       ////////////////////////////////////////////////////
+
+      it('should sort with parent asc and child asc', function(done) {
+        Associations.Customer.find({name: names, sort: 'name asc'})
+          .populate('payments', {sort: 'type asc'})
+          .exec(function(err, customers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 4);
+          assert.strictEqual(customers[0].name, 'modifier1');
+          assert.strictEqual(customers[1].name, 'modifier2');
+          assert.strictEqual(customers[2].name, 'modifier3');
+          assert.strictEqual(customers[3].name, 'modifier4');
+
+          assert(Array.isArray(customers[1].payments));
+          assert.strictEqual(customers[1].payments.length, 4);
+          assert.strictEqual(customers[1].payments[0].type, 'aquaman');
+          assert.strictEqual(customers[1].payments[1].type, 'batman');
+          assert.strictEqual(customers[1].payments[2].type, 'catwoman');
+          assert.strictEqual(customers[1].payments[3].type, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent desc and child desc', function(done) {
+        Associations.Customer.find({name: names, sort: 'name desc'})
+          .populate('payments', {sort: 'type desc'})
+          .exec(function(err, customers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 4);
+          assert.strictEqual(customers[3].name, 'modifier1');
+          assert.strictEqual(customers[2].name, 'modifier2');
+          assert.strictEqual(customers[1].name, 'modifier3');
+          assert.strictEqual(customers[0].name, 'modifier4');
+
+          assert(Array.isArray(customers[2].payments));
+          assert.strictEqual(customers[2].payments.length, 4);
+          assert.strictEqual(customers[2].payments[3].type, 'aquaman');
+          assert.strictEqual(customers[2].payments[2].type, 'batman');
+          assert.strictEqual(customers[2].payments[1].type, 'catwoman');
+          assert.strictEqual(customers[2].payments[0].type, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent asc and child desc', function(done) {
+        Associations.Customer.find({name: names, sort: 'name asc'})
+          .populate('payments', {sort: 'type desc'})
+          .exec(function(err, customers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 4);
+          assert.strictEqual(customers[0].name, 'modifier1');
+          assert.strictEqual(customers[1].name, 'modifier2');
+          assert.strictEqual(customers[2].name, 'modifier3');
+          assert.strictEqual(customers[3].name, 'modifier4');
+
+          assert(Array.isArray(customers[1].payments));
+          assert.strictEqual(customers[1].payments.length, 4);
+          assert.strictEqual(customers[1].payments[3].type, 'aquaman');
+          assert.strictEqual(customers[1].payments[2].type, 'batman');
+          assert.strictEqual(customers[1].payments[1].type, 'catwoman');
+          assert.strictEqual(customers[1].payments[0].type, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent desc and child asc', function(done) {
+        Associations.Customer.find({name: names, sort: 'name desc'})
+          .populate('payments', {sort: 'type asc'})
+          .exec(function(err, customers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 4);
+          assert.strictEqual(customers[3].name, 'modifier1');
+          assert.strictEqual(customers[2].name, 'modifier2');
+          assert.strictEqual(customers[1].name, 'modifier3');
+          assert.strictEqual(customers[0].name, 'modifier4');
+
+          assert(Array.isArray(customers[2].payments));
+          assert.strictEqual(customers[2].payments.length, 4);
+          assert.strictEqual(customers[2].payments[0].type, 'aquaman');
+          assert.strictEqual(customers[2].payments[1].type, 'batman');
+          assert.strictEqual(customers[2].payments[2].type, 'catwoman');
+          assert.strictEqual(customers[2].payments[3].type, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent asc and child asc', function(done) {
+        Associations.Customer.find({name: names, sort: 'name asc'})
+          .populate('payments', {sort: 'type asc', skip: 1, limit: 2})
+          .exec(function(err, customers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 4);
+          assert.strictEqual(customers[0].name, 'modifier1');
+          assert.strictEqual(customers[1].name, 'modifier2');
+          assert.strictEqual(customers[2].name, 'modifier3');
+          assert.strictEqual(customers[3].name, 'modifier4');
+
+          assert(Array.isArray(customers[1].payments));
+          assert.strictEqual(customers[1].payments.length, 2);
+          assert.strictEqual(customers[1].payments[0].type, 'batman');
+          assert.strictEqual(customers[1].payments[1].type, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent desc and child desc', function(done) {
+        Associations.Customer.find({name: names, sort: 'name desc'})
+          .populate('payments', {sort: 'type desc', skip: 1, limit: 2})
+          .exec(function(err, customers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 4);
+          assert.strictEqual(customers[3].name, 'modifier1');
+          assert.strictEqual(customers[2].name, 'modifier2');
+          assert.strictEqual(customers[1].name, 'modifier3');
+          assert.strictEqual(customers[0].name, 'modifier4');
+
+          assert(Array.isArray(customers[2].payments));
+          assert.strictEqual(customers[2].payments.length, 2);
+          assert.strictEqual(customers[2].payments[1].type, 'batman');
+          assert.strictEqual(customers[2].payments[0].type, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent asc and child desc', function(done) {
+        Associations.Customer.find({name: names, sort: 'name asc'})
+          .populate('payments', {sort: 'type desc', skip: 1, limit: 2})
+          .exec(function(err, customers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 4);
+          assert.strictEqual(customers[0].name, 'modifier1');
+          assert.strictEqual(customers[1].name, 'modifier2');
+          assert.strictEqual(customers[2].name, 'modifier3');
+          assert.strictEqual(customers[3].name, 'modifier4');
+
+          assert(Array.isArray(customers[1].payments));
+          assert.strictEqual(customers[1].payments.length, 2);
+          assert.strictEqual(customers[1].payments[1].type, 'batman');
+          assert.strictEqual(customers[1].payments[0].type, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent desc and child asc', function(done) {
+        Associations.Customer.find({name: names, sort: 'name desc'})
+          .populate('payments', {sort: 'type asc', skip: 1, limit: 2})
+          .exec(function(err, customers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 4);
+          assert.strictEqual(customers[3].name, 'modifier1');
+          assert.strictEqual(customers[2].name, 'modifier2');
+          assert.strictEqual(customers[1].name, 'modifier3');
+          assert.strictEqual(customers[0].name, 'modifier4');
+
+          assert(Array.isArray(customers[2].payments));
+          assert.strictEqual(customers[2].payments.length, 2);
+          assert.strictEqual(customers[2].payments[0].type, 'batman');
+          assert.strictEqual(customers[2].payments[1].type, 'catwoman');
+
+          done();
+        });
+      });
 
       it('should return the correct average', function(done) {
         Associations.Customer.find({ where: { name: 'modifier2' }})

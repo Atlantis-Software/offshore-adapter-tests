@@ -10,6 +10,8 @@ describe('Association Interface', function() {
       // TEST SETUP
       ////////////////////////////////////////////////////
 
+      var names = ['modifier1', 'modifier2', 'modifier3', 'modifier4'];
+
       before(function(done) {
         // Check Driver hasManytoMany Taxis
         assert.strictEqual(Associations.Driver.attributes.taxis.collection, 'taxi');
@@ -36,6 +38,190 @@ describe('Association Interface', function() {
       /////////////////////////////////////////////////////
       // TEST METHODS
       ////////////////////////////////////////////////////
+
+      it('should sort with parent asc and child asc', function(done) {
+        Associations.Driver.find({name: names, sort: 'name asc'})
+          .populate('taxis', {sort: 'type asc'})
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 4);
+          assert.strictEqual(drivers[0].name, 'modifier1');
+          assert.strictEqual(drivers[1].name, 'modifier2');
+          assert.strictEqual(drivers[2].name, 'modifier3');
+          assert.strictEqual(drivers[3].name, 'modifier4');
+
+          assert(Array.isArray(drivers[1].taxis));
+          assert.strictEqual(drivers[1].taxis.length, 4);
+          assert.strictEqual(drivers[1].taxis[0].type, 'aquaman');
+          assert.strictEqual(drivers[1].taxis[1].type, 'batman');
+          assert.strictEqual(drivers[1].taxis[2].type, 'catwoman');
+          assert.strictEqual(drivers[1].taxis[3].type, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent desc and child desc', function(done) {
+        Associations.Driver.find({name: names, sort: 'name desc'})
+          .populate('taxis', {sort: 'type desc'})
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 4);
+          assert.strictEqual(drivers[3].name, 'modifier1');
+          assert.strictEqual(drivers[2].name, 'modifier2');
+          assert.strictEqual(drivers[1].name, 'modifier3');
+          assert.strictEqual(drivers[0].name, 'modifier4');
+
+          assert(Array.isArray(drivers[2].taxis));
+          assert.strictEqual(drivers[2].taxis.length, 4);
+          assert.strictEqual(drivers[2].taxis[3].type, 'aquaman');
+          assert.strictEqual(drivers[2].taxis[2].type, 'batman');
+          assert.strictEqual(drivers[2].taxis[1].type, 'catwoman');
+          assert.strictEqual(drivers[2].taxis[0].type, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent asc and child desc', function(done) {
+        Associations.Driver.find({name: names, sort: 'name asc'})
+          .populate('taxis', {sort: 'type desc'})
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 4);
+          assert.strictEqual(drivers[0].name, 'modifier1');
+          assert.strictEqual(drivers[1].name, 'modifier2');
+          assert.strictEqual(drivers[2].name, 'modifier3');
+          assert.strictEqual(drivers[3].name, 'modifier4');
+
+          assert(Array.isArray(drivers[1].taxis));
+          assert.strictEqual(drivers[1].taxis.length, 4);
+          assert.strictEqual(drivers[1].taxis[3].type, 'aquaman');
+          assert.strictEqual(drivers[1].taxis[2].type, 'batman');
+          assert.strictEqual(drivers[1].taxis[1].type, 'catwoman');
+          assert.strictEqual(drivers[1].taxis[0].type, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent desc and child asc', function(done) {
+        Associations.Driver.find({name: names, sort: 'name desc'})
+          .populate('taxis', {sort: 'type asc'})
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 4);
+          assert.strictEqual(drivers[3].name, 'modifier1');
+          assert.strictEqual(drivers[2].name, 'modifier2');
+          assert.strictEqual(drivers[1].name, 'modifier3');
+          assert.strictEqual(drivers[0].name, 'modifier4');
+
+          assert(Array.isArray(drivers[2].taxis));
+          assert.strictEqual(drivers[2].taxis.length, 4);
+          assert.strictEqual(drivers[2].taxis[0].type, 'aquaman');
+          assert.strictEqual(drivers[2].taxis[1].type, 'batman');
+          assert.strictEqual(drivers[2].taxis[2].type, 'catwoman');
+          assert.strictEqual(drivers[2].taxis[3].type, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent asc and child asc', function(done) {
+        Associations.Driver.find({name: names, sort: 'name asc'})
+          .populate('taxis', {sort: 'type asc', skip: 1, limit: 2})
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 4);
+          assert.strictEqual(drivers[0].name, 'modifier1');
+          assert.strictEqual(drivers[1].name, 'modifier2');
+          assert.strictEqual(drivers[2].name, 'modifier3');
+          assert.strictEqual(drivers[3].name, 'modifier4');
+
+          assert(Array.isArray(drivers[1].taxis));
+          assert.strictEqual(drivers[1].taxis.length, 2);
+          assert.strictEqual(drivers[1].taxis[0].type, 'batman');
+          assert.strictEqual(drivers[1].taxis[1].type, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent desc and child desc', function(done) {
+        Associations.Driver.find({name: names, sort: 'name desc'})
+          .populate('taxis', {sort: 'type desc', skip: 1, limit: 2})
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 4);
+          assert.strictEqual(drivers[3].name, 'modifier1');
+          assert.strictEqual(drivers[2].name, 'modifier2');
+          assert.strictEqual(drivers[1].name, 'modifier3');
+          assert.strictEqual(drivers[0].name, 'modifier4');
+
+          assert(Array.isArray(drivers[2].taxis));
+          assert.strictEqual(drivers[2].taxis.length, 2);
+          assert.strictEqual(drivers[2].taxis[1].type, 'batman');
+          assert.strictEqual(drivers[2].taxis[0].type, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent asc and child desc', function(done) {
+        Associations.Driver.find({name: names, sort: 'name asc'})
+          .populate('taxis', {sort: 'type desc', skip: 1, limit: 2})
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 4);
+          assert.strictEqual(drivers[0].name, 'modifier1');
+          assert.strictEqual(drivers[1].name, 'modifier2');
+          assert.strictEqual(drivers[2].name, 'modifier3');
+          assert.strictEqual(drivers[3].name, 'modifier4');
+
+          assert(Array.isArray(drivers[1].taxis));
+          assert.strictEqual(drivers[1].taxis.length, 2);
+          assert.strictEqual(drivers[1].taxis[1].type, 'batman');
+          assert.strictEqual(drivers[1].taxis[0].type, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent desc and child asc', function(done) {
+        Associations.Driver.find({name: names, sort: 'name desc'})
+          .populate('taxis', {sort: 'type asc', skip: 1, limit: 2})
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 4);
+          assert.strictEqual(drivers[3].name, 'modifier1');
+          assert.strictEqual(drivers[2].name, 'modifier2');
+          assert.strictEqual(drivers[1].name, 'modifier3');
+          assert.strictEqual(drivers[0].name, 'modifier4');
+
+          assert(Array.isArray(drivers[2].taxis));
+          assert.strictEqual(drivers[2].taxis.length, 2);
+          assert.strictEqual(drivers[2].taxis[0].type, 'batman');
+          assert.strictEqual(drivers[2].taxis[1].type, 'catwoman');
+
+          done();
+        });
+      });
 
       it('should return the correct average', function(done) {
         Associations.Driver.find({ where: { name: 'modifier2' }})

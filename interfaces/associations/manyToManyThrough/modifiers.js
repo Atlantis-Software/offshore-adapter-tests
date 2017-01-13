@@ -10,6 +10,8 @@ describe('Association Interface', function() {
       // TEST SETUP
       ////////////////////////////////////////////////////
 
+      var names = ['modifier1', 'modifier2', 'modifier3', 'modifier4'];
+
       before(function(done) {
         // Check Stadium hasManytoMany Team through Venue
         assert.strictEqual(Associations.Stadium.attributes.teams.collection, 'team');
@@ -38,6 +40,190 @@ describe('Association Interface', function() {
       /////////////////////////////////////////////////////
       // TEST METHODS
       ////////////////////////////////////////////////////
+
+      it('should sort with parent asc and child asc', function(done) {
+        Associations.Stadium.find({name: names, sort: 'name asc'})
+          .populate('teams', {sort: 'mascot asc'})
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 4);
+          assert.strictEqual(stadiums[0].name, 'modifier1');
+          assert.strictEqual(stadiums[1].name, 'modifier2');
+          assert.strictEqual(stadiums[2].name, 'modifier3');
+          assert.strictEqual(stadiums[3].name, 'modifier4');
+
+          assert(Array.isArray(stadiums[1].teams));
+          assert.strictEqual(stadiums[1].teams.length, 4);
+          assert.strictEqual(stadiums[1].teams[0].mascot, 'aquaman');
+          assert.strictEqual(stadiums[1].teams[1].mascot, 'batman');
+          assert.strictEqual(stadiums[1].teams[2].mascot, 'catwoman');
+          assert.strictEqual(stadiums[1].teams[3].mascot, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent desc and child desc', function(done) {
+        Associations.Stadium.find({name: names, sort: 'name desc'})
+          .populate('teams', {sort: 'mascot desc'})
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 4);
+          assert.strictEqual(stadiums[3].name, 'modifier1');
+          assert.strictEqual(stadiums[2].name, 'modifier2');
+          assert.strictEqual(stadiums[1].name, 'modifier3');
+          assert.strictEqual(stadiums[0].name, 'modifier4');
+
+          assert(Array.isArray(stadiums[2].teams));
+          assert.strictEqual(stadiums[2].teams.length, 4);
+          assert.strictEqual(stadiums[2].teams[3].mascot, 'aquaman');
+          assert.strictEqual(stadiums[2].teams[2].mascot, 'batman');
+          assert.strictEqual(stadiums[2].teams[1].mascot, 'catwoman');
+          assert.strictEqual(stadiums[2].teams[0].mascot, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent asc and child desc', function(done) {
+        Associations.Stadium.find({name: names, sort: 'name asc'})
+          .populate('teams', {sort: 'mascot desc'})
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 4);
+          assert.strictEqual(stadiums[0].name, 'modifier1');
+          assert.strictEqual(stadiums[1].name, 'modifier2');
+          assert.strictEqual(stadiums[2].name, 'modifier3');
+          assert.strictEqual(stadiums[3].name, 'modifier4');
+
+          assert(Array.isArray(stadiums[1].teams));
+          assert.strictEqual(stadiums[1].teams.length, 4);
+          assert.strictEqual(stadiums[1].teams[3].mascot, 'aquaman');
+          assert.strictEqual(stadiums[1].teams[2].mascot, 'batman');
+          assert.strictEqual(stadiums[1].teams[1].mascot, 'catwoman');
+          assert.strictEqual(stadiums[1].teams[0].mascot, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort with parent desc and child asc', function(done) {
+        Associations.Stadium.find({name: names, sort: 'name desc'})
+          .populate('teams', {sort: 'mascot asc'})
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 4);
+          assert.strictEqual(stadiums[3].name, 'modifier1');
+          assert.strictEqual(stadiums[2].name, 'modifier2');
+          assert.strictEqual(stadiums[1].name, 'modifier3');
+          assert.strictEqual(stadiums[0].name, 'modifier4');
+
+          assert(Array.isArray(stadiums[2].teams));
+          assert.strictEqual(stadiums[2].teams.length, 4);
+          assert.strictEqual(stadiums[2].teams[0].mascot, 'aquaman');
+          assert.strictEqual(stadiums[2].teams[1].mascot, 'batman');
+          assert.strictEqual(stadiums[2].teams[2].mascot, 'catwoman');
+          assert.strictEqual(stadiums[2].teams[3].mascot, 'daredevil');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent asc and child asc', function(done) {
+        Associations.Stadium.find({name: names, sort: 'name asc'})
+          .populate('teams', {sort: 'mascot asc', skip: 1, limit: 2})
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 4);
+          assert.strictEqual(stadiums[0].name, 'modifier1');
+          assert.strictEqual(stadiums[1].name, 'modifier2');
+          assert.strictEqual(stadiums[2].name, 'modifier3');
+          assert.strictEqual(stadiums[3].name, 'modifier4');
+
+          assert(Array.isArray(stadiums[1].teams));
+          assert.strictEqual(stadiums[1].teams.length, 2);
+          assert.strictEqual(stadiums[1].teams[0].mascot, 'batman');
+          assert.strictEqual(stadiums[1].teams[1].mascot, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent desc and child desc', function(done) {
+        Associations.Stadium.find({name: names, sort: 'name desc'})
+          .populate('teams', {sort: 'mascot desc', skip: 1, limit: 2})
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 4);
+          assert.strictEqual(stadiums[3].name, 'modifier1');
+          assert.strictEqual(stadiums[2].name, 'modifier2');
+          assert.strictEqual(stadiums[1].name, 'modifier3');
+          assert.strictEqual(stadiums[0].name, 'modifier4');
+
+          assert(Array.isArray(stadiums[2].teams));
+          assert.strictEqual(stadiums[2].teams.length, 2);
+          assert.strictEqual(stadiums[2].teams[1].mascot, 'batman');
+          assert.strictEqual(stadiums[2].teams[0].mascot, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent asc and child desc', function(done) {
+        Associations.Stadium.find({name: names, sort: 'name asc'})
+          .populate('teams', {sort: 'mascot desc', skip: 1, limit: 2})
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 4);
+          assert.strictEqual(stadiums[0].name, 'modifier1');
+          assert.strictEqual(stadiums[1].name, 'modifier2');
+          assert.strictEqual(stadiums[2].name, 'modifier3');
+          assert.strictEqual(stadiums[3].name, 'modifier4');
+
+          assert(Array.isArray(stadiums[1].teams));
+          assert.strictEqual(stadiums[1].teams.length, 2);
+          assert.strictEqual(stadiums[1].teams[1].mascot, 'batman');
+          assert.strictEqual(stadiums[1].teams[0].mascot, 'catwoman');
+
+          done();
+        });
+      });
+
+      it('should sort skip limit with parent desc and child asc', function(done) {
+        Associations.Stadium.find({name: names, sort: 'name desc'})
+          .populate('teams', {sort: 'mascot asc', skip: 1, limit: 2})
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 4);
+          assert.strictEqual(stadiums[3].name, 'modifier1');
+          assert.strictEqual(stadiums[2].name, 'modifier2');
+          assert.strictEqual(stadiums[1].name, 'modifier3');
+          assert.strictEqual(stadiums[0].name, 'modifier4');
+
+          assert(Array.isArray(stadiums[2].teams));
+          assert.strictEqual(stadiums[2].teams.length, 2);
+          assert.strictEqual(stadiums[2].teams[0].mascot, 'batman');
+          assert.strictEqual(stadiums[2].teams[1].mascot, 'catwoman');
+
+          done();
+        });
+      });
 
       it('should return the correct average', function(done) {
         Associations.Stadium.find({ where: { name: 'modifier2' }})
