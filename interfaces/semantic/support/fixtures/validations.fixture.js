@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   identity: 'thing',
   tableName: 'thingTable',
@@ -21,7 +15,9 @@ module.exports = Offshore.Collection.extend({
       min: 5,
       max: 20
     },
-    description: 'string'
+    description: {
+      type: 'string'
+    },
   }
 
-});
+};

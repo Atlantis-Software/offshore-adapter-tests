@@ -1,38 +1,54 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'userTable2',
   identity: 'user',
   connection: 'queryable',
 
   attributes: {
-    first_name: 'string',
-    last_name: 'string',
-    email: 'string',
-    title: 'string',
-    phone: 'string',
-    type: 'string',
+    first_name: {
+      type: 'string'
+    },
+    last_name: {
+      type: 'string'
+    },
+    email: {
+      type: 'string'
+    },
+    title: {
+      type: 'string'
+    },
+    phone: {
+      type: 'string'
+    },
+    type: {
+      type: 'string'
+    },
     favoriteFruit: {
       defaultsTo: 'blueberry',
       type: 'string'
     },
-    age: 'integer', // integer field that's not auto-incrementable
-    dob: 'date',
+    age: {
+      type: 'integer'
+    }, // integer field that's not auto-incrementable
+    dob: {
+      type: 'date'
+    },
     status: {
       type: 'boolean',
       defaultsTo: false
     },
-    percent: 'float',
-    list: 'array',
-    obj: 'json',
+    percent: {
+      type: 'float'
+    },
+    list: {
+      type: 'array'
+    },
+    obj: {
+      type: 'json'
+    },
     fullName: function() {
       return this.first_name + ' ' + this.last_name;
     }
   }
 
-});
+};

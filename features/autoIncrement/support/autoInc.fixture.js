@@ -11,9 +11,15 @@ module.exports = Offshore.Collection.extend({
   connection: 'autoIncConn',
 
   attributes: {
-    name: 'string',
-    normalField: 'integer',
-    type: 'string'
+    name: {
+      type: 'string'
+    },
+    normalField: {
+      type: 'integer'
+    },
+    type: {
+      type: 'string'
+    },
   }
 
 });

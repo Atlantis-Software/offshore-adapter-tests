@@ -1,39 +1,52 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports.user_resource = Offshore.Collection.extend({
+module.exports.user_resource = {
 
   tableName: 'user_resourceTable',
   identity: 'user_resource',
-  connection: 'associations',
 
   attributes: {
-    name: 'string',
-    quantity: 'integer',
+    name: {
+      type: 'string'
+    },
+    quantity: {
+      type: 'integer'
+    },
     profile: {
-      model: 'profile',
-      columnName: 'profile_id'
+      model: 'profile'
+    },
+
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.name;
+      return obj;
     }
   }
 
-});
 
-module.exports.profile = Offshore.Collection.extend({
+};
+
+module.exports.profile = {
 
   tableName: 'profileTable',
   identity: 'profile',
-  connection: 'associations',
 
   attributes: {
-    name: 'string',
-    level : 'integer',
+    name: {
+      type: 'string'
+    },
+    level : {
+      type: 'integer'
+    },
     user: {
-      model: 'user_resource',
-      columnName: 'user_resource_id'
+      model: 'user_resource'
+    },
+
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.level;
+      return obj;
     }
   }
 
-});
+};

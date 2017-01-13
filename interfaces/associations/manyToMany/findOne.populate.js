@@ -11,8 +11,12 @@ describe('Association Interface', function() {
     var driverRecord;
 
     before(function(done) {
+      // Check Driver hasManytoMany Taxis
+      assert.strictEqual(Associations.Driver.attributes.taxis.collection, 'taxi');
+      assert.strictEqual(Associations.Taxi.attributes.drivers.collection, 'driver');
+
       Associations.Driver.create({ name: 'manymany findOne'}, function(err, driver) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         driverRecord = driver;
 
@@ -22,7 +26,7 @@ describe('Association Interface', function() {
         }
 
         driverRecord.save(function(err) {
-          if(err) return done(err);
+          assert.ifError(err);
           done();
         });
       });

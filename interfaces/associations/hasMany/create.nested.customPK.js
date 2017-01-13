@@ -9,6 +9,13 @@ describe('Association Interface', function() {
 
         describe('and objects', function() {
 
+          before(function(done) {
+            // Check Customer hasMany Payments
+            assert.strictEqual(Associations.Customerbelongscustom.attributes.payments.collection, 'paymentbelongscustom');
+            assert.strictEqual(Associations.Paymentbelongscustom.attributes.customer.model, 'customerbelongscustom');
+            done();
+          });
+
           /////////////////////////////////////////////////////
           // TEST METHODS
           ////////////////////////////////////////////////////
@@ -26,14 +33,14 @@ describe('Association Interface', function() {
 
             Associations.Customerbelongscustom.create(data)
             .exec(function(err, values) {
-              if(err) return done(err);
+              assert.ifError(err);
 
               // Look up the customer again to be sure the payments were added
               Associations.Customerbelongscustom.findOne(values.username)
               .populate('payments', { sort: 'amount ASC' })
               .exec(function(err, model) {
 
-                if(err) return done(err);
+                assert.ifError(err);
                 assert.equal(model.payments.length, 2);
 
                 assert.equal(model.payments[0].invoice, 2000);
@@ -54,7 +61,7 @@ describe('Association Interface', function() {
           before(function(done) {
             Associations.Paymentbelongscustom.create({ invoice: 200, amount: 1 })
             .exec(function(err, payment) {
-              if(err) return done(err);
+              assert.ifError(err);
               done();
             });
           });

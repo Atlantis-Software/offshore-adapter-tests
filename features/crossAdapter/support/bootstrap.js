@@ -7,31 +7,30 @@ var _ = require('lodash');
 var async = require('async');
 
 // Require Fixtures
-var associationsFixturesPath = '../../../interfaces/associations/support/';
+var fixtures = require('../../../interfaces/associations/support/fixtures');
 
-var fixtures = {
-  PaymentBelongsFixture: require(associationsFixturesPath + 'fixtures/belongsTo.child.fixture'),
-  PaymentBelongsCustomFixture: require(associationsFixturesPath + 'fixtures/belongsTo.child.customPK.fixture'),
-  CustomerBelongsFixture: require('./fixtures/belongsTo.parent.fixture'),
-  CustomerBelongsCustomFixture: require(associationsFixturesPath + 'fixtures/belongsTo.parent.customPK.fixture'),
-  PaymentHasManyFixture: require('./fixtures/hasMany.child.fixture'),
-  CustomerHasManyFixture: require(associationsFixturesPath + 'fixtures/hasMany.parent.fixture'),
-  ApartmentHasManyFixture: require(associationsFixturesPath + 'fixtures/hasMany.customPK.fixture'),
-  PaymentManyFixture: require(associationsFixturesPath + 'fixtures/multipleAssociations.fixture').payment,
-  CustomerManyFixture: require(associationsFixturesPath + 'fixtures/multipleAssociations.fixture').customer,
-  StadiumFixture: require(associationsFixturesPath + 'fixtures/hasManyThrough.stadium.fixture'),
-  TeamFixture: require(associationsFixturesPath + 'fixtures/hasManyThrough.team.fixture'),
-  VenueFixture: require('./fixtures/hasManyThrough.venue.fixture'),
-  TaxiFixture: require('./fixtures/manyToMany.taxi.fixture'),
-  DriverFixture: require(associationsFixturesPath + 'fixtures/manyToMany.driver.fixture'),
-  TaxiWithSchemaFixture: require(associationsFixturesPath + './fixtures/manyToMany.taxi.withSchema.fixture'),
-  DriverWithSchemaFixture: require(associationsFixturesPath + './fixtures/manyToMany.driver.withSchema.fixture'),
-  TaxiCustomFixture: require(associationsFixturesPath + 'fixtures/manyToMany.taxi.customPK.fixture'),
-  DriverCustomFixture: require(associationsFixturesPath + 'fixtures/manyToMany.driver.customPK.fixture'),
-  UserOneFixture: require(associationsFixturesPath + 'fixtures/oneToOne.fixture').user_resource,
-  ProfileOneFixture: require(associationsFixturesPath + 'fixtures/oneToOne.fixture').profile
-};
+// Divide models connection on `associations` and `associations2` by relations
+var Cnx = {};
+_.keys(fixtures).forEach(function(key) {
 
+  var fixture = fixtures[key];
+  var collectionName = fixture.identity.toLowerCase();
+
+  _.keys(fixture.attributes).forEach(function(attrKey) {
+    if (Cnx[collectionName]) {
+      return;
+    }
+    var attr = fixtures[key].attributes[attrKey];
+    var relation = attr.model || attr.collection;
+    if (relation && Cnx[relation.toLowerCase()] === 'associations') {
+      Cnx[collectionName] = fixture.connection = 'associations2';
+    }
+  });
+
+  if (!Cnx[collectionName]) {
+    Cnx[collectionName] = fixture.connection = 'associations';
+  }
+});
 
 /////////////////////////////////////////////////////
 // TEST SETUP
@@ -43,8 +42,22 @@ before(function(done) {
 
   offshore = new Offshore();
 
+  // create all collection and load them
   Object.keys(fixtures).forEach(function(key) {
-    offshore.loadCollection(fixtures[key]);
+    var collection = fixtures[key];
+    _.keys(collection.attributes).forEach(function(attr) {
+      // skip collection
+      if (collection.attributes[attr].collection) {
+        return;
+      }
+      // skip functions
+      if (_.isFunction(collection.attributes[attr])) {
+        return;
+      }
+      // add columnName
+      collection.attributes[attr].columnName = collection.identity + _.capitalize(attr);
+    });
+    offshore.loadCollection(Offshore.Collection.extend(collection));
   });
 
   var connections = { associations: _.clone(Connections.test), associations2: _.clone(Connections.test2) };

@@ -1,18 +1,18 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'teamTable',
   identity: 'team',
-  connection: 'associations',
 
   attributes: {
-    name: 'string',
-    mascot: 'string',
+    name: {
+      type: 'string'
+    },
+    mascot: {
+      type: 'string'
+    },
+    followers: {
+      type: 'integer'
+    },
     stadiums: {
       collection: 'Stadium',
       through: 'venue',
@@ -26,4 +26,4 @@ module.exports = Offshore.Collection.extend({
     }
   }
 
-});
+};

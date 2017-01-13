@@ -9,33 +9,37 @@ describe('Association Interface', function() {
     // TEST SETUP
     ////////////////////////////////////////////////////
 
-    var users, profiles;
+    var Users, Profiles;
 
     before(function(done) {
-      Associations.User_resource.createEach([{ name: 'foo1' ,quantity : 1}, { name: 'bar1', quantity : 2 }], function(err, models) {
-        if(err) return done(err);
+      // Check User_resource and Profile have a oneToOne association
+      assert.strictEqual(Associations.Profile.attributes.user.model, 'user_resource');
+      assert.strictEqual(Associations.User_resource.attributes.profile.model, 'profile');
 
-        Associations.User_resource.find()
+      Associations.User_resource.createEach([{ name: 'foo1' ,quantity : 1}, { name: 'bar1', quantity : 2 }], function(err, users) {
+        assert.ifError(err);
+
+        Associations.User_resource.find({id: [users[0].id, users[1].id]})
         .sort('quantity asc')
-        .exec(function(err, models) {
-          if(err) return done(err);
+        .exec(function(err, users) {
+          assert.ifError(err);
 
-          users = models;
+          Users = users;
 
           var profileRecords = [
-            { name: 'profile one', user: users[0].id, level : 1},
-            { name: 'profile two', user: users[1].id, level : 2}
+            { name: 'profile one', user: Users[0].id, level : 1},
+            { name: 'profile two', user: Users[1].id, level : 2}
           ];
 
-          Associations.Profile.createEach(profileRecords, function(err, models) {
-            if(err) return done(err);
+          Associations.Profile.createEach(profileRecords, function(err, profiles) {
+            assert.ifError(err);
+            Profiles = profiles;
 
-            Associations.User_resource.update({ name: 'foo1' }, { profile: models[0].id }).exec(function(err, user) {
-              if(err) return done(err);
+            Associations.User_resource.update({ name: 'foo1' }, { profile: profiles[0].id }).exec(function(err, user) {
+              assert.ifError(err);
 
-              Associations.User_resource.update({ name: 'bar1' }, { profile: models[1].id }).exec(function(err, user) {
-                if(err) return done(err);
-                profiles = models;
+              Associations.User_resource.update({ name: 'bar1' }, { profile: profiles[1].id }).exec(function(err, user) {
+                assert.ifError(err);
                 done();
               });
             });
@@ -51,12 +55,13 @@ describe('Association Interface', function() {
       ////////////////////////////////////////////////////
 
       it('should return user when the populate criteria is added on profile', function(done) {
-        Associations.Profile.find()
+        Associations.Profile.find({id: [Profiles[0].id, Profiles[1].id]})
         .sort('level asc')
         .populate('user')
         .exec(function(err, profiles) {
           assert.ifError(err);
 
+          assert.strictEqual(profiles.length, 2);
           assert(profiles[0].user);
           assert(profiles[1].user);
 
@@ -68,12 +73,13 @@ describe('Association Interface', function() {
       });
 
       it('should return profile when the populate criteria is added on user', function(done) {
-        Associations.User_resource.find()
+        Associations.User_resource.find({id: [Users[0].id, Users[1].id]})
         .populate('profile')
         .sort('quantity asc')
         .exec(function(err, users) {
           assert.ifError(err);
 
+          assert.strictEqual(users.length, 2);
           assert(users[0].profile);
           assert(users[1].profile);
 
@@ -85,14 +91,15 @@ describe('Association Interface', function() {
       });
 
       it('should return a user object when the profile is undefined', function(done) {
-        Associations.User_resource.create({ name: 'foobar', profile: undefined }).exec(function(err, usr) {
-          assert(!err, err);
+        Associations.User_resource.create({ name: 'foobar2' }).exec(function(err, usr) {
+          assert.ifError(err);
 
-          Associations.User_resource.find({ name: 'foobar' })
+          Associations.User_resource.find({ name: 'foobar2' })
           .populate('profile')
           .exec(function(err, users) {
             assert.ifError(err);
-            assert(users[0].name);
+            assert.strictEqual(users.length, 1);
+            assert.strictEqual(users[0].name, 'foobar2');
             assert(!users[0].profile, 'Expected `users[0].profile` to be falsy, but instead users[0] looks like ==> '+require('util').inspect(users[0], false, null));
             done();
           });
@@ -100,13 +107,14 @@ describe('Association Interface', function() {
       });
 
       it('should return undefined for profile when the profile is a non-existent foreign key', function(done) {
-        Associations.User_resource.create({ name: 'foobar2', profile: '123' }).exec(function(err, usr) {
-          assert(!err, err);
-          Associations.User_resource.find({ name: 'foobar2' })
+        Associations.User_resource.create({ name: 'foobar3', profile: '123' }).exec(function(err, usr) {
+          assert.ifError(err);
+          Associations.User_resource.find({ name: 'foobar3' })
           .populate('profile')
           .exec(function(err, users) {
             assert.ifError(err);
-            assert(users[0].name);
+            assert.strictEqual(users.length, 1);
+            assert.strictEqual(users[0].name, 'foobar3');
             assert(!users[0].profile, 'Expected `users[0].profile` to be falsy, but instead users[0] looks like ==> '+require('util').inspect(users[0], false, null));
             done();
           });

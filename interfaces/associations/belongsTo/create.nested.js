@@ -7,6 +7,14 @@ var util = require('util');
 describe('Association Interface', function() {
 
   describe('Belongs To Associations', function() {
+
+    before(function(done) {
+      // Check Payment belongsTo Customer
+      assert.strictEqual(Associations.Paymentbelongs.attributes.customer.model, 'customerbelongs');
+      assert.strictEqual(Associations.Customerbelongs.attributes.payments.collection, 'paymentbelongs');
+      done();
+    });
+
     describe('create nested association', function() {
 
       /////////////////////////////////////////////////////
@@ -21,12 +29,10 @@ describe('Association Interface', function() {
           }
         };
 
-        // console.log('----- Associations.Paymentbelongs.create');
         Associations.Paymentbelongs.create(data).exec(function(err, payment) {
-          assert(!err, err);
+          assert.ifError(err);
           assert(payment.customer);
 
-          // console.log('----- Associations.Paymentbelongs.findOne');
           Associations.Paymentbelongs.findOne(payment.id)
           .populate('customer')
           .exec(function(err, _paymnt) {

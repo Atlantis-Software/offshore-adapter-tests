@@ -13,18 +13,22 @@ describe('Association Interface', function() {
 
     before(function(done) {
 
+      // Check Apartment hasMany Payments
+      assert.strictEqual(Associations.Apartment.attributes.payments.collection, 'payment');
+      assert.strictEqual(Associations.Payment.attributes.apartment.model, 'apartment');
+
       var apartmentRecords = [
         { number: 'a00-A', building: '1' },
         { number: 'b00-B', building: '1' }
       ];
 
       Associations.Apartment.createEach(apartmentRecords, function(err, apartments) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         Associations.Apartment.find({ building: '1' })
         .sort('number asc')
         .exec(function(err, apartments) {
-          if(err) return done(err);
+          assert.ifError(err);
 
           // Create 8 payments, 4 from one apartment, 4 from another
           var payments = [];
@@ -34,7 +38,7 @@ describe('Association Interface', function() {
           }
 
           Associations.Payment.createEach(payments, function(err, payments) {
-            if(err) return done(err);
+            assert.ifError(err);
             done();
           });
         });

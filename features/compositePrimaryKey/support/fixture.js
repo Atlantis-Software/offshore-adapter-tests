@@ -8,12 +8,13 @@ module.exports = Offshore.Collection.extend({
   autoPK: false,
 
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string'
+    },
     pkOne: {
       type: 'integer',
       primaryKey: true
     },
-
     pkTwo: {
       type: 'string',
       primaryKey: true
@@ -21,4 +22,3 @@ module.exports = Offshore.Collection.extend({
   }
 
 });
-

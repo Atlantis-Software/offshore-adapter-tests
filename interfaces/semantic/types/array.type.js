@@ -18,7 +18,7 @@ describe('Semantic Interface', function() {
           Semantic.User.findOne({id: createdRecord.id}, function (err, record) {
             assert.ifError(err);
             assert(Array.isArray(record.list));
-            assert.strictEqual(record.list.length, 4);
+            assert.strictEqual(record.list.length, 4, 'resulting array should have a length of 4');
             done();
           });
         });

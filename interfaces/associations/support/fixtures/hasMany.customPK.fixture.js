@@ -1,18 +1,13 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'apartmentTable',
   identity: 'apartment',
-  connection: 'associations',
   autoPK: false,
 
   attributes: {
-    building: 'string',
+    building: {
+      type: 'string'
+    },
     number: {
       type: 'string',
       primaryKey: true,
@@ -24,4 +19,4 @@ module.exports = Offshore.Collection.extend({
     }
   }
 
-});
+};

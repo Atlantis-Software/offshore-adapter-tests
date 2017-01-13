@@ -11,12 +11,16 @@ module.exports = Offshore.Collection.extend({
   connection: 'uniqueConn',
 
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string'
+    },
     email: {
       type: 'string',
       unique: true
     },
-    type: 'string'
+    type: {
+      type: 'string'
+    }
   }
 
 });

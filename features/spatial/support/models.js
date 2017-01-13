@@ -6,8 +6,13 @@ module.exports = Offshore.Collection.extend({
   connection: 'geoConnection',
 
   attributes: {
-    name: 'string',
-    prop1: 'string',
+    name: {
+      type: 'string'
+    },
+    prop1: {
+      type: 'string',
+      columnName: 'geomodelProp1'
+    },
     marker: {
       type: 'geometry',
       geometry: {
@@ -38,5 +43,3 @@ module.exports = Offshore.Collection.extend({
     }
   }
 });
-
-

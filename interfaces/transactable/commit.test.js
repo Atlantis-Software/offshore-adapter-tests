@@ -7,12 +7,13 @@ describe('Transaction commit', function() {
   it('should commit created data', function(done) {
     var id;
     var customerName = 'Test create transaction';
-    
+
     Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       trx.customer.create({name: customerName}).exec(function(err, createResult) {
         if (err) {
           return done(err);
         }
+
         id = createResult.id;
         cb(null, createResult);
       });
@@ -36,7 +37,7 @@ describe('Transaction commit', function() {
     var id;
     var customerName = 'Test update transaction';
     var updatedName = 'Updated test transaction';
-    
+
     Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       trx.customer.create({name: customerName}).exec(function(err, createResult) {
         if (err) {
@@ -73,7 +74,7 @@ describe('Transaction commit', function() {
       });
     });
   });
-  
+
   it('should destroy data', function(done) {
     var id;
     var customerName = 'Test destroy transaction';
@@ -111,7 +112,7 @@ describe('Transaction commit', function() {
   it('should destroy data in transaction', function(done) {
     var id;
     var customerName = 'Test destroy in transaction';
-    
+
     Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       trx.customer.create({name: customerName}).exec(function(err, createResult) {
         if (err) {
@@ -144,7 +145,7 @@ describe('Transaction commit', function() {
   it('original model should not interact with transaction', function(done) {
     var id;
     var customerName = 'Test atomicity transaction';
-    
+
     Offshore.Transaction(Transactable.Customer, function(trx, cb) {
       trx.customer.create({name: customerName}).exec(function(err, createResult) {
         if (err) {
@@ -156,7 +157,7 @@ describe('Transaction commit', function() {
             return done(err);
           }
           assert.equal(findInTrx.length, 1, 'Customer should exist inside the transaction');
-          Transactable.Customer.find({id: id}, function(err, findOutTrx) {
+          Transactable.Customer.find({name: customerName}, function(err, findOutTrx) {
             if (err) {
               return done(err);
             }
@@ -208,7 +209,7 @@ describe('Transaction commit', function() {
 
   it('should perform nested transactions', function(done) {
     var customerName = 'Test transaception';
-    
+
     Offshore.Transaction(Transactable.Customer, function(trx1, cb1) {
       trx1.customer.create({name: customerName}).exec(function(err, customer1) {
         if (err) {
@@ -250,7 +251,7 @@ describe('Transaction commit', function() {
   it('should populate', function(done) {
     var customerName = 'Parent customer';
     var paymentName = 'Child payment';
-    
+
     Transactable.Customer.create({name: customerName}, function(err, customer) {
       if (err) {
         done(err);
@@ -312,7 +313,7 @@ describe('Transaction commit', function() {
   it('should populate undeclared child collections', function(done) {
     var customerName = 'Parent customer 2';
     var paymentName = 'Child payment 2';
-    
+
     Transactable.Customer.create({name: customerName}, function(err, customer) {
       if (err) {
         done(err);
@@ -346,7 +347,7 @@ describe('Transaction commit', function() {
   it('should perform nested transactions and commit only one', function(done) {
     var close;
     var customerName = 'Test transaception2';
-    
+
     Offshore.Transaction(Transactable.Customer, function(trx1, cb1) {
       trx1.customer.create({name: customerName}).exec(function(err, customer1) {
         if (err) {
@@ -360,7 +361,7 @@ describe('Transaction commit', function() {
             // Commit only the first transaction and keep second transaction callback
             close = cb2;
             cb1(null, customer1);
-            
+
           });
         });
       });
@@ -369,14 +370,14 @@ describe('Transaction commit', function() {
         done(err);
       }
       Transactable.Customer.find({name: customerName}, function(err, test) {
+        // Close second transaction to free connection
+        close(null, 'ok');
         if (err) {
           return done(err);
         }
         assert.equal(test.length, 1, 'Only one customer should be commited');
         assert.equal(test[0].name, customerName);
-        
-        // Close second transaction to free connection
-        close(null, 'ok');
+
         done();
       });
     });

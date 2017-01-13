@@ -7,7 +7,9 @@ module.exports = Offshore.Collection.extend({
   connection: 'compositeUniqueConnection',
 
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string'
+    },
     uniqueOne: {
       type: 'string',
       unique: {
@@ -26,4 +28,3 @@ module.exports = Offshore.Collection.extend({
   }
 
 });
-

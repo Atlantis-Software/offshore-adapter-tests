@@ -18,18 +18,22 @@ describe('Association Interface', function() {
 
     before(function(done) {
 
+      // Check Customer hasMany Payments
+      assert.strictEqual(Associations.Customer.attributes.payments.collection, 'payment');
+      assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
+
       Associations.Customer.createEach([{
         name: 'hasMany find where', capital : 1000
       }, {
         name: 'hasMany find where', capital : 2000
       }],
       function(err, customers) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         Associations.Customer.find({ name: 'hasMany find where'})
         .sort('capital asc')
         .exec(function(err, customers) {
-          if(err) return done(err);
+          assert.ifError(err);
 
           Customer = customers[0];
 
@@ -41,7 +45,7 @@ describe('Association Interface', function() {
           }
 
           Associations.Payment.createEach(payments, function(err, payments) {
-            if(err) return done(err);
+            assert.ifError(err);
             done();
           });
         });
@@ -116,7 +120,7 @@ describe('Association Interface', function() {
 
         // Find the payments
         Associations.Payment.findOne({ amount: 1, a_customer: Customer.id }).exec(function(err, payment) {
-          if(err) return done(err);
+          assert.ifError(err);
 
           Associations.Customer.find({ name: 'hasMany find where' })
           .populate('payments', {where : { id: payment.id }, sort : {amount : 1}})

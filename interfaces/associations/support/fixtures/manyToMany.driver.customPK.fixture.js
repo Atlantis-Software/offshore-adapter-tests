@@ -1,14 +1,7 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'driverTableCustomPK',
   identity: 'drivercustom',
-  connection: 'associations',
 
   autoPK: false,
 
@@ -17,11 +10,13 @@ module.exports = Offshore.Collection.extend({
       type: 'integer',
       primaryKey: true
     },
-    name: 'string',
+    name: {
+      type: 'string'
+    },
     taxis: {
       collection: 'taxicustom',
       via: 'drivers',
       dominant: true
     }
   }
-});
+};

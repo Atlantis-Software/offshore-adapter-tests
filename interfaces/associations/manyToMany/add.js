@@ -14,9 +14,13 @@ describe('Association Interface', function() {
       var driverRecord;
 
       before(function(done) {
+        // Check Driver hasManytoMany Taxis
+        assert.strictEqual(Associations.Driver.attributes.taxis.collection, 'taxi');
+        assert.strictEqual(Associations.Taxi.attributes.drivers.collection, 'driver');
+
         Associations.Driver.create({ name: 'manymany add' })
         .exec(function(err, model) {
-          if(err) return done(err);
+          assert.ifError(err);
           driverRecord = model;
           done();
         });
@@ -59,12 +63,12 @@ describe('Association Interface', function() {
       before(function(done) {
         Associations.Driver.create({ name: 'manymany add' })
         .exec(function(err, model) {
-          if(err) return done(err);
+          assert.ifError(err);
           driverRecord = model;
 
           Associations.Taxi.create([{ medallion: 20 }, { medallion: 30 }])
           .exec(function(err, taxis) {
-            if(err) return done(err);
+            assert.ifError(err);
             taxiRecord = taxis[0];
             taxiRecord2 = taxis[1];
             done();

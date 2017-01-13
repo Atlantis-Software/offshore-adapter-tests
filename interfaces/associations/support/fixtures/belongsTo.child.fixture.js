@@ -1,21 +1,18 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'paymentbelongsTable',
   identity: 'paymentbelongs',
   connection: 'associations',
 
   attributes: {
-    amount: 'integer',
-    type: 'string',
+    amount: {
+      type: 'integer'
+    },
+    type: {
+      type: 'string'
+    },
     customer: {
-      model: 'Customerbelongs',
-      columnName: 'customer_belongs'
+      model: 'Customerbelongs'
     },
 
     toJSON: function() {
@@ -25,4 +22,4 @@ module.exports = Offshore.Collection.extend({
     }
   }
 
-});
+};

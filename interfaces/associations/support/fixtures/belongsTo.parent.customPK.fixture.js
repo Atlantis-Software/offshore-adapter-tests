@@ -1,10 +1,4 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'customerbelongsPKTable',
   identity: 'customerbelongscustom',
@@ -17,12 +11,16 @@ module.exports = Offshore.Collection.extend({
       type: 'string',
       primaryKey: true
     },
-    name: 'string',
-    title: 'string',
+    name: {
+      type: 'string'
+    },
+    title: {
+      type: 'string'
+    },
     payments: {
       collection: 'Paymentbelongscustom',
       via: 'customer'
     }
   }
 
-});
+};

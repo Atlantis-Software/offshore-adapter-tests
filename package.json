@@ -15,7 +15,7 @@
     "mocha": "2.4.5",
     "offshore-memory": "Atlantis-Software/offshore-memory",
     "should": "8.2.1",
-    "offshore": "~0.0.8"
+    "offshore": "Atlantis-Software/offshore"
   },
   "devDependencies": {
     "jpath": "0.0.20",

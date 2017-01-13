@@ -78,5 +78,14 @@ describe('Semantic Interface', function() {
       });
     });
 
+    it('should find column not set', function(done) {
+      Semantic.User.find({type: 'find test', phone: null}, function(err, users) {
+        assert.ifError(err);
+        assert(Array.isArray(users));
+        assert.equal(users.length, 10, 'should find 10 results');
+        done();
+      });
+    });
+
   });
 });

@@ -10,20 +10,41 @@ describe('Semantic Interface', function() {
       // TEST METHODS
       ////////////////////////////////////////////////////
 
-      it('should store proper date value', function(done) {
-        var date = new Date();
-        var origDate = Date.parse(date);
-        Semantic.User.create({ dob: date }, function(err, createdRecord) {
+      var dateId;
+      var date = new Date(1970,0,1);
+      var parsedDate = '1970-0-1';
+
+      it.skip('should store proper date value', function(done) {
+        Semantic.User.create({ birthday: date }, function(err, createdRecord) {
           assert.ifError(err);
-          var createdDate = Date.parse(new Date(createdRecord.dob));
-          assert.strictEqual(origDate, createdDate);
+          createdDate = createdRecord.birthday.getFullYear() + '-' +
+                        createdRecord.birthday.getMonth() + '-' +
+                        createdRecord.birthday.getDate();
+          assert.strictEqual(parsedDate, createdDate);
+          dateId = createdRecord.id;
           Semantic.User.findOne({id: createdRecord.id}, function (err, record) {
             assert.ifError(err);
             // Convert both dates to unix timestamps
-            var resultDate = Date.parse(new Date(record.dob));
-            assert.strictEqual(origDate, resultDate);
+            var resultDate = record.birthday.getFullYear() + '-' +
+                             record.birthday.getMonth() + '-' +
+                             record.birthday.getDate();
+            assert.strictEqual(parsedDate, resultDate, 'date should correspond');
             done();
           });
+        });
+      });
+
+      it.skip('should find record by date criteria', function(done) {
+        var findDate = new Date(3600*1000*5.5);
+
+        Semantic.User.find({ birthday: findDate }, function (err, record) {
+          assert.ifError(err);
+          assert.strictEqual(record.length, 1, 'should have 1 result');
+
+          // Convert both dates to unix timestamps
+          var resultDate = Date.parse(new Date(record[0].birthday));
+          assert.strictEqual(dateId, record[0].id, 'id should correspond');
+          done();
         });
       });
 

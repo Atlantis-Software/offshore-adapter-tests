@@ -34,9 +34,7 @@ describe('spatial feature', function () {
         done();
       });
     });
-    it.skip('should return a FeatureCollection if queried with .asGeojson()', function (done) {
-      done();
-    })
+
   });
 
   before(function(done) {

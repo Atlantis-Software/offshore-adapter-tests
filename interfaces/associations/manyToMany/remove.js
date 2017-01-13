@@ -13,10 +13,13 @@ describe('Association Interface', function() {
       var driverRecord, taxiRecords;
 
       before(function(done) {
+        // Check Driver hasManytoMany Taxis
+        assert.strictEqual(Associations.Driver.attributes.taxis.collection, 'taxi');
+        assert.strictEqual(Associations.Taxi.attributes.drivers.collection, 'driver');
 
         Associations.Driver.create({ name: 'manymany remove' })
         .exec(function(err, model) {
-          if(err) return done(err);
+          assert.ifError(err);
 
           driverRecord = model;
 
@@ -26,12 +29,12 @@ describe('Association Interface', function() {
           }
 
           driverRecord.save(function(err) {
-            if(err) return done(err);
+            assert.ifError(err);
 
             Associations.Driver.findOne(driverRecord.id)
             .populate('taxis')
             .exec(function(err, driver) {
-              if(err) return done(err);
+              assert.ifError(err);
               taxiRecords = driver.toObject().taxis;
               done();
             });
@@ -72,7 +75,7 @@ describe('Association Interface', function() {
       before(function(done) {
         Associations.Driver.create({ name: 'manymany remove' })
         .exec(function(err, model) {
-          if(err) return done(err);
+          assert.ifError(err);
           driverRecord = model;
           done();
         });

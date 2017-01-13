@@ -19,7 +19,7 @@ describe('Association Interface', function() {
     before(function(done) {
 
       Associations.Customer.createEach([{}, {}], function(err, customers) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         // cache customers
         Customers = customers;
@@ -31,7 +31,7 @@ describe('Association Interface', function() {
         for(i=0; i<2; i++) payments.push({ amount: i, a_customer: customers[1].id });
 
         Associations.Payment.createEach(payments, function(err) {
-          if(err) return done(err);
+          assert.ifError(err);
           done();
         });
 

@@ -1,21 +1,15 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'driverWithSchemaTable',
   meta: {
     schemaName: 'foo'
   },
   identity: 'driverwithschema',
-  connection: 'associations',
 
-  // migrate: 'drop', 
   attributes: {
-    name: 'string',
+    name: {
+      type: 'string'
+    },
     taxis: {
       collection: 'taxiwithschema',
       via: 'drivers',
@@ -28,4 +22,4 @@ module.exports = Offshore.Collection.extend({
       return obj;
     }
   }
-});
+};

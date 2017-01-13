@@ -16,13 +16,16 @@ describe('Association Interface', function() {
           var Customer;
 
           before(function(done) {
+            // Check Customer hasMany Payments
+            assert.strictEqual(Associations.Customer.attributes.payments.collection, 'payment');
+            assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
 
             var data = {
               name: 'has many nested update'
             };
 
             Associations.Customer.create(data).exec(function(err, values) {
-              if(err) return done(err);
+              assert.ifError(err);
               Customer = values;
               done();
             });
@@ -81,7 +84,7 @@ describe('Association Interface', function() {
             };
 
             Associations.Customer.create(data).exec(function(err, customer) {
-              if(err) return done(err);
+              assert.ifError(err);
               Customer = customer;
               done();
             });
@@ -148,11 +151,11 @@ describe('Association Interface', function() {
             };
 
             Associations.Payment.create(paymentData).exec(function(err, payments) {
-              if(err) return done(err);
+              assert.ifError(err);
               Payments = payments;
 
               Associations.Customer.create(data).exec(function(err, customer) {
-                if(err) return done(err);
+                assert.ifError(err);
                 Customer = customer;
                 done();
               });
@@ -172,7 +175,7 @@ describe('Association Interface', function() {
             };
 
             Associations.Customer.update({ id: Customer.id }, data).exec(function(err, values) {
-              if(err) return done(err);
+              assert.ifError(err);
 
               // Look up the customer again to be sure the payments were added
               Associations.Customer.findOne(values[0].id)

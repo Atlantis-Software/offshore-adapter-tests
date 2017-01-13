@@ -16,6 +16,9 @@ describe('Association Interface', function() {
           var Customer;
 
           before(function(done) {
+            // Check Customer hasMany Payments
+            assert.strictEqual(Associations.Customerbelongscustom.attributes.payments.collection, 'paymentbelongscustom');
+            assert.strictEqual(Associations.Paymentbelongscustom.attributes.customer.model, 'customerbelongscustom');
 
             var data = {
               username: 'has many nested',
@@ -24,7 +27,7 @@ describe('Association Interface', function() {
 
             Associations.Customerbelongscustom.create(data)
             .exec(function(err, values) {
-              if(err) return done(err);
+              assert.ifError(err);
               Customer = values;
               done();
             });
@@ -88,7 +91,7 @@ describe('Association Interface', function() {
 
             Associations.Customerbelongscustom.create(data)
             .exec(function(err, customer) {
-              if(err) return done(err);
+              assert.ifError(err);
               Customer = customer;
               done();
             });

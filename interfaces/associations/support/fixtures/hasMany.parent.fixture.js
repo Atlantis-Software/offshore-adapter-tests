@@ -1,19 +1,18 @@
-/**
- * Dependencies
- */
-
-var Offshore = require('offshore');
-
-module.exports = Offshore.Collection.extend({
+module.exports = {
 
   tableName: 'customerTable',
   identity: 'customer',
-  connection: 'associations',
 
   attributes: {
-    name: 'string',
-    title: 'string',
-    capital : 'integer',
+    name: {
+      type: 'string'
+    },
+    title: {
+      type: 'string'
+    },
+    capital : {
+      type: 'integer'
+    },
     payments: {
       collection: 'Payment',
       via: 'a_customer'
@@ -26,4 +25,4 @@ module.exports = Offshore.Collection.extend({
     }
   }
 
-});
+};

@@ -3,7 +3,7 @@ var assert = require('assert'),
 
 describe('Association Interface', function() {
 
-  describe('1:1 association :: .update()', function() {
+  describe('Belongs To Association', function() {
     describe('update nested associations()', function() {
       describe('with single level depth', function() {
 
@@ -16,9 +16,12 @@ describe('Association Interface', function() {
           var Payment;
 
           before(function(done) {
+            // Check Payment belongsTo Customer
+            assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
+            assert.strictEqual(Associations.Customer.attributes.payments.collection, 'payment');
 
             Associations.Payment.create({ amount: 1 }).exec(function(err, values) {
-              if(err) return done(err);
+              assert.ifError(err);
               Payment = values;
               done();
             });
@@ -72,7 +75,7 @@ describe('Association Interface', function() {
             };
 
             Associations.Payment.create(data).exec(function(err, payment) {
-              if(err) return done(err);
+              assert.ifError(err);
               Payment = payment;
               done();
             });
@@ -122,12 +125,12 @@ describe('Association Interface', function() {
           before(function(done) {
 
             Associations.Customer.create([{ name: 'foo' }, { name: 'bar' }]).exec(function(err, customers) {
-              if(err) return done(err);
+              assert.ifError(err);
               Customers = customers;
 
               Associations.Payment.create({ amount: 100, a_customer: customers[0].id })
               .exec(function(err, payment) {
-                if(err) return done(err);
+                assert.ifError(err);
                 Payment = payment;
                 done();
               });

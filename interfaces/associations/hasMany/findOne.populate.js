@@ -12,8 +12,12 @@ describe('Association Interface', function() {
     var customerRecord;
 
     before(function(done) {
+      // Check Customer hasMany Payments
+      assert.strictEqual(Associations.Customer.attributes.payments.collection, 'payment');
+      assert.strictEqual(Associations.Payment.attributes.a_customer.model, 'customer');
+
       Associations.Customer.create({ name: 'hasMany findOne' }, function(err, customer) {
-        if(err) return done(err);
+        assert.ifError(err);
 
         customerRecord = customer;
 
@@ -24,7 +28,7 @@ describe('Association Interface', function() {
         }
 
         Associations.Payment.createEach(payments, function(err) {
-          if(err) return done(err);
+          assert.ifError(err);
           done();
         });
       });
