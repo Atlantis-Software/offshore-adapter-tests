@@ -10,6 +10,12 @@ module.exports = {
     type: {
       type: 'string'
     },
+    bank: {
+      type: 'string'
+    },
+    currency: {
+      type: 'string'
+    },
     apartment: {
       model: 'apartment'
     },

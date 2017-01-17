@@ -25,10 +25,10 @@ describe('Association Interface', function() {
         Customers.push({name: 'modifier3', capital: 32000, payments: []});
         Customers.push({name: 'modifier4', capital: 25000, payments: []});
 
-        Customers[1].payments.push({amount: 150, type: 'aquaman'});
-        Customers[1].payments.push({amount: 350, type: 'batman'});
-        Customers[1].payments.push({amount: 180, type: 'catwoman'});
-        Customers[1].payments.push({amount: 180, type: 'daredevil'});
+        Customers[1].payments.push({amount: 150, type: 'aquaman', bank: 'Money Inc', currency: 'euro'});
+        Customers[1].payments.push({amount: 350, type: 'batman', bank: 'Cash Tm', currency: 'dollar'});
+        Customers[1].payments.push({amount: 180, type: 'catwoman', bank: 'Money Inc', currency: 'euro'});
+        Customers[1].payments.push({amount: 180, type: 'daredevil', bank: 'Cash Tm', currency: 'euro'});
 
         Associations.Customer.createEach(Customers, function(err) {
           assert.ifError(err);
@@ -532,6 +532,29 @@ describe('Association Interface', function() {
         });
       });
 
+      it('should return the correct sum with groupBy', function(done) {
+        Associations.Customer.find({ where: { name: 'modifier2' }})
+          .populate('payments', {sum: ['amount'], groupBy: ['bank', 'currency'], sort: ['bank asc', 'currency desc'] })
+          .exec(function(err, customers) {
+          assert.ifError(err);
+          assert(Array.isArray(customers));
+          assert.strictEqual(customers.length, 1);
+          assert.strictEqual(customers[0].name, 'modifier2');
+          assert(Array.isArray(customers[0].payments));
+          console.log('POUET :', customers[0].payments);
+          assert.strictEqual(customers[0].payments.length, 3);
+          assert.strictEqual(customers[0].payments[0].amount, 180);
+          assert.strictEqual(customers[0].payments[0].bank, 'Cash Tm');
+          assert.strictEqual(customers[0].payments[0].currency, 'euro');
+          assert.strictEqual(customers[0].payments[1].amount, 350);
+          assert.strictEqual(customers[0].payments[1].bank, 'Cash Tm');
+          assert.strictEqual(customers[0].payments[1].currency, 'dollar');
+          assert.strictEqual(customers[0].payments[2].amount, 330);
+          assert.strictEqual(customers[0].payments[2].bank, 'Money Inc');
+          assert.strictEqual(customers[0].payments[2].currency, 'euro');
+          done();
+        });
+      });
 
     });
   });
