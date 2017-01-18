@@ -83,7 +83,7 @@ describe('autoIncrement attribute feature', function() {
 
         var ids = lastIds = _.map(records, 'id');
         assert.equal(ids.length, 10);
-        assert.equal(_.unique(ids).length, 10, 'Generated ids are not unique: '+ids.join(', '));
+        assert.equal(_.uniq(ids).length, 10, 'Generated ids are not unique: '+ids.join(', '));
 
         done();
       });
@@ -114,7 +114,7 @@ describe('autoIncrement attribute feature', function() {
 
         var ids = _.map(records, 'id');
         assert.equal(ids.length, 5)
-        assert.equal(_.unique(ids).length, 5)
+        assert.equal(_.uniq(ids).length, 5)
 
         // Create another set of records without auto inc values set. The generated values should be
         // unique, even when compared to those set explicitly.
@@ -138,7 +138,7 @@ describe('autoIncrement attribute feature', function() {
 
             var ids = _.map(records, 'id');
             assert.equal(ids.length, 10);
-            assert.equal(_.unique(ids).length, 10, 'Preset and generated ids are not unique: '+ids.join(', '));
+            assert.equal(_.uniq(ids).length, 10, 'Preset and generated ids are not unique: '+ids.join(', '));
 
             done();
           });
