@@ -541,7 +541,6 @@ describe('Association Interface', function() {
           assert.strictEqual(customers.length, 1);
           assert.strictEqual(customers[0].name, 'modifier2');
           assert(Array.isArray(customers[0].payments));
-          console.log('POUET :', customers[0].payments);
           assert.strictEqual(customers[0].payments.length, 3);
           assert.strictEqual(customers[0].payments[0].amount, 180);
           assert.strictEqual(customers[0].payments[0].bank, 'Cash Tm');

@@ -539,7 +539,6 @@ describe('Association Interface', function() {
           assert.strictEqual(drivers[0].name, 'modifier2');
           assert(Array.isArray(drivers[0].taxis));
           assert.strictEqual(drivers[0].taxis.length, 3);
-          console.log('TAXIS : ', drivers[0].taxis);
           assert.strictEqual(drivers[0].taxis[0].medallion, 180);
           assert.strictEqual(drivers[0].taxis[0].brand, 'bobby');
           assert.strictEqual(drivers[0].taxis[0].transmission, 'manual');
