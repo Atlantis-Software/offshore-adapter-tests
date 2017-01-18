@@ -81,7 +81,7 @@ describe('autoIncrement attribute feature', function() {
         assert.equal(records[0].name, 'ai_0');
         assert(records[0].normalField === null || records[0].normalField === undefined);
 
-        var ids = lastIds = _.pluck(records, 'id');
+        var ids = lastIds = _.map(records, 'id');
         assert.equal(ids.length, 10);
         assert.equal(_.unique(ids).length, 10, 'Generated ids are not unique: '+ids.join(', '));
 
@@ -112,7 +112,7 @@ describe('autoIncrement attribute feature', function() {
         assert.equal(records[0].name, 'ai_0');
         assert.equal(records[0].normalField, 10);
 
-        var ids = _.pluck(records, 'id');
+        var ids = _.map(records, 'id');
         assert.equal(ids.length, 5)
         assert.equal(_.unique(ids).length, 5)
 
@@ -136,7 +136,7 @@ describe('autoIncrement attribute feature', function() {
             assert(records[5].id);
             assert.equal(records[5].name, 'ai_5');
 
-            var ids = _.pluck(records, 'id');
+            var ids = _.map(records, 'id');
             assert.equal(ids.length, 10);
             assert.equal(_.unique(ids).length, 10, 'Preset and generated ids are not unique: '+ids.join(', '));
 
