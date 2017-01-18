@@ -24,10 +24,10 @@ describe('Association Interface', function() {
         Drivers.push({name: 'modifier3', drivingTime: 32000, taxis: []});
         Drivers.push({name: 'modifier4', drivingTime: 25000, taxis: []});
 
-        Drivers[1].taxis.push({medallion: 150, type: 'aquaman'});
-        Drivers[1].taxis.push({medallion: 350, type: 'batman'});
-        Drivers[1].taxis.push({medallion: 180, type: 'catwoman'});
-        Drivers[1].taxis.push({medallion: 180, type: 'daredevil'});
+        Drivers[1].taxis.push({medallion: 150, type: 'aquaman', brand: 'jimmy', transmission: 'manual'});
+        Drivers[1].taxis.push({medallion: 350, type: 'batman', brand: 'bobby', transmission: 'automatic'});
+        Drivers[1].taxis.push({medallion: 180, type: 'catwoman', brand: 'jimmy', transmission: 'manual'});
+        Drivers[1].taxis.push({medallion: 180, type: 'daredevil', brand: 'bobby', transmission: 'manual'});
 
         Associations.Driver.createEach(Drivers, function(err) {
           assert.ifError(err);
@@ -525,6 +525,29 @@ describe('Association Interface', function() {
           assert.strictEqual(Drivers[1].taxis.length, 2);
           assert.strictEqual(Drivers[1].taxis[0].type, 'daredevil');
           assert.strictEqual(Drivers[1].taxis[1].type, 'catwoman');
+          done();
+        });
+      });
+
+      it('should return the correct sum with groupBy', function(done) {
+        Associations.Driver.find({ where: { name: 'modifier2' }})
+          .populate('taxis', {sum: ['medallion'], groupBy: ['brand', 'transmission'], sort: ['brand asc', 'transmission desc'] })
+          .exec(function(err, drivers) {
+          assert.ifError(err);
+          assert(Array.isArray(drivers));
+          assert.strictEqual(drivers.length, 1);
+          assert.strictEqual(drivers[0].name, 'modifier2');
+          assert(Array.isArray(drivers[0].taxis));
+          assert.strictEqual(drivers[0].taxis.length, 3);
+          assert.strictEqual(drivers[0].taxis[0].medallion, 180);
+          assert.strictEqual(drivers[0].taxis[0].brand, 'bobby');
+          assert.strictEqual(drivers[0].taxis[0].transmission, 'manual');
+          assert.strictEqual(drivers[0].taxis[1].medallion, 350);
+          assert.strictEqual(drivers[0].taxis[1].brand, 'bobby');
+          assert.strictEqual(drivers[0].taxis[1].transmission, 'automatic');
+          assert.strictEqual(drivers[0].taxis[2].medallion, 330);
+          assert.strictEqual(drivers[0].taxis[2].brand, 'jimmy');
+          assert.strictEqual(drivers[0].taxis[2].transmission, 'manual');
           done();
         });
       });

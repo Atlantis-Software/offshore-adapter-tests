@@ -26,10 +26,10 @@ describe('Association Interface', function() {
         Stadiums.push({name: 'modifier3', budget: 32000, teams: []});
         Stadiums.push({name: 'modifier4', budget: 25000, teams: []});
 
-        Stadiums[1].teams.push({followers: 150, mascot: 'aquaman'});
-        Stadiums[1].teams.push({followers: 350, mascot: 'batman'});
-        Stadiums[1].teams.push({followers: 180, mascot: 'catwoman'});
-        Stadiums[1].teams.push({followers: 180, mascot: 'daredevil'});
+        Stadiums[1].teams.push({followers: 150, mascot: 'aquaman', score: 20, league: 2 });
+        Stadiums[1].teams.push({followers: 350, mascot: 'batman', score: 10, league: 1});
+        Stadiums[1].teams.push({followers: 180, mascot: 'catwoman', score: 20, league: 2});
+        Stadiums[1].teams.push({followers: 180, mascot: 'daredevil', score: 10, league: 2});
 
         Associations.Stadium.createEach(Stadiums, function(err) {
           assert.ifError(err);
@@ -527,6 +527,29 @@ describe('Association Interface', function() {
           assert.strictEqual(Stadiums[1].teams.length, 2);
           assert.strictEqual(Stadiums[1].teams[0].mascot, 'daredevil');
           assert.strictEqual(Stadiums[1].teams[1].mascot, 'catwoman');
+          done();
+        });
+      });
+
+      it('should return the correct sum with groupBy', function(done) {
+        Associations.Stadium.find({ where: { name: 'modifier2' }})
+          .populate('teams', {sum: ['followers'], groupBy: ['score', 'league'], sort: ['score asc', 'league desc'] })
+          .exec(function(err, stadiums) {
+          assert.ifError(err);
+          assert(Array.isArray(stadiums));
+          assert.strictEqual(stadiums.length, 1);
+          assert.strictEqual(stadiums[0].name, 'modifier2');
+          assert(Array.isArray(stadiums[0].teams));
+          assert.strictEqual(stadiums[0].teams.length, 3);
+          assert.strictEqual(stadiums[0].teams[0].followers, 180);
+          assert.strictEqual(stadiums[0].teams[0].score, 10);
+          assert.strictEqual(stadiums[0].teams[0].league, 2);
+          assert.strictEqual(stadiums[0].teams[1].followers, 350);
+          assert.strictEqual(stadiums[0].teams[1].score, 10);
+          assert.strictEqual(stadiums[0].teams[1].league, 1);
+          assert.strictEqual(stadiums[0].teams[2].followers, 330);
+          assert.strictEqual(stadiums[0].teams[2].score, 20);
+          assert.strictEqual(stadiums[0].teams[2].league, 2);
           done();
         });
       });

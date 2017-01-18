@@ -10,6 +10,12 @@ module.exports = {
     type: {
       type: 'string'
     },
+    brand: {
+      type: 'string'
+    },
+    transmission: {
+      type: 'string'
+    },
     drivers: {
       collection: 'driver',
       via: 'taxis'

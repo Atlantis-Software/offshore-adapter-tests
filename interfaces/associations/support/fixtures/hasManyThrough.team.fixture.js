@@ -13,6 +13,12 @@ module.exports = {
     followers: {
       type: 'integer'
     },
+    score: {
+      type: 'integer'
+    },
+    league: {
+      type: 'integer'
+    },
     stadiums: {
       collection: 'Stadium',
       through: 'venue',
