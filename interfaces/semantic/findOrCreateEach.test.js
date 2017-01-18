@@ -1,5 +1,4 @@
-var assert = require('assert'),
-    _ = require('lodash');
+var assert = require('assert');
 
 describe('Semantic Interface', function() {
 
