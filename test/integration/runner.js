@@ -59,7 +59,9 @@ new TestRunner({
   mochaChainableMethods: {},
 
   // Return code != 0 if any test failed
-  failOnError: true
+  failOnError: true,
+
+  childProcess: true
 
   // Most databases implement 'semantic' and 'queryable'.
   //
