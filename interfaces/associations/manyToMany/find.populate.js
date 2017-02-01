@@ -28,7 +28,11 @@ describe('Association Interface', function() {
 
         driverRecord.save(function(err) {
           assert.ifError(err);
-          done();
+
+          Associations.Driver.create({ name: 'manymany find no child'}, function(err, driver) {
+            assert.ifError(err);
+            done();
+          });
         });
       });
     });
@@ -80,6 +84,22 @@ describe('Association Interface', function() {
         assert(!obj.taxis[0].hasOwnProperty('medallion'));
         assert(obj.taxis[1].hasOwnProperty('createdAt'));
         assert(!obj.taxis[1].hasOwnProperty('medallion'));
+
+        done();
+      });
+    });
+
+    it('populate should be an empty array if id refer to an undefined child', function(done) {
+      Associations.Driver.find({ name: 'manymany find no child' })
+      .populate('taxis')
+      .exec(function(err, drivers) {
+        assert.ifError(err);
+
+        assert.strictEqual(drivers.length, 1);
+
+        assert(!_.isUndefined(drivers[0].taxis), 'Child should not be undefined');
+        assert(_.isArray(drivers[0].taxis), 'Child should be an array');
+        assert.strictEqual(drivers[0].taxis.length, 0);
 
         done();
       });

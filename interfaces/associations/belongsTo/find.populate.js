@@ -35,6 +35,10 @@ describe('Association Interface', function() {
             amount: 2,
             type: 'belongsTo find',
             a_customer: customers[1].id
+          }, {
+            amount: 3,
+            type: 'belongsTo find no child',
+            a_customer: 1000
           }], function(err, _payments) {
           assert.ifError(err);
 
@@ -116,6 +120,20 @@ describe('Association Interface', function() {
           assert.ifError(err);
           assert.strictEqual(payments.length, 1);
           assert.strictEqual(payments[0].a_customer.id, customers[0].id);
+
+          done();
+        });
+      });
+
+      it('populate should be null if id refer to an undefined child', function(done) {
+        Associations.Payment.find({where: {amount: 3}})
+        .populate('a_customer')
+        .exec(function(err, payments) {
+          assert.ifError(err);
+          assert.strictEqual(payments.length, 1);
+          assert.strictEqual(payments[0].amount, 3);
+          assert(!_.isUndefined(payments[0].a_customer), 'Child should not be undefined');
+          assert(_.isNull(payments[0].a_customer), 'Child should be null, but is actually : ', payments[0].a_customer);
 
           done();
         });
