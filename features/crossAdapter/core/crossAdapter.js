@@ -84,25 +84,27 @@ function CrossAdapter(options, cb) {
     cb(err);
   });
 
-  runner.on('pass', function (test) {
-    process.send({
-      file: test.file,
-      title: test.title,
-      state: test.state,
-      duration: test.duration
+  if (options.childProcess) {
+    runner.on('pass', function (test) {
+      process.send({
+        file: test.file,
+        title: test.title,
+        state: test.state,
+        duration: test.duration
+      });
     });
-  });
 
-  runner.on('fail', function (test, error) {
-    console.error(test.err);
-    process.send({
-      file: test.file,
-      title: test.title,
-      state: test.state,
-      duration: test.duration,
-      err: test.err
+    runner.on('fail', function (test, error) {
+      console.error(test.err);
+      process.send({
+        file: test.file,
+        title: test.title,
+        state: test.state,
+        duration: test.duration,
+        err: test.err
+      });
     });
-  });
+  }
 };
 
 /**
