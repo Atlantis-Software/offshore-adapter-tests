@@ -35,7 +35,8 @@ describe('Association Interface', function() {
           assert.ifError(err);
 
           // Ensure the foreignKey get set
-          assert.equal(payment.customer, 'belongsTo');
+          assert.equal(payment.customer.username, 'belongsTo');
+          assert.equal(payment.customer.title, 'belongsTo nested create');
 
           // Look up the values and test that populate works on the custom values
           Associations.Paymentbelongscustom.findOne(payment.invoice)

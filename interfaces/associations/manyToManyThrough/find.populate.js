@@ -21,23 +21,27 @@ describe('Association Interface', function() {
       Associations.Stadium.create({ name: 'hasManyThrough find stadium'}, function(err, stadium) {
         assert.ifError(err);
         stadiumRecord = stadium;
-      Associations.Stadium.create({ name: 'hasManyThrough find stadium2'}, function(err, stadium2) {
-        assert.ifError(err);
-        stadiumRecord2 = stadium2;
-          Associations.Team.create({ name: 'hasManyThrough team1', mascot: 'elephant' }, function(err, team) {
+        Associations.Stadium.create({ name: 'hasManyThrough find stadium2'}, function(err, stadium2) {
+          assert.ifError(err);
+          stadiumRecord2 = stadium2;
+          Associations.Stadium.create({ name: 'find stadium hasManyThrough no child'}, function(err, stadium3) {
             assert.ifError(err);
-            teamRecord = team;
 
-            Associations.Team.create({ name: 'hasManyThrough team1', mascot: 'fox' }, function(err, team2) {
+            Associations.Team.create({ name: 'hasManyThrough team1', mascot: 'elephant' }, function(err, team) {
               assert.ifError(err);
-              teamRecord2 = team2;
+              teamRecord = team;
 
-              Associations.Venue.create({ seats: 200, stadium: stadium.id, team: team.id }, function(err, venue) {
+              Associations.Team.create({ name: 'hasManyThrough team1', mascot: 'fox' }, function(err, team2) {
                 assert.ifError(err);
+                teamRecord2 = team2;
 
-                Associations.Venue.create({ seats: 200, stadium: stadium2.id, team: team2.id }, function(err, venue) {
+                Associations.Venue.create({ seats: 200, stadium: stadium.id, team: team.id }, function(err, venue) {
                   assert.ifError(err);
-                    done();
+
+                  Associations.Venue.create({ seats: 200, stadium: stadium2.id, team: team2.id }, function(err, venue) {
+                    assert.ifError(err);
+                      done();
+                  });
                 });
               });
             });
@@ -93,6 +97,20 @@ describe('Association Interface', function() {
           assert.strictEqual(obj.teams.length, 1);
           assert(!obj.teams[0].mascot);
 
+          done();
+        });
+      });
+
+      it('populate should be an empty array if id refer to an undefined child', function(done) {
+        Associations.Stadium.find({name: 'find stadium hasManyThrough no child'})
+        .populate('teams')
+        .exec(function(err, stadiums) {
+          assert.ifError(err);
+
+          assert.strictEqual(stadiums.length, 1);
+          assert(!_.isUndefined(stadiums[0].teams), 'Child should not be undefined');
+          assert(_.isArray(stadiums[0].teams), 'Child should be an array');
+          assert.strictEqual(stadiums[0].teams.length, 0);
           done();
         });
       });

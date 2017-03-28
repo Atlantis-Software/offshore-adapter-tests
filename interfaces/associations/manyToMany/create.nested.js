@@ -64,7 +64,6 @@ describe('Association Interface', function() {
           ////////////////////////////////////////////////////
 
           it('should create a new driver and taxi associations', function(done) {
-
             var data = {
               name: 'many to many nested',
               taxis: [
@@ -75,6 +74,7 @@ describe('Association Interface', function() {
 
             Associations.Driver.create(data).exec(function(err, values) {
               assert.ifError(err);
+              assert(values.taxis.length);
 
               // Look up the driver again to be sure the taxis were added
               Associations.Driver.findOne(values.id)

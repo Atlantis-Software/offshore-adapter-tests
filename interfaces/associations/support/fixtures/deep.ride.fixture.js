@@ -6,7 +6,8 @@ module.exports = {
   attributes: {
     id: {
       type: 'integer',
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     taxi: {
       model: 'TaxiDeep'

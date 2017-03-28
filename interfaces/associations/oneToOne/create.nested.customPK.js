@@ -35,7 +35,8 @@ describe('Association Interface', function() {
           assert.ifError(err);
 
           // Ensure the foreignKey get set
-          assert.equal(user.profile, 'oneToOne');
+          assert.equal(user.profile.name, 'oneToOne');
+          assert.equal(user.profile.level, 30);
 
           // Look up the values and test that populate works on the custom values
           Associations.User_resourcecustom.findOne(user.number)

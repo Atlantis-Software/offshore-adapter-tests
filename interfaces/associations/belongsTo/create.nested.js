@@ -8,14 +8,14 @@ describe('Association Interface', function() {
 
   describe('Belongs To Associations', function() {
 
-    before(function(done) {
-      // Check Payment belongsTo Customer
-      assert.strictEqual(Associations.Paymentbelongs.attributes.customer.model, 'customerbelongs');
-      assert.strictEqual(Associations.Customerbelongs.attributes.payments.collection, 'paymentbelongs');
-      done();
-    });
-
     describe('create nested association', function() {
+
+      before(function(done) {
+        // Check Payment belongsTo Customer
+        assert.strictEqual(Associations.Paymentbelongs.attributes.customer.model, 'customerbelongs');
+        assert.strictEqual(Associations.Customerbelongs.attributes.payments.collection, 'paymentbelongs');
+        done();
+      });
 
       /////////////////////////////////////////////////////
       // TEST METHODS
