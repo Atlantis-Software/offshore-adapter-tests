@@ -39,7 +39,7 @@ _.keys(fixtures).forEach(function(key) {
 var offshore, ontology;
 
 before(function(done) {
-
+  this.timeout(60000);
   offshore = new Offshore();
 
   // create all collection and load them
@@ -82,7 +82,7 @@ before(function(done) {
 });
 
 after(function(done) {
-
+  this.timeout(60000);
   function dropCollection(item, next) {
     if(!Adapter.hasOwnProperty('drop')) return next();
 
