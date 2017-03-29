@@ -120,7 +120,7 @@ describe('Association Interface', function() {
           var customer1 = payments[0].a_customer;
           var customer2 = payments[1].a_customer;
           assert(customer1 === customerRecords[0].id || customer1 === customerRecords[1].id, 'customer not in find range');
-          assert(customer2 === customerRecords[1].id || customer2 === customerRecords[1].id, 'customer not in find range');
+          assert(customer2 === customerRecords[0].id || customer2 === customerRecords[1].id, 'customer not in find range');
           done();
         });
       });
