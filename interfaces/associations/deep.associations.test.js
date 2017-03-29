@@ -230,7 +230,7 @@ describe('Association Interface', function() {
       });
 
       it('should deeply populate nested collections', function(done) {
-        Associations.Companydeep.find().where({name: 'compagny 2'})
+        Associations.Companydeep.find().where({name: 'company 2'})
           .populate('taxis', {sort: 'matricule asc'})
           .populate('taxis.breakdowns')
           .exec(function(err, company) {
