@@ -15,12 +15,12 @@
     "mocha": "2.4.5",
     "offshore-memory": "~0.1.0",
     "should": "8.2.1",
-    "offshore": "git://github.com/Atlantis-Software/offshore.git#v1.0.0"
+    "offshore": "~1.0.0"
   },
   "devDependencies": {
     "jpath": "0.0.20",
     "npm": "2.7.4",
-    "offshore-sql": "git://github.com/Atlantis-Software/offshore-sql.git#v1.0.0"
+    "offshore-sql": "~1.0.0"
   },
   "keywords": [
     "orm",
