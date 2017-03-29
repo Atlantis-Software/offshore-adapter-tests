@@ -113,13 +113,14 @@ describe('Association Interface', function() {
       });
 
       it('should return customer when the dynamic finder method is used for findIn', function(done) {
-        Associations.Payment.findByA_customerIn([customerRecords[0].id, customerRecords[1].id]).sort('a_customer asc')
+        Associations.Payment.findByA_customerIn([customerRecords[0].id, customerRecords[1].id])
         .exec(function(err, payments) {
           assert.ifError(err);
           assert.strictEqual(payments.length, 2);
-          assert.equal(payments[0].a_customer, customerRecords[0].id);
-          assert.equal(payments[1].a_customer, customerRecords[1].id);
-
+          var customer1 = payments[0].a_customer;
+          var customer2 = payments[1].a_customer;
+          assert(customer1 === customerRecords[0].id || customer1 === customerRecords[1].id, 'customer not in find range');
+          assert(customer2 === customerRecords[1].id || customer2 === customerRecords[1].id, 'customer not in find range');
           done();
         });
       });
