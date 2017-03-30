@@ -83,9 +83,7 @@ describe('Association Interface', function() {
             };
 
             Associations.Drivercustom.create(data).exec(function(err, values) {
-
               assert.ifError(err);
-
               // Look up the driver again to be sure the taxis were added
               Associations.Drivercustom.findOne(values.number)
               .populate('taxis', {sort: 'vin ASC'})

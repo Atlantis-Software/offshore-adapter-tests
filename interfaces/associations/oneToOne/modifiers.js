@@ -251,7 +251,7 @@ describe('Association Interface', function() {
           assert(Array.isArray(Profiles));
           assert.strictEqual(Profiles.length, 1);
           assert.strictEqual(Profiles[0].name, 'modifier2');
-          assert.strictEqual(Profiles[0].user, void 0, 'customer should be skipped');
+          assert.strictEqual(Profiles[0].user, null, 'customer should be null');
           done();
         });
       });

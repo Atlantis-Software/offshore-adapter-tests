@@ -5,101 +5,150 @@ var async = require('async');
 describe('Association Interface', function() {
 
   describe('Deep Associations', function() {
+    var nestedSellers;
+    var nestedCompanies;
     before(function(done) {
-      async.series([
-        function(callback) {
-          Associations.Addressdeep.createEach([
-            {id: 1, city: 'city 1'},
-            {id: 2, city: 'city 2'},
-            {id: 3, city: 'city 3'},
-            {id: 4, city: 'city 4'}
-          ], callback);
+      Associations.Companydeep.createEach([
+        {
+          name: 'company 1',
+          drivers: [
+            {
+              name: 'driver 1',
+              address: {city: 'city 1'}
+            },
+            {
+              name: 'driver 3',
+              address: {city: 'city 3'}
+            }
+          ]
         },
-        function(callback) {
-          Associations.Breakdowndeep.createEach([
-            {id: 1, level: 5, taxi: 3},
-            {id: 2, level: 7, taxi: 2},
-            {id: 3, level: 1, taxi: 3},
-            {id: 4, level: 8, taxi: 3},
-            {id: 5, level: 9, taxi: 1},
-            {id: 8, level: 9, taxi: 1},
-            {id: 6, level: 10, taxi: 4},
-            {id: 7, level: 11, taxi: 5}
-          ], callback);
-        },
-        function(callback) {
-          Associations.Companydeep.createEach([
-            {id: 1, name: 'company 1'},
-            {id: 2, name: 'company 2'}
-          ], callback);
-        },
-        function(callback) {
-          Associations.Sellerdeep.createEach([
-            {id: 1, name: 'seller 1'},
-            {id: 2, name: 'seller 2'}
-          ], callback);
-        },
-        function(callback) {
-          Associations.Countrydeep.createEach([
-            {id: 1, name: 'france'},
-            {id: 2, name: 'germany'}
-          ], callback);
-        },
-        function(callback) {
-          Associations.Departmentdeep.createEach([
-            {id: 1, name: 'dep 1', seller: 1},
-            {id: 2, name: 'dep 2', seller: 1},
-            {id: 3, name: 'dep 3', seller: 2},
-            {id: 4, name: 'dep 4', seller: 1},
-            {id: 5, name: 'dep 5', seller: 2}
-          ], callback);
-        },
-        function(callback) {
-          Associations.Driverdeep.createEach([
-            {id: 1, name: 'driver 1', company: 1, address: 1},
-            {id: 2, name: 'driver 2', company: 2, address: 2},
-            {id: 3, name: 'driver 3', company: 1, address: 3},
-            {id: 4, name: 'driver 4', company: 2, address: 4}
-          ], callback);
-        },
-        function(callback) {
-          Associations.Ridedeep.createEach([
-            {id:1, taxi: 1, driver: 1},
-            {id:2, taxi: 4, driver: 1},
-            {id:3, taxi: 5, driver: 1},
-            {id:4, taxi: 2, driver: 2},
-            {id:5, taxi: 1, driver: 2},
-            {id:6, taxi: 3, driver: 3},
-            {id:7, taxi: 2, driver: 3}
-          ], callback);
-        },
-        function(callback) {
-          Associations.Taxideep.createEach([
-            {id: 1, matricule: 'taxi_1', company: 1, seller: 1},
-            {id: 2, matricule: 'taxi_2', company: 2, seller: 2},
-            {id: 3, matricule: 'taxi_3', company: 2, seller: 2},
-            {id: 4, matricule: 'taxi_4', company: 1, seller: 1},
-            {id: 5, matricule: 'taxi_5', company: 1, seller: 1}
-          ], callback);
-        },
-        function(callback) {
-          Associations.Countrydeep.findOne(1, function(err, country) {
-            assert.ifError(err);
-            country.sellers.add(1);
-            country.sellers.add(2);
-            country.save(callback);
-          });
+        {
+          name: 'company 2',
+          drivers: [
+            {
+              name: 'driver 2',
+              address: {city: 'city 2'}
+            },
+            {
+              name: 'driver 4',
+              address: {city: 'city 4'}
+            }
+          ]
         }
-      ], done);
+      ]).exec(function(err, companies) {
+        if(err) {
+          return done(err);
+        }
+        _.forEach(companies, function(company, companyIndex) {
+          companies[companyIndex].drivers = _.sortBy(companies[companyIndex].drivers, 'name');
+        });
+        nestedCompanies = companies;
+        Associations.Countrydeep.createEach([
+          {name: 'france'},
+          {name: 'germany'}
+        ]).exec(function(err, countries) {
+          nestedCreates = [
+            {
+              name: 'seller 1',
+              countries: [
+                countries[0].id,
+                countries[1].id
+              ],
+              departments: [
+                {name: 'dep 1'},
+                {name: 'dep 2'},
+                {name: 'dep 4'}
+              ],
+              taxis: [
+                {
+                  matricule: 'taxi_1',
+                  company: companies[0].id,
+                  breakdowns: [
+                    {level: 9},
+                    {level: 9}
+                  ],
+                  drivers: [
+                    companies[0].drivers[0].id,
+                    companies[1].drivers[0].id
+                  ]
+                },
+                {
+                  matricule: 'taxi_4',
+                  company: companies[0].id,
+                  breakdowns: [
+                    {level: 10}
+                  ],
+                  drivers: [
+                    companies[0].drivers[0].id
+                  ]
+                },
+                {
+                  matricule: 'taxi_5',
+                  company: companies[0].id,
+                  breakdowns: [
+                    {level: 11}
+                  ],
+                  drivers: [
+                    companies[0].drivers[0].id
+                  ]
+                }
+              ]
+            },
+            {
+              name: 'seller 2',
+              countries: [
+                countries[0].id
+              ],
+              departments: [
+                {name: 'dep 3'},
+                {name: 'dep 5'}
+              ],
+              taxis: [
+                {
+                  matricule: 'taxi_2',
+                  company: companies[1].id,
+                  breakdowns: [
+                    {level: 7}
+                  ],
+                  drivers: [
+                    companies[1].drivers[0].id,
+                    companies[0].drivers[1].id
+                  ]
+                },
+                {
+                  matricule: 'taxi_3',
+                  company: companies[1].id,
+                  breakdowns: [
+                    {level: 5},
+                    {level: 1},
+                    {level: 8}
+                  ],
+                  drivers: [
+                    companies[0].drivers[1].id
+                  ]
+                }
+              ]
+            }
+          ];
+
+          Associations.Sellerdeep.createEach(nestedCreates).exec(function(err, sellers) {
+            if(err) {
+              return done(err);
+            }
+            nestedSellers = sellers;
+            done();
+          });
+        });
+      });
     });
 
     describe('Populate', function() {
       it('should deeply populate a branch', function(done) {
         Associations.Companydeep.find().sort('id asc')
-          .populate('drivers', {sort: {id: 1}})
-          .populate('drivers.taxis', {sort: {id: 1}})
-          .populate('drivers.taxis.seller', {sort: {id: 1}})
-          .populate('drivers.taxis.seller.departments', {sort: {id: 1}})
+          .populate('drivers', {sort: {name: 1}})
+          .populate('drivers.taxis', {sort: {matricule: 1}})
+          .populate('drivers.taxis.seller', {sort: {name: 1}})
+          .populate('drivers.taxis.seller.departments', {sort: {name: 1}})
           .exec(function(err, companies) {
             assert.ifError(err);
             // Root Level
@@ -134,9 +183,9 @@ describe('Association Interface', function() {
 
       it('should deeply populate multiple branchs', function(done) {
         Associations.Companydeep.find().where({name: 'company 2'})
-          .populate('drivers', {sort: {id: 1}})
-          .populate('drivers.taxis', {sort: {id: 1}})
-          .populate('drivers.address')
+          .populate('drivers', {sort: {name: 1}})
+          .populate('drivers.taxis', {sort: {matricule: 1}})
+          .populate('drivers.address', {sort: {city: 1}})
           .populate('taxis')
           .exec(function(err, companies) {
             assert.ifError(err);
@@ -181,7 +230,7 @@ describe('Association Interface', function() {
       });
 
       it('should deeply populate nested collections', function(done) {
-        Associations.Companydeep.find().where({id: 2})
+        Associations.Companydeep.find().where({name: 'company 2'})
           .populate('taxis', {sort: 'matricule asc'})
           .populate('taxis.breakdowns')
           .exec(function(err, company) {
@@ -216,82 +265,82 @@ describe('Association Interface', function() {
       });
 
       it('should find model using deep criteria on hasManyToOne', function(done) {
-        Associations.Taxideep.find({where: {breakdowns: {level: 11}}}).populate('breakdowns').exec(function(err, taxis) {
+        Associations.Taxideep.find({where: {breakdowns: {level: 11}}, sort: {matricule: 1}}).populate('breakdowns', {sort: {level: 1}}).exec(function(err, taxis) {
           assert.ifError(err);
-          assert(taxis[0].id === 5);
-          assert(taxis[0].breakdowns[0].id === 7);
-          assert(taxis[0].breakdowns[0].level === 11);
+          assert.strictEqual(taxis[0].matricule, 'taxi_5');
+          assert.strictEqual(taxis[0].breakdowns[0].level, 11);
           done();
         });
       });
 
       it('should find model using deep criteria on hasManyToMany', function(done) {
-        Associations.Sellerdeep.find({where: {countries: {name: 'france'}}}).populate('countries').exec(function(err, sellers) {
+        Associations.Sellerdeep.find({where: {countries: {name: 'france'}}, sort: {name: 1}}).populate('countries', {sort: {name: 1}}).exec(function(err, sellers) {
           assert.ifError(err);
           assert(sellers.length === 2);
-          assert(sellers[0].countries[0].name === 'france');
-          assert(sellers[1].countries[0].name === 'france');
+          assert.strictEqual(sellers[0].countries[0].name, 'france');
+          assert.strictEqual(sellers[1].countries[0].name, 'france');
           done();
         });
       });
 
       it('should find model using deep criteria on hasManyToMany through', function(done) {
-        Associations.Driverdeep.find({where: {taxis: {matricule: 'taxi_4'}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
+        Associations.Driverdeep.find({where: {taxis: {matricule: 'taxi_4'}}, sort: {name: 1}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
           assert.ifError(err);
-          assert(drivers.length === 1);
-          assert(drivers[0].id === 1);
-          assert(drivers[0].taxis.length === 3);
-          assert(drivers[0].taxis[0].matricule === 'taxi_1');
-          assert(drivers[0].taxis[1].matricule === 'taxi_4');
-          assert(drivers[0].taxis[2].matricule === 'taxi_5');
+          assert.strictEqual(drivers.length, 1);
+          assert.strictEqual(drivers[0].name, 'driver 1');
+          assert.strictEqual(drivers[0].taxis.length, 3);
+          assert.strictEqual(drivers[0].taxis[0].matricule, 'taxi_1');
+          assert.strictEqual(drivers[0].taxis[1].matricule, 'taxi_4');
+          assert.strictEqual(drivers[0].taxis[2].matricule, 'taxi_5');
           done();
         });
       });
 
       it('should find model using deep criteria with operator', function(done) {
-        Associations.Driverdeep.find({sort: 'id', where: {taxis: {or: [{matricule: 'taxi_1'}, {matricule: 'taxi_2'}]}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
+        Associations.Driverdeep.find({sort: 'name', where: {taxis: {or: [{matricule: 'taxi_1'}, {matricule: 'taxi_2'}]}}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
           assert.ifError(err);
-          assert(drivers.length === 3);
-          assert(drivers[0].id === 1);
-          assert(drivers[0].taxis.length === 3);
-          assert(drivers[0].taxis[0].matricule === 'taxi_1');
-          assert(drivers[0].taxis[1].matricule === 'taxi_4');
-          assert(drivers[0].taxis[2].matricule === 'taxi_5');
-          assert(drivers[1].id === 2);
-          assert(drivers[1].taxis.length === 2);
-          assert(drivers[1].taxis[0].matricule === 'taxi_1');
-          assert(drivers[1].taxis[1].matricule === 'taxi_2');
-          assert(drivers[2].id === 3);
-          assert(drivers[2].taxis.length === 2);
-          assert(drivers[2].taxis[0].matricule === 'taxi_2');
-          assert(drivers[2].taxis[1].matricule === 'taxi_3');
+          assert.strictEqual(drivers.length, 3);
+          assert.strictEqual(drivers[0].name, 'driver 1');
+          assert.strictEqual(drivers[0].taxis.length, 3);
+          assert.strictEqual(drivers[0].taxis[0].matricule, 'taxi_1');
+          assert.strictEqual(drivers[0].taxis[1].matricule, 'taxi_4');
+          assert.strictEqual(drivers[0].taxis[2].matricule, 'taxi_5');
+          assert.strictEqual(drivers[1].name, 'driver 2');
+          assert.strictEqual(drivers[1].taxis.length, 2);
+          assert.strictEqual(drivers[1].taxis[0].matricule, 'taxi_1');
+          assert.strictEqual(drivers[1].taxis[1].matricule, 'taxi_2');
+          assert.strictEqual(drivers[2].name, 'driver 3');
+          assert.strictEqual(drivers[2].taxis.length, 2);
+          assert.strictEqual(drivers[2].taxis[0].matricule, 'taxi_2');
+          assert.strictEqual(drivers[2].taxis[1].matricule, 'taxi_3');
           done();
         });
       });
 
       it('should find model using deep criteria in operator', function(done) {
-        Associations.Driverdeep.find({sort: 'id', where: {or: [{taxis: {matricule: 'taxi_3'}}, {address: {city: 'city 4'}}]}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
+        Associations.Driverdeep.find({sort: 'name', where: {or: [{taxis: {matricule: 'taxi_3'}}, {address: {city: 'city 4'}}]}}).populate('taxis', {sort: 'matricule'}).exec(function(err, drivers) {
           assert.ifError(err);
-          assert(drivers.length === 2);
-          assert(drivers[0].id === 3);
-          assert(drivers[0].taxis.length === 2);
-          assert(drivers[0].taxis[0].matricule === 'taxi_2');
-          assert(drivers[0].taxis[1].matricule === 'taxi_3');
-          assert(drivers[1].id === 4);
-          assert(drivers[1].taxis.length === 0);
-          assert(drivers[1].address === 4);
+          assert.strictEqual(drivers.length, 2);
+          assert.strictEqual(drivers[0].name, 'driver 3');
+          assert.strictEqual(drivers[0].taxis.length, 2);
+          assert.strictEqual(drivers[0].taxis[0].matricule, 'taxi_2');
+          assert.strictEqual(drivers[0].taxis[1].matricule, 'taxi_3');
+          assert.strictEqual(drivers[1].name, 'driver 4');
+          assert.strictEqual(drivers[1].taxis.length, 0);
           done();
         });
       });
 
       it('should populate using deep criteria', function(done) {
-        Associations.Driverdeep.findOne(3).populate('taxis', {sort: 'matricule', where: {breakdowns: {level: 5}}}).exec(function(err, driver) {
+        Associations.Driverdeep.findOne({name: 'driver 3'}).populate('taxis', {sort: 'matricule', where: {breakdowns: {level: 5}}}).exec(function(err, driver) {
           assert.ifError(err);
-          assert(driver.taxis.length === 1);
-          assert(driver.taxis[0].id === 3);
+          assert.strictEqual(driver.name, 'driver 3');
+          assert.strictEqual(driver.taxis.length, 1);
+          assert.strictEqual(driver.taxis[0].matricule, 'taxi_3');
           done();
         });
       });
+
     });
 
     describe('Associations', function() {
@@ -382,6 +431,7 @@ describe('Association Interface', function() {
             done();
           });
       });
+
     });
   });
 });

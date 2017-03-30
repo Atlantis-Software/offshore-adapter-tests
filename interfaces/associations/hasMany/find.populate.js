@@ -23,7 +23,8 @@ describe('Association Interface', function() {
 
       var customers = [
         { name: 'hasMany find pop' },
-        { name: 'hasMany find pop' }
+        { name: 'hasMany find pop' },
+        { name: 'hasMany find pop no child' }
       ];
 
       Associations.Customer.createEach(customers, function(err, customers) {
@@ -193,6 +194,21 @@ describe('Association Interface', function() {
           assert.strictEqual(payments[1].a_customer.id, customerRecords[0].id);
           assert.strictEqual(payments[2].a_customer.id, customerRecords[0].id);
           assert.strictEqual(payments[3].a_customer.id, customerRecords[0].id);
+
+          done();
+        });
+      });
+
+      it('populate should be an empty array if id refer to an undefined child', function(done) {
+        Associations.Customer.find({ name: 'hasMany find pop no child' })
+        .populate('payments')
+        .exec(function(err, customer) {
+          assert.ifError(err);
+          assert.strictEqual(customer.length, 1);
+          assert.strictEqual(customer[0].name, 'hasMany find pop no child');
+          assert(!_.isUndefined(customer[0].payments), 'Child should not be undefined');
+          assert(_.isArray(customer[0].payments), 'Child should be an array');
+          assert.strictEqual(customer[0].payments.length, 0);
 
           done();
         });

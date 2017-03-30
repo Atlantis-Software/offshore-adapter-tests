@@ -16,7 +16,6 @@ before_install:
   - npm install sqlite3
 
 before_script:
-  - npm install Atlantis-Software/offshore
   - psql -c 'create database offshorepg;' -U postgres
   - mysql -e 'create database offshoresql;'
 
