@@ -22,7 +22,6 @@ describe('Semantic Interface', function() {
           dateId = createdRecord.id;
           Semantic.User.findOne({id: createdRecord.id}, function (err, record) {
             assert.ifError(err);
-            process.exit();
             // Convert both dates to unix timestamps
             var resultDate = record.dob.getTime();
             assert.strictEqual(origDate, resultDate, 'datetime should correspond');
