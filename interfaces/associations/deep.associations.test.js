@@ -144,7 +144,7 @@ describe('Association Interface', function() {
 
     describe('Populate', function() {
       it('should deeply populate a branch', function(done) {
-        Associations.Companydeep.find().sort('id asc')
+        Associations.Companydeep.find().sort('name asc')
           .populate('drivers', {sort: {name: 1}})
           .populate('drivers.taxis', {sort: {matricule: 1}})
           .populate('drivers.taxis.seller', {sort: {name: 1}})
