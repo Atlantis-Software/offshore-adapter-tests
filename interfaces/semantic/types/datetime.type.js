@@ -11,19 +11,20 @@ describe('Semantic Interface', function() {
       ////////////////////////////////////////////////////
 
       var dateId;
-      var date = new Date();
-      var origDate = Date.parse(date);
+      var date = new Date(2010, 10, 05, 10, 03, 40);
+      var origDate = date.getTime();
 
       it('should store proper datetime value', function(done) {
         Semantic.User.create({ dob: date }, function(err, createdRecord) {
           assert.ifError(err);
-          createdDate = Date.parse(new Date(createdRecord.dob));
+          createdDate = createdRecord.dob.getTime();
           assert.strictEqual(origDate, createdDate);
           dateId = createdRecord.id;
           Semantic.User.findOne({id: createdRecord.id}, function (err, record) {
             assert.ifError(err);
+            process.exit();
             // Convert both dates to unix timestamps
-            var resultDate = Date.parse(new Date(record.dob));
+            var resultDate = record.dob.getTime();
             assert.strictEqual(origDate, resultDate, 'datetime should correspond');
             done();
           });
@@ -36,7 +37,7 @@ describe('Semantic Interface', function() {
           assert.strictEqual(record.length, 1, 'should have 1 result');
 
           // Convert both dates to unix timestamps
-          var resultDate = Date.parse(new Date(record[0].dob));
+          var resultDate = record[0].dob.getTime();
           assert.strictEqual(dateId, record[0].id, 'id should correspond');
           assert.strictEqual(origDate, resultDate, 'datetime should correspond');
           done();
