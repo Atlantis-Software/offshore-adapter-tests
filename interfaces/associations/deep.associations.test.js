@@ -252,6 +252,7 @@ describe('Association Interface', function() {
           });
       });
     });
+
     describe('Criteria', function() {
       it('should find model using deep criteria on belongsTo', function(done) {
         Associations.Taxideep.find({where: {seller: {name: 'seller 1'}}}).populate('seller').exec(function(err, taxis) {
@@ -337,6 +338,24 @@ describe('Association Interface', function() {
           assert.strictEqual(driver.name, 'driver 3');
           assert.strictEqual(driver.taxis.length, 1);
           assert.strictEqual(driver.taxis[0].matricule, 'taxi_3');
+          done();
+        });
+      });
+
+      it('should intersect results on deep criteria', function(done) {
+        Associations.Companydeep.find().where({
+          drivers: {
+            taxis: {
+              matricule: 'taxi_4'
+            }
+          },
+          taxis: {
+            matricule: 'taxi_2'
+          }
+        })
+        .exec(function(err, companies) {
+          assert.ifError(err);
+          assert.strictEqual(companies.length, 0);
           done();
         });
       });
