@@ -20,7 +20,7 @@
   "devDependencies": {
     "jpath": "0.0.20",
     "npm": "2.7.4",
-    "offshore-sql": "~0.1.0"
+    "offshore-sql": "Atlantis-Software/offshore-sql#fix-exponential-rows"
   },
   "keywords": [
     "orm",
