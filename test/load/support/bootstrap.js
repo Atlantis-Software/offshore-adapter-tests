@@ -2,8 +2,8 @@
  * Module dependencies
  */
 
-var _ = require('lodash')
-  , Offshore = require('offshore');
+var _ = require('lodash');
+var Offshore = require(process.env.offshorePath || 'offshore');
 
 
 /**

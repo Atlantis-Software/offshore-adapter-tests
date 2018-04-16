@@ -2,7 +2,7 @@
  * Dependencies
  */
 
-var Offshore = require('offshore');
+var Offshore = require(process.env.offshorePath || 'offshore');
 
 module.exports = Offshore.Collection.extend({
 

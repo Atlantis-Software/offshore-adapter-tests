@@ -1,4 +1,4 @@
-var Offshore = require('offshore');
+var Offshore = require(process.env.offshorePath || 'offshore');
 var assert = require('assert');
 var _ = require('lodash');
 

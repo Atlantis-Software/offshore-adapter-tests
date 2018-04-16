@@ -2,8 +2,8 @@
  * Module Dependencies
  */
 
-var Offshore = require('offshore'),
-    _ = require('lodash');
+var Offshore = require(process.env.offshorePath || 'offshore');
+var _ = require('lodash');
 
 // Require Fixtures
 var fixtures = {

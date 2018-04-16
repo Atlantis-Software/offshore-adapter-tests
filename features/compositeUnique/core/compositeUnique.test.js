@@ -2,7 +2,7 @@ var assert = require('assert');
 var _ = require('lodash');
 
 describe('compositeUnique feature', function () {
-  var Offshore = require('offshore');
+  var Offshore = require(process.env.offshorePath || 'offshore');
   var defaults = { migrate: 'alter' };
   var offshore;
 

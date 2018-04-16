@@ -2,9 +2,9 @@
  * Module dependencies
  */
 
-var Offshore = require('offshore'),
-    assert = require('assert'),
-    bootstrapFn = require('./support/bootstrapFn');
+var Offshore = require(process.env.offshorePath || 'offshore');
+var assert = require('assert');
+var bootstrapFn = require('./support/bootstrapFn');
 
 var newFixture = {
   CreateFixture : Offshore.Collection.extend({

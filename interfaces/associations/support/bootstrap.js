@@ -2,7 +2,7 @@
  * Module Dependencies
  */
 
-var Offshore = require('offshore');
+var Offshore = require(process.env.offshorePath || 'offshore');
 var _ = require('lodash');
 var async = require('async');
 

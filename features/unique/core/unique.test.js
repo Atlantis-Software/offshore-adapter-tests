@@ -7,7 +7,7 @@ describe('unique attribute feature', function() {
   // TEST SETUP
   ////////////////////////////////////////////////////
 
-  var Offshore = require('offshore');
+  var Offshore = require(process.env.offshorePath || 'offshore');
   var defaults = { migrate: 'alter' };
   var offshore;
 

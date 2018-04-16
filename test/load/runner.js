@@ -111,14 +111,14 @@ function roundMB(num){
 }
 
 function printStats(stats){
-  var maxRss = _.max(_.pluck(stats, 'rss'));
-  var maxHeapTotal = _.max(_.pluck(stats, 'heapTotal'));
-  var maxHeapUsed = _.max(_.pluck(stats, 'heapUsed'));
+  var maxRss = _.max(_.map(stats, 'rss'));
+  var maxHeapTotal = _.max(_.map(stats, 'heapTotal'));
+  var maxHeapUsed = _.max(_.map(stats, 'heapUsed'));
   console.log('max: ' + reportMemory({ rss: maxRss, heapTotal: maxHeapTotal, heapUsed: maxHeapUsed }));
   
-  var avgRss = _.reduce(_.pluck(stats, 'rss'), function(sum, num) { return sum + num; }) / stats.length;
-  var avgHeapTotal = _.reduce(_.pluck(stats, 'heapTotal'), function(sum, num) { return sum + num; }) / stats.length;
-  var avgHeapUsed = _.reduce(_.pluck(stats, 'heapUsed'), function(sum, num) { return sum + num; }) / stats.length;
+  var avgRss = _.reduce(_.map(stats, 'rss'), function(sum, num) { return sum + num; }) / stats.length;
+  var avgHeapTotal = _.reduce(_.map(stats, 'heapTotal'), function(sum, num) { return sum + num; }) / stats.length;
+  var avgHeapUsed = _.reduce(_.map(stats, 'heapUsed'), function(sum, num) { return sum + num; }) / stats.length;
   console.log('avg: ' + reportMemory({ rss: avgRss, heapTotal: avgHeapTotal, heapUsed: avgHeapUsed }) + '\n');
 }
 

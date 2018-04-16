@@ -2,8 +2,8 @@
  * Module Dependencies
  */
 
-var bootstrapFn = require('./bootstrapFn'),
-    async = require('async');
+var bootstrapFn = require('./bootstrapFn');
+var async = require('async');
 
 /////////////////////////////////////////////////////
 // TEST SETUP

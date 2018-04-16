@@ -5,10 +5,10 @@
 // TODO: track any failures/errors
 
 
-var Offshore = require('offshore'),
-    Model = require('./support/crud.fixture'),
-    assert = require('assert'),
-    async = require('async');
+var Offshore = require(process.env.offshorePath || 'offshore');
+var Model = require('./support/crud.fixture');
+var assert = require('assert');
+var async = require('async');
 
 var CONNECTIONS = 10;
 
