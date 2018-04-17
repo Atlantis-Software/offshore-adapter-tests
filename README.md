@@ -4,6 +4,12 @@ Offshore Adapter Tests
 A set of integration tests that can be included in your Offshore Adapter module and used to test
 your adapter against the current Offshore API.
 
+[![npm version](https://badge.fury.io/js/offshore-adapter-tests.svg)](https://www.npmjs.com/offshore-adapter-tests)
+[![Build Status](https://travis-ci.org/Atlantis-Software/offshore-adapter-tests.svg?branch=master)](https://travis-ci.org/Atlantis-Software/offshore-adapter-tests)
+[![Coverage Status](https://coveralls.io/repos/github/Atlantis-Software/offshore-adapter-tests/badge.svg?branch=master)](https://coveralls.io/github/Atlantis-Software/offshore-adapter-tests?branch=master)
+[![NSP Status](https://nodesecurity.io/orgs/atlantis/projects/30ec60e6-5fe3-4546-9d4d-52be60ef5fa3/badge)](https://nodesecurity.io/orgs/atlantis/projects/30ec60e6-5fe3-4546-9d4d-52be60ef5fa3)
+[![Dependencies Status](https://david-dm.org/Atlantis-Software/offshore-adapter-tests.svg)](https://david-dm.org/Atlantis-Software/offshore-adapter-tests)
+
 ## Adapter Interface Specification
 
 
