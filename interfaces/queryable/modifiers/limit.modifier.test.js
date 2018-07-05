@@ -30,7 +30,7 @@ describe('Queryable Interface', function() {
     ////////////////////////////////////////////////////
 
     it('should return the correct amount of records', function(done) {
-      Queryable.User.find({ where: { type: 'limit test' }, limit: 3 }, function(err, users) {
+      Queryable.User.find({ where: { type: 'limit test' }, limit: 3, sort: 'type asc' }, function(err, users) {
         assert.ifError(err);
         assert(Array.isArray(users));
         assert.strictEqual(users.length, 3);
