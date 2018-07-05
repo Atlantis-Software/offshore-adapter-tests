@@ -1,5 +1,4 @@
-var assert = require('assert'),
-    _ = require('lodash');
+var assert = require('assert');
 
 describe('Queryable Interface', function() {
 
@@ -14,12 +13,14 @@ describe('Queryable Interface', function() {
       // Insert 10 Users
       var users = [];
 
-      for(var i=0; i<10; i++) {
+      for (var i=0; i<10; i++) {
         users.push({first_name: 'limit_user' + i, type: 'limit test'});
       }
 
       Queryable.User.createEach(users, function(err, users) {
-        if(err) return done(err);
+        if (err) {
+          return done(err);
+        }
         done();
       });
     });

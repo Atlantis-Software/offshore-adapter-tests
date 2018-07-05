@@ -1,5 +1,5 @@
-var exec = require('child_process').exec,
-    async = require('async');
+var exec = require('child_process').exec;
+var asynk = require('asynk');
 
 var adapters = ['offshore-sql', 'offshore-memory'];
 if (process.argv.length > 2) {
@@ -9,7 +9,7 @@ console.log('About to test ' + adapters + ' ...');
 
 console.time('total time elapsed');
 
-async.eachSeries(adapters, function(adapterName, next){
+asynk.each(adapters, function(adapterName, next){
   console.log("\n");
   console.log("\033[0;34m-------------------------------------------------------------------------------------------\033[0m");
   console.log("\033[0;34m                                     %s \033[0m", adapterName);
@@ -28,6 +28,6 @@ async.eachSeries(adapters, function(adapterName, next){
     next();
   });
   
-}, function allDone(err, results){
+}).serie().asCallback(function allDone(err, results){
   console.timeEnd('total time elapsed');
 });

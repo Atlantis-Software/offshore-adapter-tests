@@ -2,8 +2,8 @@
  * Module Dependencies
  */
 
-var bootstrapFn = require('./bootstrapFn'),
-    async = require('async');
+var bootstrapFn = require('./bootstrapFn');
+var asynk = require('asynk');
 
 /////////////////////////////////////////////////////
 // TEST SETUP
@@ -14,7 +14,7 @@ var offshore, ontology;
 before(function(done) {
 
   bootstrapFn(function(err, obj) {
-    if(err) {
+    if (err) {
       console.log('Ontology loading error : ', err);
     }
 
@@ -35,15 +35,21 @@ before(function(done) {
 
 after(function(done) {
   function dropCollection(item, next) {
-    if(!Adapter.hasOwnProperty('drop')) return next();
+    if (!Adapter.hasOwnProperty('drop')) {
+      return next();
+    }
 
     ontology.collections[item].drop(function(err) {
-      if(err) return next(err);
+      if (err) {
+        return next(err);
+      }
       next();
     });
   }
-  async.each(Object.keys(ontology.collections), dropCollection, function(err) {
-    if(err) return done(err);
+  asynk.each(Object.keys(ontology.collections), dropCollection).serie().asCallback(function(err) {
+    if (err) {
+      return done(err);
+    }
     offshore.teardown(done);
   });
 });

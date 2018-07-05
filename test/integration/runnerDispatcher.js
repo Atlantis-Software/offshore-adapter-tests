@@ -1,5 +1,5 @@
 var child_process = require('child_process');
-var async = require('async');
+var asynk = require('asynk');
 var npm = require('npm');
 var jpath = require('jpath');
 var fs = require('fs');
@@ -54,7 +54,7 @@ function getNpmDetails(cb){
 }
 
 function runTests(cb){
-  async.eachSeries(adapters, function(adapter, next){
+  asynk.each(adapters, function(adapter, next){
     var adapterName = adapter.name;
     var settings = adapter.config;
     status[adapterName] = { passed: 0, failed: 0, total: 0, exitCode: 0, startTime: new Date().getTime() };
@@ -91,8 +91,7 @@ function runTests(cb){
       if(code != 0 && (!settings || !settings.returnZeroOnError)) { exitCode = exitCode + code; }
       next();
     });
-  },
-  cb);
+  }).serie().asCallback(cb);
 }
 
 function printCoreModulesVersions(cb){
@@ -114,8 +113,7 @@ function getModuleRow(name, module){;
     + " |\n";
 }
 
-
-async.series([getNpmDetails, runTests, printCoreModulesVersions], function(err, res){
+asynk.add(getNpmDetails).add(runTests).add(printCoreModulesVersions).serie().asCallback(function(err, res){
   resultTable += " ------------------------------------------------------------------------------------- \n";
   console.log(resultTable);
   console.timeEnd('total time elapsed');
@@ -124,8 +122,6 @@ async.series([getNpmDetails, runTests, printCoreModulesVersions], function(err, 
   }
   process.exit(exitCode);
 });
-
-
 
 /**
  * Aux functions

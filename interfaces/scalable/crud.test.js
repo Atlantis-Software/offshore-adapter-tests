@@ -8,7 +8,7 @@
 var Offshore = require(process.env.offshorePath || 'offshore');
 var Model = require('./support/crud.fixture');
 var assert = require('assert');
-var async = require('async');
+var asynk = require('asynk');
 
 var CONNECTIONS = 10;
 
@@ -50,16 +50,19 @@ describe('Load Testing', function() {
     it('should not error', function(done) {
 
       // generate x users
-      async.times(CONNECTIONS, function(n, next){
-
-        var data = {
+      var users = [];
+      for (var i = 0; i < CONNECTIONS; ++i) {
+        users.push({
           first_name: Math.floor((Math.random()*100000)+1),
           last_name: Math.floor((Math.random()*100000)+1),
           email: Math.floor((Math.random()*100000)+1)
-        };
+        });
+      }
 
-        User.create(data, next);
-      }, function(err, users) {
+
+      asynk.each(users, function(user, next){
+        User.create(user, next);
+      }).serie().asCallback(function(err, users) {
         assert.ifError(err);
         assert.strictEqual(users.length, CONNECTIONS);
         done();

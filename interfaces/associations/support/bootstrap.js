@@ -4,7 +4,7 @@
 
 var Offshore = require(process.env.offshorePath || 'offshore');
 var _ = require('lodash');
-var async = require('async');
+var asynk = require('asynk');
 
 // Require Fixtures
 var fixtures = require('./fixtures');
@@ -60,15 +60,19 @@ before(function(done) {
 after(function(done) {
   this.timeout(60000);
   function dropCollection(item, next) {
-    if(!Adapter.hasOwnProperty('drop')) return next();
+    if (!Adapter.hasOwnProperty('drop')) {
+      return next();
+    }
 
     ontology.collections[item].drop(function(err) {
-      if(err) return next(err);
+      if (err) {
+        return next(err);
+      }
       next();
     });
   }
 
-  async.each(Object.keys(ontology.collections), dropCollection, function(err) {
+  asynk.each(Object.keys(ontology.collections), dropCollection).serie().asCallback(function(err) {
     if (err) {
       return done(err);
     }

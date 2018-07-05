@@ -1,9 +1,9 @@
 /**
  * Module dependencies
  */
-var setupWaterline = require('./support/bootstrap'),
-    async = require('async'),
-    _ = require('lodash');
+var setupWaterline = require('./support/bootstrap');
+var asynk = require('asynk');
+var _ = require('lodash');
 var adapterName = process.env.ADAPTER_NAME || process.argv[2];
 var config = {};
 try {
@@ -95,8 +95,7 @@ function loadTest(cb){
       .catch(next);
   }
   
-  // async.each / async.eachSeries
-  async.each(_.range(1, hitsNumber+1), findAndPopulate, cb); 
+  asynk.each(_.range(1, hitsNumber+1), findAndPopulate).serie().asCallback(cb); 
 }
 
 function reportMemory(memUsage){
@@ -123,16 +122,16 @@ function printStats(stats){
 }
 
 function boostrapCollections(cb){
-  async.eachSeries(_.range(0, usersNumber), function (userIndex, innerCb) {
+  asynk.each(_.range(0, usersNumber), function (userIndex, innerCb) {
     WL_MODELS.user.create().exec(function (err, user) {
       if (err) {
         return innerCb(err);
       }
-      async.eachSeries(_.range(0, petsNumber), function (petIndex, innerInnerCb) {
+      asynk.each(_.range(0, petsNumber), function (petIndex, innerInnerCb) {
         WL_MODELS.pet.create({ owner: user.id }).exec(innerInnerCb);
-      }, innerCb);
+      }).serie().asCallback(innerCb);
     });
-  }, cb);
+  }).serie().asCallback(cb);
 }
 
 function handleError(err, message){
@@ -150,8 +149,8 @@ function tearDown(collections, cb){
     });
   }
 
-  async.each(Object.keys(collections), dropCollection, function(err) {
-    if(err) {
+  asynk.each(Object.keys(collections), dropCollection).serie().asCallback(function(err) {
+    if (err) {
       console.log('ERROR:', err);
       cb(err);
     }
